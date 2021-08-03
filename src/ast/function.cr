@@ -15,6 +15,7 @@ module Mint
       getter comment, head_comments, tail_comments
 
       property? keep_name = false
+      property parent : Node? = nil
 
       def initialize(@head_comments : Array(Comment),
                      @tail_comments : Array(Comment),

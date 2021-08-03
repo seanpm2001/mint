@@ -1,0 +1,10 @@
+component Main {
+  fun greet (argument : String) : String {
+    argument + otherArgument
+  } where {
+    otherArgument = "Hello"
+  }
+}
+-----------------------------------------------------------------------------2:4
+argument -> Argument
+otherArgument -> Variable

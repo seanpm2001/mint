@@ -3,7 +3,7 @@ module Mint
     def statement(parent : Ast::Statement::Parent, require_name : Bool = false) : Ast::Statement?
       start do |start_position|
         target = start do
-          value = variable(track: false) || tuple_destructuring
+          value = variable(track: false) || tuple_destructuring || enum_destructuring
           whitespace
           next unless keyword "="
           next if char == '=' # Don't parse == operation as statement.

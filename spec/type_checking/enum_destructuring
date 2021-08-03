@@ -1,0 +1,27 @@
+enum Test(a) {
+  Option1(a)
+  Option2
+}
+
+component Main {
+  fun render : String {
+    Test::Option1(variable) =
+      Test::Option1("Some variable")
+
+    ""
+  }
+}
+-----------------------------------------------------------------------TypeError
+enum Test(a) {
+  Option1(a)
+  Option2
+}
+
+component Main {
+  fun render : String {
+    Test::Option1(variable) =
+      Test::Option2
+
+    ""
+  }
+}

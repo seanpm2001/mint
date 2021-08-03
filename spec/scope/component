@@ -1,0 +1,18 @@
+component Main {
+  property age : Number = 42
+
+  state name : String = ""
+
+  fun greet : String {
+    ""
+  }
+
+  fun render : String {
+    ""
+  }
+}
+-----------------------------------------------------------------------------1:1
+render -> Function
+greet -> Function
+age -> Property
+name -> State

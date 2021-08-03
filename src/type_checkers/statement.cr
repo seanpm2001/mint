@@ -30,6 +30,22 @@ module Mint
       end
     end
 
+    private def _check_statement_target(target : Ast::EnumDestructuring, node, condition)
+      resolved =
+        resolve target
+
+      raise TypeError, {
+        "condition" => condition,
+        "target"    => target,
+        "node"      => node,
+      } unless Comparer.compare(resolved, condition)
+
+      target.parameters.each_with_index do |param, index|
+        subcondition = condition.parameters[index]
+        _check_statement_target(param, node, subcondition)
+      end
+    end
+
     private def _check_statement_target(target, node, condition)
     end
   end

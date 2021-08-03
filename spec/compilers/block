@@ -1,6 +1,7 @@
 component Main {
   fun render : String {
-    a = "Some string..."
+    user =
+      decode object as User -> |error| "Could not decode object!"
 
     a + ", other string..."
   }
@@ -9,8 +10,15 @@ component Main {
 class A extends _C {
   render() {
     return (() => {
-      const a = `Some string...`;
-      return a + `, other string...`;
+      try {
+        const a = _o(new B(`Some string...`), (error) => {
+          `error`
+        });
+
+        return a + `, other string...`);
+      } catch (error) {
+        return error
+      }
     })();
   }
 };

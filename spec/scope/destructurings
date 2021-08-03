@@ -1,0 +1,13 @@
+component Main {
+  fun greet (argument : String) : String {
+    ""
+  } where {
+    {a, {b, {c, d}}} = {"A", {"B", {"C", "D"}}}
+  }
+}
+-----------------------------------------------------------------------------2:4
+argument -> Argument
+a -> Variable
+b -> Variable
+c -> Variable
+d -> Variable

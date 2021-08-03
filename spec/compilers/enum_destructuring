@@ -1,0 +1,39 @@
+enum Test(a) {
+  Option1(a)
+  Option2
+}
+
+component Main {
+  fun render : String {
+    Test::Option1(variable) =
+      Test::Option1("Some variable")
+
+    variable
+  }
+}
+--------------------------------------------------------------------------------
+class B extends _E {
+  constructor(_0) {
+    super();
+    this._0 = _0;
+    this.length = 1;
+  }
+};
+
+class C extends _E {
+  constructor() {
+    super();
+    this.length = 0;
+  }
+};
+
+class A extends _C {
+  render() {
+    return (() => {
+      const a = new B(`Some variable`);
+      return a;
+    })();
+  }
+};
+
+A.displayName = "Main";

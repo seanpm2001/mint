@@ -258,6 +258,14 @@ module Mint
           }
         }
 
+        const _o = (item) {
+          if (item instanceof #{err}) {
+            raise new #{err}(item._0)
+          } else {
+            return item._0
+          }
+        }
+
         class DoError extends Error {}
 
         #{body}

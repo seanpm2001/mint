@@ -3,6 +3,8 @@ module Mint
     class Get < Node
       getter name, body, type, comment, head_comments, tail_comments, where
 
+      property parent : Node? = nil
+
       def initialize(@head_comments : Array(Comment),
                      @tail_comments : Array(Comment),
                      @type : TypeOrVariable?,

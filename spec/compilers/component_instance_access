@@ -16,8 +16,8 @@ component Instance {
 component Main {
   fun handleClick : String {
     case (instance) {
-      Maybe::Just(component) => component.name
-      Maybe::Nothing => ""
+      Maybe.Just(component) => component.name
+      Maybe.Nothing => ""
     }
   }
 

@@ -24,7 +24,6 @@ module Mint
         html_component ||
         html_fragment ||
         member_access ||
-        constant_access ||
         module_access ||
         decode ||
         encode ||

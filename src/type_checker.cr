@@ -33,7 +33,7 @@ module Mint
     property? checking = true
 
     delegate checked, record_field_lookup, component_records, to: artifacts
-    delegate types, variables, ast, lookups, cache, to: artifacts
+    delegate types, variables, ast, lookups, cache, value_lookup, to: artifacts
     delegate assets, resolve_order, enum_constructor_data, to: artifacts
 
     delegate component?, component, stateful?, current_top_level_entity?, to: scope

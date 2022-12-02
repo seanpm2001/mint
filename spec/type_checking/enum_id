@@ -5,12 +5,12 @@ enum A {
 
 component Main {
   fun render : String {
-    case (A::B) {
+    case (A.B) {
       => ""
     }
   }
 }
---------------------------------------------------------------EnumIdTypeMismatch
+--------------------------------------------------------------CallArgumentTypeMismatch
 enum A {
   B(String)
   C
@@ -18,12 +18,12 @@ enum A {
 
 component Main {
   fun render : String {
-    case (A::B(0)) {
+    case (A.B(0)) {
       => ""
     }
   }
 }
----------------------------------------------------------------EnumIdEnumMissing
+-----------------------------------------------------------------VariableMissing
 enum A {
   B(String)
   C
@@ -31,15 +31,15 @@ enum A {
 
 component Main {
   fun render : String {
-    case (A::D(0)) {
+    case (A.D(0)) {
       => ""
     }
   }
 }
----------------------------------------------------------------EnumIdTypeMissing
+-----------------------------------------------------------------VariableMissing
 component Main {
   fun render : String {
-    case (C::D(0)) {
+    case (C.D(0)) {
       => ""
     }
   }

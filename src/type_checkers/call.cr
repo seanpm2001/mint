@@ -9,7 +9,46 @@ module Mint
       function_type =
         resolve node.expression
 
-      check_call(node, function_type)
+      if item = enum_constructor_data[node.expression]?
+        check_enum_record node, item
+      else
+        check_call(node, function_type)
+      end
+    end
+
+    def check_enum_record(node : Ast::Call, item : {Record, Type})
+      option_type, parent_type =
+        item
+
+      parameters =
+        resolve node.arguments
+
+      resolved_type =
+        Type.new(option_type.name, parameters)
+
+      unified =
+        Comparer.compare_raw(option_type, resolved_type)
+
+      raise EnumIdTypeMismatch, {
+        "got"      => resolved_type,
+        "expected" => option_type,
+        "node"     => node,
+      } unless unified
+
+      extracted =
+        extract_variables unified
+
+      final_parameters =
+        parent_type.parameters.map do |param|
+          case param
+          when Variable
+            extracted[param.name]? || param
+          else
+            param
+          end
+        end
+
+      Type.new(parent_type.name, final_parameters)
     end
 
     def check_call(node, function_type) : Checkable

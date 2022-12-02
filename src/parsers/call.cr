@@ -10,7 +10,7 @@ module Mint
         arguments = list(
           terminator: ')',
           separator: ','
-        ) { expression.as(Ast::Expression?) }
+        ) { record_field || expression.as(Ast::Expression?) }
         whitespace
 
         char ')', CallExpectedClosingParentheses

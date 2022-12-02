@@ -18,7 +18,7 @@ component Main {
     item.name
   }
 }
--------------------------------------------RecordConstructorArgumentTypeMismatch
+--------------------------------------------------------CallArgumentTypeMismatch
 record Test {
   name : String,
   age : Number
@@ -31,7 +31,7 @@ component Main {
     item.name
   }
 }
--------------------------------------------RecordConstructorArgumentSizeMismatch
+--------------------------------------------------------CallArgumentSizeMismatch
 record Test {
   name : String,
   age : Number

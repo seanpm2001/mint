@@ -5,7 +5,7 @@ enum Maybe(a) {
 
 component Main {
   fun render : String {
-    Maybe::Nothing or "Hello"
+    Maybe.Nothing or "Hello"
   }
 }
 ---------------------------------------------------------OperationOrTypeMismatch
@@ -16,7 +16,7 @@ enum Maybe(a) {
 
 component Main {
   fun render : String {
-    Maybe::Just(0) or "Hello"
+    Maybe.Just(0) or "Hello"
   }
 }
 -----------------------------------------------------OperationOrNotMaybeOrResult

@@ -10,6 +10,4 @@ message EnumIdTypeMismatch do
   was_expecting_type expected, got
 
   snippet node, "The enum is here:"
-
-  snippet option, "The definition is here:"
 end

@@ -34,11 +34,10 @@ module Mint
         case_expression ||
         parenthesized_expression ||
         inline_function ||
-        enum_id ||
         negated_expression ||
         js ||
         void ||
-        variable
+        value
     end
 
     def basic_expression!(error : SyntaxError.class) : Ast::Expression

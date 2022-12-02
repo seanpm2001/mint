@@ -34,7 +34,7 @@ module Mint
 
     delegate checked, record_field_lookup, component_records, to: artifacts
     delegate types, variables, ast, lookups, cache, to: artifacts
-    delegate assets, resolve_order, to: artifacts
+    delegate assets, resolve_order, enum_constructor_data, to: artifacts
 
     delegate component?, component, stateful?, current_top_level_entity?, to: scope
     delegate format, to: formatter
@@ -187,6 +187,12 @@ module Mint
 
     def lookup_with_level(node : Ast::Variable)
       scope.find_with_level(node.value).try do |item|
+        {item[0], item[1], scope.levels.dup}
+      end
+    end
+
+    def lookup_with_level(node : Ast::Value)
+      scope.find_with_level(node.name).try do |item|
         {item[0], item[1], scope.levels.dup}
       end
     end

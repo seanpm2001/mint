@@ -3,8 +3,10 @@ module Mint
     class Artifacts
       getter ast, lookups, cache, checked, record_field_lookup, assets
       getter types, variables, component_records, resolve_order
+      getter enum_constructor_data
 
       def initialize(@ast : Ast,
+                     @enum_constructor_data = {} of Ast::Node => {Record, Type},
                      @component_records = {} of Ast::Component => Record,
                      @record_field_lookup = {} of Ast::Node => String,
                      @variables = {} of Ast::Node => Scope::Lookup,

@@ -5,7 +5,7 @@ module Mint
         format node.parameters, ", "
 
       name =
-        "#{node.name}::" if node.name
+        "#{node.name}." if node.name
 
       if parameters.empty?
         "#{name}#{node.option}"

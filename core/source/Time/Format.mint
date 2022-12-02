@@ -7,9 +7,9 @@ module Time {
       Time.utc(2016, 1, 2, 12, 34, 50, 200)
 
     time =
-      Time.shift(Time.Span::Hours(4), time)
+      Time.shift(Time.Span.Hours(4), time)
 
-    Time.distanceOfTimeInWords(Time.Format::English, now, time)) == "in 4 hours"
+    Time.distanceOfTimeInWords(Time.Format.English, now, time)) == "in 4 hours"
   */
   fun distanceOfTimeInWords (
     language : Time.Format.Language,

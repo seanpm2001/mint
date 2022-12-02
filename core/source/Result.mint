@@ -12,17 +12,17 @@ module Result {
     |> Result.isError()) == true
   */
   fun error (input : a) : Result(a, b) {
-    Result::Err(input)
+    Result.Err(input)
   }
 
   /*
   Maps over the value of the result to an other result and flattens it.
 
     (Result.error("error")
-    |> Result.flatMap(\item : String => Result::Ok(item + "1"))) == Result.error("error")
+    |> Result.flatMap(\item : String => Result.Ok(item + "1"))) == Result.error("error")
 
     (Result.ok("ok")
-    |> Result.map(\item : String => Result::Ok(item + "1"))) == Result.ok("ok1")
+    |> Result.map(\item : String => Result.Ok(item + "1"))) == Result.ok("ok1")
   */
   fun flatMap (
     func : Function(a, Result(error, b)),
@@ -40,8 +40,8 @@ module Result {
   */
   fun isError (input : Result(a, b)) : Bool {
     case (input) {
-      Result::Err => true
-      Result::Ok => false
+      Result.Err => true
+      Result.Ok => false
     }
   }
 
@@ -53,21 +53,21 @@ module Result {
   */
   fun isOk (input : Result(a, b)) : Bool {
     case (input) {
-      Result::Err => false
-      Result::Ok => true
+      Result.Err => false
+      Result.Ok => true
     }
   }
 
   /*
   Joins two results together.
 
-    Result.join(Result::Ok(Result::Ok("Hello"))) == Result::Ok("Hello")
-    Result.join(Result::Err("Error") == Result::Err("Error")
+    Result.join(Result.Ok(Result.Ok("Hello"))) == Result.Ok("Hello")
+    Result.join(Result.Err("Error") == Result.Err("Error")
   */
   fun join (input : Result(error, Result(error, value))) : Result(error, value) {
     case (input) {
-      Result::Err(error) => Result::Err(error)
-      Result::Ok(value) => value
+      Result.Err(error) => Result.Err(error)
+      Result.Ok(value) => value
     }
   }
 
@@ -82,8 +82,8 @@ module Result {
   */
   fun map (func : Function(b, c), input : Result(a, b)) : Result(a, c) {
     case (input) {
-      Result::Ok(value) => Result::Ok(func(value))
-      Result::Err => input
+      Result.Ok(value) => Result.Ok(func(value))
+      Result.Err => input
     }
   }
 
@@ -98,8 +98,8 @@ module Result {
   */
   fun mapError (func : Function(a, c), input : Result(a, b)) : Result(c, b) {
     case (input) {
-      Result::Err(value) => Result::Err(func(value))
-      Result::Ok => input
+      Result.Err(value) => Result.Err(func(value))
+      Result.Ok => input
     }
   }
 
@@ -110,7 +110,7 @@ module Result {
     |> Result.isOk()) == true
   */
   fun ok (input : a) : Result(b, a) {
-    Result::Ok(input)
+    Result.Ok(input)
   }
 
   /*
@@ -124,8 +124,8 @@ module Result {
   */
   fun toMaybe (result : Result(a, b)) : Maybe(b) {
     case (result) {
-      Result::Ok(value) => Maybe::Just(value)
-      Result::Err => Maybe::Nothing
+      Result.Ok(value) => Maybe.Just(value)
+      Result.Err => Maybe.Nothing
     }
   }
 
@@ -140,8 +140,8 @@ module Result {
   */
   fun withDefault (defaultValue : b, input : Result(a, b)) : b {
     case (input) {
-      Result::Ok(value) => value
-      Result::Err => defaultValue
+      Result.Ok(value) => value
+      Result.Err => defaultValue
     }
   }
 
@@ -156,8 +156,8 @@ module Result {
   */
   fun withError (defaultError : a, input : Result(a, b)) : a {
     case (input) {
-      Result::Err(value) => value
-      Result::Ok => defaultError
+      Result.Err(value) => value
+      Result.Ok => defaultError
     }
   }
 }

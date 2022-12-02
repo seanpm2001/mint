@@ -8,12 +8,12 @@ module Maybe {
   /*
   Maps the value of a maybe with a possibility to discard it.
 
-    Maybe::Just(4)
+    Maybe.Just(4)
     |> Maybe.andThen((num : Number) : Maybe(String) {
       if (num > 4) {
-        Maybe::Just(Number.toString(num))
+        Maybe.Just(Number.toString(num))
       } else {
-        Maybe::Nothing
+        Maybe.Nothing
       }
     })
   */
@@ -22,8 +22,8 @@ module Maybe {
     maybe : Maybe(value)
   ) : Maybe(result) {
     case (maybe) {
-      Maybe::Just(value) => transform(value)
-      Maybe::Nothing => Maybe::Nothing
+      Maybe.Just(value) => transform(value)
+      Maybe.Nothing => Maybe.Nothing
     }
   }
 
@@ -36,8 +36,8 @@ module Maybe {
   */
   fun flatten (maybe : Maybe(Maybe(value))) : Maybe(value) {
     case (maybe) {
-      Maybe::Nothing => Maybe::Nothing
-      Maybe::Just(value) => value
+      Maybe.Nothing => Maybe.Nothing
+      Maybe.Just(value) => value
     }
   }
 
@@ -48,7 +48,7 @@ module Maybe {
      Maybe.isJust(Maybe.nothing()) == false
   */
   fun isJust (maybe : Maybe(value)) : Bool {
-    maybe != Maybe::Nothing
+    maybe != Maybe.Nothing
   }
 
   /*
@@ -58,12 +58,12 @@ module Maybe {
     Maybe.isNothing(Maybe.nothing("A")) == false
   */
   fun isNothing (maybe : Maybe(value)) : Bool {
-    maybe == Maybe::Nothing
+    maybe == Maybe.Nothing
   }
 
   /* Returns a maybe containing just the given value. */
   fun just (value : value) : Maybe(value) {
-    Maybe::Just(value)
+    Maybe.Just(value)
   }
 
   /*
@@ -74,14 +74,14 @@ module Maybe {
   */
   fun map (func : Function(value, result), maybe : Maybe(value)) : Maybe(result) {
     case (maybe) {
-      Maybe::Just(value) => Maybe::Just(func(value))
-      Maybe::Nothing => Maybe::Nothing
+      Maybe.Just(value) => Maybe.Just(func(value))
+      Maybe.Nothing => Maybe.Nothing
     }
   }
 
   /* Returns nothing. */
   fun nothing : Maybe(value) {
-    Maybe::Nothing
+    Maybe.Nothing
   }
 
   /*
@@ -103,8 +103,8 @@ module Maybe {
   */
   fun toResult (error : error, maybe : Maybe(value)) : Result(error, value) {
     case (maybe) {
-      Maybe::Just(value) => Result::Ok(value)
-      Maybe::Nothing => Result::Err(error)
+      Maybe.Just(value) => Result.Ok(value)
+      Maybe.Nothing => Result.Err(error)
     }
   }
 
@@ -126,8 +126,8 @@ module Maybe {
   */
   fun withLazyDefault (func : Function(value), maybe : Maybe(value)) : value {
     case (maybe) {
-      Maybe::Nothing => func()
-      Maybe::Just(value) => value
+      Maybe.Nothing => func()
+      Maybe.Just(value) => value
     }
   }
 }

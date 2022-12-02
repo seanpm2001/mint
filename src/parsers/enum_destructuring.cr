@@ -6,12 +6,13 @@ module Mint
 
     def enum_destructuring
       start do |start_position|
-        next unless option = type_id
+        next unless parts = type_id.try(&.split('.'))
 
-        if keyword "::"
-          name = option
-          option = type_id! EnumDestructuringExpectedOption
-        end
+        option =
+          parts.pop
+
+        name =
+          parts.join('.') if parts.size > 0
 
         parameters = [] of Ast::Node
 

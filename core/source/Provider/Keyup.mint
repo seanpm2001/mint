@@ -6,7 +6,7 @@ record Provider.Keyup.Subscription {
 /* A provider for global key up events. */
 provider Provider.Keyup : Provider.Keyup.Subscription {
   /* The listener unsubscribe function. */
-  state listener : Maybe(Function(Void)) = Maybe::Nothing
+  state listener : Maybe(Function(Void)) = Maybe.Nothing
 
   /* The event handler. */
   fun handle (event : Html.Event) : Array(Promise(Void)) {
@@ -19,11 +19,11 @@ provider Provider.Keyup : Provider.Keyup.Subscription {
   fun update : Promise(Void) {
     if (Array.isEmpty(subscriptions)) {
       Maybe.map((unsubscribe : Function(Void)) { unsubscribe() }, listener)
-      next { listener = Maybe::Nothing }
+      next { listener = Maybe.Nothing }
     } else {
       case (listener) {
-        Maybe::Nothing =>
-          next { listener = Maybe::Just(Window.addEventListener("keyup", true, handle)) }
+        Maybe.Nothing =>
+          next { listener = Maybe.Just(Window.addEventListener("keyup", true, handle)) }
 
         => next { }
       }

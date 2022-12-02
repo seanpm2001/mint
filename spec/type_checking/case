@@ -26,8 +26,8 @@ enum A {
 component Main {
   fun render : String {
     case (A.B) {
-      A::B => "a"
-      A::C => "c"
+      A.B => "a"
+      A.C => "c"
       => "x"
     }
   }
@@ -50,8 +50,8 @@ enum A {
 component Main {
   fun render : String {
     case (A.B) {
-      A::B => "a"
-      A::C => "c"
+      A.B => "a"
+      A.C => "c"
     }
   }
 }

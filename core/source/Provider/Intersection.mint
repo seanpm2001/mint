@@ -23,16 +23,16 @@ provider Provider.Intersection : Provider.Intersection.Subscription {
           item
 
         if (Array.contains(subscription, subscriptions)) {
-          Maybe::Just({subscription, observer})
+          Maybe.Just({subscription, observer})
         } else {
           case (subscription.element) {
-            Maybe::Just(observed) =>
+            Maybe.Just(observed) =>
               {
                 IntersectionObserver.unobserve(observed, observer)
-                Maybe::Nothing
+                Maybe.Nothing
               }
 
-            => Maybe::Nothing
+            => Maybe.Nothing
           }
         }
       }
@@ -42,8 +42,8 @@ provider Provider.Intersection : Provider.Intersection.Subscription {
     newObservers:
       for (subscription of subscriptions) {
         case (subscription.element) {
-          Maybe::Just(observed) =>
-            Maybe::Just(
+          Maybe.Just(observed) =>
+            Maybe.Just(
               {
                 subscription,
                 IntersectionObserver.new(
@@ -53,7 +53,7 @@ provider Provider.Intersection : Provider.Intersection.Subscription {
                 |> IntersectionObserver.observe(observed)
               })
 
-          => Maybe::Nothing
+          => Maybe.Nothing
         }
       } when {
         size:

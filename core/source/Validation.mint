@@ -7,8 +7,8 @@ return if the validation fails.
 The error is a `Tuple(String, String)` where the first parameter is the key of
 the field and the second is the error message.
 
-The result of the validation is a `Maybe(error)`. If it's `Maybe::Nothing` then
-there validation succeeded, otherwise it will be a `Maybe::Just(error)` meaning
+The result of the validation is a `Maybe(error)`. If it's `Maybe.Nothing` then
+there validation succeeded, otherwise it will be a `Maybe.Just(error)` meaning
 the validation failed.
 
 Here is an example of doing validation for a checkout form:
@@ -66,7 +66,7 @@ module Validation {
       "",
       5,
       {"zip", "Zip code does is not 5 characters!"}) ==
-        Maybe::Just({"zip", "Zip code does is not 5 characters!"})
+        Maybe.Just({"zip", "Zip code does is not 5 characters!"})
   */
   fun hasExactNumberOfCharacters (
     value : String,
@@ -74,9 +74,9 @@ module Validation {
     error : Tuple(String, String)
   ) : Maybe(Tuple(String, String)) {
     if (String.size(value) == size) {
-      Maybe::Nothing
+      Maybe.Nothing
     } else {
-      Maybe::Just(error)
+      Maybe.Just(error)
     }
   }
 
@@ -88,7 +88,7 @@ module Validation {
       "",
       5,
       {"zip", "Zip code does is not 5 characters or more!"}) ==
-        Maybe::Just({"zip", "Zip code does is not 5 characters or more!"})
+        Maybe.Just({"zip", "Zip code does is not 5 characters or more!"})
   */
   fun hasMinimumNumberOfCharacters (
     value : String,
@@ -96,9 +96,9 @@ module Validation {
     error : Tuple(String, String)
   ) : Maybe(Tuple(String, String)) {
     if (String.size(value) >= size) {
-      Maybe::Nothing
+      Maybe.Nothing
     } else {
-      Maybe::Just(error)
+      Maybe.Just(error)
     }
   }
 
@@ -107,13 +107,13 @@ module Validation {
   (contains only whitespace).
 
     Validation.isNotBlank("", {"name", "Name is empty!"}) ==
-      Maybe::Just({"name", "Name is empty!"})
+      Maybe.Just({"name", "Name is empty!"})
   */
   fun isNotBlank (value : String, error : Tuple(String, String)) : Maybe(Tuple(String, String)) {
     if (String.isNotBlank(value)) {
-      Maybe::Nothing
+      Maybe.Nothing
     } else {
-      Maybe::Just(error)
+      Maybe.Just(error)
     }
   }
 
@@ -121,12 +121,12 @@ module Validation {
   Returns the given error if the given string is not a number.
 
     Validation.isNumber("asd", {"age", "Age is not a number!"}) ==
-      Maybe::Just({"age", "Age is not a number!"})
+      Maybe.Just({"age", "Age is not a number!"})
   */
   fun isNumber (value : String, error : Tuple(String, String)) : Maybe(Tuple(String, String)) {
     case (Number.fromString(value)) {
-      Maybe::Just => Maybe::Nothing
-      => Maybe::Just(error)
+      Maybe.Just => Maybe.Nothing
+      => Maybe.Just(error)
     }
   }
 
@@ -137,13 +137,13 @@ module Validation {
       "password",
       "confirmation",
       {"confirmation", "Confirmation is not the same!"}) ==
-        Maybe::Just({"confirmation", "Confirmation is not the same!"})
+        Maybe.Just({"confirmation", "Confirmation is not the same!"})
   */
   fun isSame (value : a, value2 : a, error : Tuple(String, String)) : Maybe(Tuple(String, String)) {
     if (value == value2) {
-      Maybe::Nothing
+      Maybe.Nothing
     } else {
-      Maybe::Just(error)
+      Maybe.Just(error)
     }
   }
 
@@ -153,13 +153,13 @@ module Validation {
     Validation.isValidEmail(
       "test",
       {"email", "Email is not a valid email address!"}) ==
-        Maybe::Just({"email", "Email is not a valid email address!"})
+        Maybe.Just({"email", "Email is not a valid email address!"})
   */
   fun isValidEmail (value : String, error : Tuple(String, String)) : Maybe(Tuple(String, String)) {
     if (Regexp.match(value, EMAIL_REGEXP)) {
-      Maybe::Nothing
+      Maybe.Nothing
     } else {
-      Maybe::Just(error)
+      Maybe.Just(error)
     }
   }
 
@@ -182,7 +182,7 @@ module Validation {
         item : Maybe(Tuple(String, String))
       ) : Map(String, Array(String)) {
         case (item) {
-          Maybe::Just(error) =>
+          Maybe.Just(error) =>
             {
               {key, message}:
                 error

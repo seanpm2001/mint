@@ -28,19 +28,19 @@ suite "Array.append" {
 
 suite "Array.at" {
   test "it returns nothing at 0 if the array is empty" {
-    Array.at(0, []) == Maybe::Nothing
+    Array.at(0, []) == Maybe.Nothing
   }
 
   test "it returns nothing index is over the arrays length" {
-    Array.at(1, []) == Maybe::Nothing
+    Array.at(1, []) == Maybe.Nothing
   }
 
   test "it returns item at index #1" {
-    Array.at(0, [0]) == Maybe::Just(0)
+    Array.at(0, [0]) == Maybe.Just(0)
   }
 
   test "it returns item at index #2" {
-    Array.at(2, [1, 2, 3]) == Maybe::Just(3)
+    Array.at(2, [1, 2, 3]) == Maybe.Just(3)
   }
 }
 
@@ -48,8 +48,8 @@ suite "Array.compact" {
   test "it flattens an array of maybes" {
     Array.compact(
       [
-        Maybe::Just("A"),
-        Maybe::Nothing
+        Maybe.Just("A"),
+        Maybe.Nothing
       ]) == ["A"]
   }
 }
@@ -212,11 +212,11 @@ suite "Array.indexBy" {
 
 suite "Array.indexOf" {
   test "it returns the index of the item" {
-    Array.indexOf("c", ["a", "b", "c"]) == Maybe::Just(2)
+    Array.indexOf("c", ["a", "b", "c"]) == Maybe.Just(2)
   }
 
   test "it returns the index of an enum" {
-    Array.indexOf(Http.Error::Aborted, [Http.Error::Aborted]) == Maybe::Just(0)
+    Array.indexOf(Http.Error.Aborted, [Http.Error.Aborted]) == Maybe.Just(0)
   }
 }
 

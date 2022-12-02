@@ -6,7 +6,12 @@ module Mint
       start do |start_position|
         comment = self.comment
 
-        next unless value = type_id
+        next unless value =
+                      gather do
+                        return unless char.ascii_uppercase?
+                        step
+                        letters_numbers_or_underscore
+                      end
         whitespace
 
         parameters = [] of Ast::TypeVariable | Ast::Type

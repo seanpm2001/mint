@@ -8,7 +8,7 @@ record Provider.TabFocus.Subscription {
 /* A provider to provide the tab in and tab out events for an element. */
 provider Providers.TabFocus : Provider.TabFocus.Subscription {
   /* The listener unsubscribe functions. */
-  state listeners : Maybe(Tuple(Function(Void), Function(Void))) = Maybe::Nothing
+  state listeners : Maybe(Tuple(Function(Void), Function(Void))) = Maybe.Nothing
 
   /* The `keyUp` event handler. */
   fun handleKeyUp (event : Html.Event) : Array(Promise(Void)) {
@@ -30,7 +30,7 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
   fun handleKeyDown (event : Html.Event) : Array(Promise(Void)) {
     if (event.keyCode == Html.Event:TAB) {
       target:
-        Maybe::Just(event.target)
+        Maybe.Just(event.target)
 
       for (subscription of subscriptions) {
         subscription.onTabOut()
@@ -55,14 +55,14 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
         },
         listeners)
 
-      next { listeners = Maybe::Nothing }
+      next { listeners = Maybe.Nothing }
     } else {
       case (listeners) {
-        Maybe::Nothing =>
+        Maybe.Nothing =>
           next
             {
               listeners =
-                Maybe::Just(
+                Maybe.Just(
                   {
                     Window.addEventListener("keydown", true, handleKeyDown),
                     Window.addEventListener("keyup", true, handleKeyUp)

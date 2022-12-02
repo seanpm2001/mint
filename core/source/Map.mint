@@ -194,7 +194,7 @@ module Map {
       |> Map.set("a", "y")
 
     (Map.merge(a, b)
-    |> Map.get("a")) == Maybe::Just("y")
+    |> Map.get("a")) == Maybe.Just("y")
   */
   fun merge (map1 : Map(key, value), map2 : Map(key, value)) : Map(key, value) {
     Map.reduce(

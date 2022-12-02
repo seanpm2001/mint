@@ -78,9 +78,9 @@ module Window {
       let result = window.confirm(#{message})
 
       if (result) {
-        resolve(#{Result::Ok(`result`)})
+        resolve(#{Result.Ok(`result`)})
       } else {
-        reject(#{Result::Err("User cancelled!")})
+        reject(#{Result.Err("User cancelled!")})
       }
     })
     `

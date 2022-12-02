@@ -16,8 +16,8 @@ component Test {
 component Main {
   fun handleClick : String {
     case (test) {
-      Maybe::Just(component) => component.something("asd")
-      Maybe::Nothing => "asd"
+      Maybe.Just(component) => component.something("asd")
+      Maybe.Nothing => "asd"
     }
   }
 
@@ -46,8 +46,8 @@ component Test {
 component Main {
   fun handleClick : String {
     case (test) {
-      Maybe::Just(component) => handleComponent(component)
-      Maybe::Nothing => "asd"
+      Maybe.Just(component) => handleComponent(component)
+      Maybe.Nothing => "asd"
     }
   }
 

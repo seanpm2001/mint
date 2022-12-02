@@ -42,7 +42,7 @@ module Dom {
   Returns if the given base element contains the given element (as a maybe).
 
     case (Dom.getElementBySelector("body")) {
-      Maybe::Just(body) =>
+      Maybe.Just(body) =>
         {
           div =
             Dom.getElementBySelector("div")
@@ -81,13 +81,13 @@ module Dom {
   */
   fun focus (maybeElement : Maybe(Dom.Element)) : Promise(Void) {
     case (maybeElement) {
-      Maybe::Just(element) =>
+      Maybe.Just(element) =>
         {
           focusWhenVisible(element)
           Promise.resolve(void)
         }
 
-      Maybe::Nothing => Promise.resolve(void)
+      Maybe.Nothing => Promise.resolve(void)
     }
   }
 
@@ -113,7 +113,7 @@ module Dom {
 
       let focus = () => {
         if (counter > 15) {
-          resolve(#{Result::Err("Could not focus the element in 150ms. Is it visible?")})
+          resolve(#{Result.Err("Could not focus the element in 150ms. Is it visible?")})
         }
 
         #{element}.focus()
@@ -122,7 +122,7 @@ module Dom {
           counter++
           setTimeout(focus, 10)
         } else {
-          resolve(#{Result::Ok(void)})
+          resolve(#{Result.Ok(void)})
         }
       }
 
@@ -140,9 +140,9 @@ module Dom {
     `
     (() => {
       if (document.activeElement) {
-        return #{Maybe::Just(`document.activeElement`)}
+        return #{Maybe.Just(`document.activeElement`)}
       } else {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `
@@ -155,8 +155,8 @@ module Dom {
       Dom.getElementById("my-div")
 
     case (outcome) {
-      Maybe::Just(element) => Dom.getAttribute("id", element) == "my-div"
-      Maybe::Nothing => false
+      Maybe.Just(element) => Dom.getAttribute("id", element) == "my-div"
+      Maybe.Nothing => false
     }
   */
   fun getAttribute (name : String, element : Dom.Element) : Maybe(String) {
@@ -165,9 +165,9 @@ module Dom {
       const value = #{element}.getAttribute(#{name})
 
       if (value === "") {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       } else {
-        return #{Maybe::Just(`value`)}
+        return #{Maybe.Just(`value`)}
       }
     })()
     `
@@ -244,9 +244,9 @@ module Dom {
       let element = document.getElementById(#{id})
 
       if (element) {
-        return #{Maybe::Just(`element`)}
+        return #{Maybe.Just(`element`)}
       } else {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `
@@ -264,12 +264,12 @@ module Dom {
         let element = document.querySelector(#{selector})
 
         if (element) {
-          return #{Maybe::Just(`element`)}
+          return #{Maybe.Just(`element`)}
         } else {
-          return #{Maybe::Nothing}
+          return #{Maybe.Nothing}
         }
       } catch (error) {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `

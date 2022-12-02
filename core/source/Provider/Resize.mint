@@ -6,7 +6,7 @@ record Provider.Resize.Subscription {
 /* A provider for handling changes of the viewport. */
 provider Provider.Resize : Provider.Resize.Subscription {
   /* The listener unsubscribe function. */
-  state listener : Maybe(Function(Void)) = Maybe::Nothing
+  state listener : Maybe(Function(Void)) = Maybe.Nothing
 
   /* Handles the resize events. */
   fun handle (event : Html.Event) : Array(Promise(Void)) {
@@ -19,11 +19,11 @@ provider Provider.Resize : Provider.Resize.Subscription {
   fun update : Promise(Void) {
     if (Array.isEmpty(subscriptions)) {
       Maybe.map((unsubscribe : Function(Void)) { unsubscribe() }, listener)
-      next { listener = Maybe::Nothing }
+      next { listener = Maybe.Nothing }
     } else {
       case (listener) {
-        Maybe::Nothing =>
-          next { listener = Maybe::Just(Window.addEventListener("resize", true, handle)) }
+        Maybe.Nothing =>
+          next { listener = Maybe.Just(Window.addEventListener("resize", true, handle)) }
 
         => next { }
       }

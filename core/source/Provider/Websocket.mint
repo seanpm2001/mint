@@ -58,7 +58,7 @@ provider Provider.WebSocket : WebSocket.Config {
           config : WebSocket.Config
         ) {
           case (Map.get(config.url, connections)) {
-            Maybe::Nothing =>
+            Maybe.Nothing =>
               Map.set(
                 config.url,
                 WebSocket.open(
@@ -72,7 +72,7 @@ provider Provider.WebSocket : WebSocket.Config {
                   }),
                 memo)
 
-            Maybe::Just => memo
+            Maybe.Just => memo
           }
         })
 
@@ -91,13 +91,13 @@ provider Provider.WebSocket : WebSocket.Config {
               (config : WebSocket.Config) { config.url == url })
 
           case (subscription) {
-            Maybe::Nothing =>
+            Maybe.Nothing =>
               {
                 WebSocket.closeWithoutReconnecting(socket)
                 Map.delete(url, memo)
               }
 
-            Maybe::Just => memo
+            Maybe.Just => memo
           }
         })
 

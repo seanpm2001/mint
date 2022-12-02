@@ -8,7 +8,7 @@ record Provider.Mouse.Subscription {
 /* A provider for global mouse events. */
 provider Provider.Mouse : Provider.Mouse.Subscription {
   /* The listener unsubscribe functions. */
-  state listeners : Maybe(Tuple(Function(Void), Function(Void), Function(Void))) = Maybe::Nothing
+  state listeners : Maybe(Tuple(Function(Void), Function(Void), Function(Void))) = Maybe.Nothing
 
   /* The state to hold the animation frame id. */
   state id : Number = 0
@@ -29,14 +29,14 @@ provider Provider.Mouse : Provider.Mouse.Subscription {
         },
         listeners)
 
-      next { listeners = Maybe::Nothing }
+      next { listeners = Maybe.Nothing }
     } else {
       case (listeners) {
-        Maybe::Nothing =>
+        Maybe.Nothing =>
           next
             {
               listeners =
-                Maybe::Just(
+                Maybe.Just(
                   {
                     Window.addEventListener(
                       "click",

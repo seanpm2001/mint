@@ -45,9 +45,9 @@ module Number {
       let value = parseFloat(#{input})
 
       if (isNaN(value)) {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       } else {
-        return #{Maybe::Just(`value`)}
+        return #{Maybe.Just(`value`)}
       }
     })()
     `

@@ -6,7 +6,7 @@ record Provider.Scroll.Subscription {
 /* A provider for global scroll events. */
 provider Provider.Scroll : Provider.Scroll.Subscription {
   /* The listener unsubscribe function. */
-  state listener : Maybe(Function(Void)) = Maybe::Nothing
+  state listener : Maybe(Function(Void)) = Maybe.Nothing
 
   /* Handles the scroll events. */
   fun handle (event : Html.Event) : Array(Promise(Void)) {
@@ -19,11 +19,11 @@ provider Provider.Scroll : Provider.Scroll.Subscription {
   fun update : Promise(Void) {
     if (Array.isEmpty(subscriptions)) {
       Maybe.map((unsubscribe : Function(Void)) { unsubscribe() }, listener)
-      next { listener = Maybe::Nothing }
+      next { listener = Maybe.Nothing }
     } else {
       case (listener) {
-        Maybe::Nothing =>
-          next { listener = Maybe::Just(Window.addEventListener("scroll", false, handle)) }
+        Maybe.Nothing =>
+          next { listener = Maybe.Just(Window.addEventListener("scroll", false, handle)) }
 
         => next { }
       }

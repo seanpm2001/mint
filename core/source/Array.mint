@@ -9,8 +9,8 @@ module Array {
   */
   fun any (function : Function(item, Bool), array : Array(item)) : Bool {
     case (Array.find(function, array)) {
-      Maybe::Nothing => false
-      Maybe::Just => true
+      Maybe.Nothing => false
+      Maybe.Just => true
     }
   }
 
@@ -26,8 +26,8 @@ module Array {
   /*
   Returns the element at the given index as a `Maybe(item)`.
 
-    Array.at(0, [0]) == Maybe::Just(0)
-    Array.at(1, [0]) == Maybe::Nothing()
+    Array.at(0, [0]) == Maybe.Just(0)
+    Array.at(1, [0]) == Maybe.Nothing()
   */
   fun at (index : Number, array : Array(item)) : Maybe(item) {
     array[index]
@@ -35,17 +35,17 @@ module Array {
 
   /*
   Flattens an `Array(Maybe(item))` into an `Array(item)`, by unwrapping the
-  items and skipping all elements of `Maybe::Nothing`.
+  items and skipping all elements of `Maybe.Nothing`.
 
-    Array.compact([Maybe::Just("A"), Maybe::Nothing()]) == ["A"]
+    Array.compact([Maybe.Just("A"), Maybe.Nothing()]) == ["A"]
   */
   fun compact (array : Array(Maybe(item))) : Array(item) {
     Array.reduce(
       [],
       (memo : Array(item), item : Maybe(item)) : Array(item) {
         case (item) {
-          Maybe::Just(value) => Array.push(value, memo)
-          Maybe::Nothing => memo
+          Maybe.Just(value) => Array.push(value, memo)
+          Maybe.Nothing => memo
         }
       },
       array)
@@ -131,7 +131,7 @@ module Array {
   /*
   Finds the first element in the array that matches the predicate function.
 
-    Array.find((number : Number) { number % 2 == 0 }, [1, 2, 3, 4]) == Maybe::Just(2)
+    Array.find((number : Number) { number % 2 == 0 }, [1, 2, 3, 4]) == Maybe.Just(2)
   */
   fun find (function : Function(item, Bool), array : Array(item)) : Maybe(item) {
     Array.first(
@@ -148,7 +148,7 @@ module Array {
 
     Array.findByAndMap(
       (number : Number) : (Bool, value) { {number % 2 == 0, "Two"} },
-      [1, 2, 3, 4]) == Maybe::Just("Two")
+      [1, 2, 3, 4]) == Maybe.Just("Two")
   */
   fun findByAndMap (
     function : Function(item, Tuple(Bool, result)),
@@ -160,21 +160,21 @@ module Array {
         const [found, value] = #{function}(item)
 
         if (found) {
-          return #{Maybe::Just(`value`)}
+          return #{Maybe.Just(`value`)}
         }
       }
 
-      return #{Maybe::Nothing}
+      return #{Maybe.Nothing}
     })()
     `
   }
 
   /*
-  Returns the first element of the array as `Maybe::Just(item)` or
-  `Maybe::Nothing`.
+  Returns the first element of the array as `Maybe.Just(item)` or
+  `Maybe.Nothing`.
 
-    Array.first(["a", "x"]) == Maybe::Just("a")
-    Array.first([]) == Maybe::Nothing
+    Array.first(["a", "x"]) == Maybe.Just("a")
+    Array.first([]) == Maybe.Nothing
   */
   fun first (array : Array(item)) : Maybe(item) {
     array[0]
@@ -336,19 +336,19 @@ module Array {
   }
 
   /*
-  Returns the last element of the array as `Maybe::Just(a)` or `Maybe::Nothing`.
+  Returns the last element of the array as `Maybe.Just(a)` or `Maybe.Nothing`.
 
-    Array.last(["x", "a"]) == Maybe::Just("a")
-    Array.last([]) == Maybe::Nothing
+    Array.last(["x", "a"]) == Maybe.Just("a")
+    Array.last([]) == Maybe.Nothing
   */
   fun last (array : Array(item)) : Maybe(item) {
     `
     (() => {
       let last = #{array}[#{array}.length - 1]
       if (last !== undefined) {
-        return #{Maybe::Just(`last`)}
+        return #{Maybe.Just(`last`)}
       } else {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `
@@ -396,14 +396,14 @@ module Array {
   Returns the maximum value of an array of numbers. It's a maybe because the
   array might not have items in it.
 
-    Array.max([0, 1, 2, 3, 4]) == Maybe::Just(4)
-    Array.max([]) == Maybe::Nothing
+    Array.max([0, 1, 2, 3, 4]) == Maybe.Just(4)
+    Array.max([]) == Maybe.Nothing
   */
   fun max (array : Array(Number)) : Maybe(Number) {
     if (Array.size(array) > 0) {
-      Maybe::Just(`Math.max(...#{array})`)
+      Maybe.Just(`Math.max(...#{array})`)
     } else {
-      Maybe::Nothing
+      Maybe.Nothing
     }
   }
 
@@ -411,14 +411,14 @@ module Array {
   Returns the minimum value of an array of numbers. It's a maybe because the
   array might not have items in it.
 
-    Array.min([0, 1, 2, 3, 4]) == Maybe::Just(0)
-    Array.min([]) == Maybe::Nothing
+    Array.min([0, 1, 2, 3, 4]) == Maybe.Just(0)
+    Array.min([]) == Maybe.Nothing
   */
   fun min (array : Array(Number)) : Maybe(Number) {
     if (Array.size(array) > 0) {
-      Maybe::Just(`Math.min(...#{array})`)
+      Maybe.Just(`Math.min(...#{array})`)
     } else {
-      Maybe::Nothing
+      Maybe.Nothing
     }
   }
 
@@ -557,8 +557,8 @@ module Array {
   /*
   Returns a random element from the array.
 
-    Array.sample(["a"]) == Maybe::Just("a")
-    Array.sample() == Maybe::Nothing()
+    Array.sample(["a"]) == Maybe.Just("a")
+    Array.sample() == Maybe.Nothing()
   */
   fun sample (array : Array(item)) : Maybe(item) {
     `
@@ -566,9 +566,9 @@ module Array {
       if (#{array}.length) {
         const item = #{array}[Math.floor(Math.random() * #{array}.length)]
 
-        return #{Maybe::Just(`item`)}
+        return #{Maybe.Just(`item`)}
       } else {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `
@@ -743,7 +743,7 @@ module Array {
     for (item, index of array) {
       item
     } when {
-      indexOf(item, array) == Maybe::Just(index)
+      indexOf(item, array) == Maybe.Just(index)
     }
   }
 
@@ -777,8 +777,8 @@ module Array {
     array : Array(item)
   ) : Array(item) {
     case (array[index]) {
-      Maybe::Just(item) => setAt(index, method(item), array)
-      Maybe::Nothing => array
+      Maybe.Just(item) => setAt(index, method(item), array)
+      Maybe.Nothing => array
     }
   }
 }

@@ -81,7 +81,7 @@ suite "Time.monthNumber" {
 
 suite "Time.month" {
   test "returns the month of the time" {
-    Time.month(Time.utcDate(2018, 4, 5)) == Month::April
+    Time.month(Time.utcDate(2018, 4, 5)) == Month.April
   }
 }
 
@@ -213,7 +213,7 @@ suite "Time.dayOfWeekNumber" {
 
 suite "Time.dayOfWeek" {
   test "returns the day of the week of the given time (as a number)" {
-    Time.dayOfWeek(Time.utcDate(2018, 4, 5)) == Weekday::Thursday
+    Time.dayOfWeek(Time.utcDate(2018, 4, 5)) == Weekday.Thursday
   }
 }
 
@@ -278,30 +278,30 @@ suite "Time.shift" {
 
   const TEST_DATA =
     [
-      {Time.Span::Milliseconds(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Milliseconds(2), Time.utc(2018, 4, 5, 14, 42, 54, 22)},
-      {Time.Span::Milliseconds(-2), Time.utc(2018, 4, 5, 14, 42, 54, 18)},
-      {Time.Span::Seconds(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Seconds(2), Time.utc(2018, 4, 5, 14, 42, 56, 20)},
-      {Time.Span::Seconds(-2), Time.utc(2018, 4, 5, 14, 42, 52, 20)},
-      {Time.Span::Minutes(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Minutes(2), Time.utc(2018, 4, 5, 14, 44, 54, 20)},
-      {Time.Span::Minutes(-2), Time.utc(2018, 4, 5, 14, 40, 54, 20)},
-      {Time.Span::Hours(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Hours(2), Time.utc(2018, 4, 5, 16, 42, 54, 20)},
-      {Time.Span::Hours(-2), Time.utc(2018, 4, 5, 12, 42, 54, 20)},
-      {Time.Span::Days(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Days(2), Time.utc(2018, 4, 7, 14, 42, 54, 20)},
-      {Time.Span::Days(-2), Time.utc(2018, 4, 3, 14, 42, 54, 20)},
-      {Time.Span::Weeks(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Weeks(2), Time.utc(2018, 4, 19, 14, 42, 54, 20)},
-      {Time.Span::Weeks(-2), Time.utc(2018, 3, 22, 14, 42, 54, 20)},
-      {Time.Span::Months(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Months(2), Time.utc(2018, 6, 5, 14, 42, 54, 20)},
-      {Time.Span::Months(-2), Time.utc(2018, 2, 5, 14, 42, 54, 20)},
-      {Time.Span::Years(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Years(2), Time.utc(2020, 4, 5, 14, 42, 54, 20)},
-      {Time.Span::Years(-2), Time.utc(2016, 4, 5, 14, 42, 54, 20)}
+      {Time.Span.Milliseconds(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Milliseconds(2), Time.utc(2018, 4, 5, 14, 42, 54, 22)},
+      {Time.Span.Milliseconds(-2), Time.utc(2018, 4, 5, 14, 42, 54, 18)},
+      {Time.Span.Seconds(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Seconds(2), Time.utc(2018, 4, 5, 14, 42, 56, 20)},
+      {Time.Span.Seconds(-2), Time.utc(2018, 4, 5, 14, 42, 52, 20)},
+      {Time.Span.Minutes(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Minutes(2), Time.utc(2018, 4, 5, 14, 44, 54, 20)},
+      {Time.Span.Minutes(-2), Time.utc(2018, 4, 5, 14, 40, 54, 20)},
+      {Time.Span.Hours(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Hours(2), Time.utc(2018, 4, 5, 16, 42, 54, 20)},
+      {Time.Span.Hours(-2), Time.utc(2018, 4, 5, 12, 42, 54, 20)},
+      {Time.Span.Days(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Days(2), Time.utc(2018, 4, 7, 14, 42, 54, 20)},
+      {Time.Span.Days(-2), Time.utc(2018, 4, 3, 14, 42, 54, 20)},
+      {Time.Span.Weeks(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Weeks(2), Time.utc(2018, 4, 19, 14, 42, 54, 20)},
+      {Time.Span.Weeks(-2), Time.utc(2018, 3, 22, 14, 42, 54, 20)},
+      {Time.Span.Months(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Months(2), Time.utc(2018, 6, 5, 14, 42, 54, 20)},
+      {Time.Span.Months(-2), Time.utc(2018, 2, 5, 14, 42, 54, 20)},
+      {Time.Span.Years(0), Time.utc(2018, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Years(2), Time.utc(2020, 4, 5, 14, 42, 54, 20)},
+      {Time.Span.Years(-2), Time.utc(2016, 4, 5, 14, 42, 54, 20)}
     ]
 
   test "shifts the given time with the given span" {
@@ -416,6 +416,6 @@ suite "Time.range" {
 
 suite "Time.inZone" {
   test "it returns a new time in the given time zone" {
-    Time.inZone("America/New_York", Time.utc(2019, 1, 1, 7, 12, 35, 200)) == Maybe::Just(Time.utc(2019, 1, 1, 2, 12, 35, 200))
+    Time.inZone("America/New_York", Time.utc(2019, 1, 1, 7, 12, 35, 200)) == Maybe.Just(Time.utc(2019, 1, 1, 2, 12, 35, 200))
   }
 }

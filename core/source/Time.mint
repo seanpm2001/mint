@@ -28,9 +28,9 @@ module Time {
     `
     (() => {
       try {
-        return #{Maybe::Just(`new Date(#{raw})`)}
+        return #{Maybe.Just(`new Date(#{raw})`)}
       } catch (error) {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `
@@ -102,7 +102,7 @@ module Time {
     time:
       now()
 
-    shift(Time.Span::Minutes(`-#{time}.getTimezoneOffset()`), time)
+    shift(Time.Span.Minutes(`-#{time}.getTimezoneOffset()`), time)
   }
 
   /*
@@ -164,22 +164,22 @@ module Time {
   /*
   Returns the month of the given time (as a `Month`).
 
-    Time.month(Time.utcDate(2018, 4, 5)) == Month::April
+    Time.month(Time.utcDate(2018, 4, 5)) == Month.April
   */
   fun month (time : Time) : Month {
     case (monthNumber(time)) {
-      1 => Month::January
-      2 => Month::February
-      3 => Month::March
-      4 => Month::April
-      5 => Month::May
-      6 => Month::June
-      7 => Month::July
-      8 => Month::August
-      9 => Month::September
-      10 => Month::October
-      11 => Month::November
-      => Month::December
+      1 => Month.January
+      2 => Month.February
+      3 => Month.March
+      4 => Month.April
+      5 => Month.May
+      6 => Month.June
+      7 => Month.July
+      8 => Month.August
+      9 => Month.September
+      10 => Month.October
+      11 => Month.November
+      => Month.December
     }
   }
 
@@ -267,17 +267,17 @@ module Time {
   /*
   Returns the day of week of the given time.
 
-    Time.dayOfWeek(Time.utcDate(2018, 4, 5)) == Weekday::Thursday
+    Time.dayOfWeek(Time.utcDate(2018, 4, 5)) == Weekday.Thursday
   */
   fun dayOfWeek (time : Time) : Weekday {
     case (dayOfWeekNumber(time)) {
-      1 => Weekday::Monday
-      2 => Weekday::Tuesday
-      3 => Weekday::Wednesday
-      4 => Weekday::Thursday
-      5 => Weekday::Friday
-      6 => Weekday::Saturday
-      => Weekday::Sunday
+      1 => Weekday.Monday
+      2 => Weekday.Tuesday
+      3 => Weekday.Wednesday
+      4 => Weekday.Thursday
+      5 => Weekday.Friday
+      6 => Weekday.Saturday
+      => Weekday.Sunday
     }
   }
 
@@ -370,7 +370,7 @@ module Time {
   /*
   Shifts the given time using the given time span.
 
-    Time.shift(Time.utcDate(2018, 4, 5), Time.Span::Days(2)) ==
+    Time.shift(Time.utcDate(2018, 4, 5), Time.Span.Days(2)) ==
       Time.utcDate(2018, 4, 7)
   */
   fun shift (delta : Time.Span, time : Time) : Time {
@@ -380,28 +380,28 @@ module Time {
 
       #{
         case (delta) {
-          Time.Span::Milliseconds(amount) =>
+          Time.Span.Milliseconds(amount) =>
             `time.setUTCMilliseconds(time.getUTCMilliseconds() + #{amount})`
 
-          Time.Span::Seconds(amount) =>
+          Time.Span.Seconds(amount) =>
             `time.setUTCSeconds(time.getUTCSeconds() + #{amount})`
 
-          Time.Span::Minutes(amount)      =>
+          Time.Span.Minutes(amount)      =>
             `time.setUTCMinutes(time.getUTCMinutes() + #{amount})`
 
-          Time.Span::Hours(amount)        =>
+          Time.Span.Hours(amount)        =>
             `time.setUTCHours(time.getUTCHours() + #{amount})`
 
-          Time.Span::Days(amount)         =>
+          Time.Span.Days(amount)         =>
             `time.setUTCDate(time.getUTCDate() + #{amount})`
 
-          Time.Span::Weeks(amount)        =>
+          Time.Span.Weeks(amount)        =>
             `time.setUTCDate(time.getUTCDate() + (7 * #{amount}))`
 
-          Time.Span::Months(amount)       =>
+          Time.Span.Months(amount)       =>
             `time.setUTCMonth(time.getUTCMonth() + #{amount})`
 
-          Time.Span::Years(amount)        =>
+          Time.Span.Years(amount)        =>
             `time.setUTCFullYear(time.getUTCFullYear() + #{amount})`
         }
       }
@@ -455,7 +455,7 @@ module Time {
     day:
       dayOfWeekNumber(time)
 
-    shift(Time.Span::Days(-(day - 1)), time)
+    shift(Time.Span.Days(-(day - 1)), time)
   }
 
   /*
@@ -518,7 +518,7 @@ module Time {
   */
   fun atEndOfWeek (time : Time) : Time {
     time
-    |> shift(Time.Span::Days(7 - dayOfWeekNumber(time)))
+    |> shift(Time.Span.Days(7 - dayOfWeekNumber(time)))
     |> atEndOfDay
   }
 
@@ -547,7 +547,7 @@ module Time {
     Time.nextMonth(Time.utcDate(2017, 5, 20)) == Time.utcDate(2017, 6, 20)
   */
   fun nextMonth (time : Time) : Time {
-    shift(Time.Span::Months(1), time)
+    shift(Time.Span.Months(1), time)
   }
 
   /*
@@ -556,7 +556,7 @@ module Time {
     Time.previousMonth(Time.utcDate(2017, 5, 20)) == Time.utcDate(2017, 4, 20)
   */
   fun previousMonth (time : Time) : Time {
-    shift(Time.Span::Months(-1), time)
+    shift(Time.Span.Months(-1), time)
   }
 
   /*
@@ -565,7 +565,7 @@ module Time {
     Time.nextWeek(Time.utcDate(2017, 5, 10)) == Time.utcDate(2017, 5, 17)
   */
   fun nextWeek (time : Time) : Time {
-    shift(Time.Span::Weeks(1), time)
+    shift(Time.Span.Weeks(1), time)
   }
 
   /*
@@ -574,7 +574,7 @@ module Time {
     Time.previousWeek(Time.utcDate(2017, 5, 20)) == Time.utcDate(2017, 5, 13)
   */
   fun previousWeek (time : Time) : Time {
-    shift(Time.Span::Weeks(-1), time)
+    shift(Time.Span.Weeks(-1), time)
   }
 
   /*
@@ -583,7 +583,7 @@ module Time {
     Time.nextDay(Time.utcDate(2017, 5, 20)) == Time.utcDate(2017, 5, 21)
   */
   fun nextDay (time : Time) : Time {
-    shift(Time.Span::Days(1), time)
+    shift(Time.Span.Days(1), time)
   }
 
   /*
@@ -592,7 +592,7 @@ module Time {
     Time.previousDay(Time.utcDate(2017, 5, 20)) == Time.utcDate(2017, 5, 19)
   */
   fun previousDay (time : Time) : Time {
-    shift(Time.Span::Days(-1), time)
+    shift(Time.Span.Days(-1), time)
   }
 
   /* UTILITIES -------------------------------------------------------------- */
@@ -629,7 +629,7 @@ module Time {
   conversion this function can fail.
 
     Time.inZone("America/New_York", Time.utc(2019, 1, 1, 7, 12, 35, 200)) ==
-      Maybe::Just(Time.utc(2019, 1, 1, 2, 12, 35, 200))
+      Maybe.Just(Time.utc(2019, 1, 1, 2, 12, 35, 200))
   */
   fun inZone (timeZone : String, time : Time) : Maybe(Time) {
     `
@@ -643,9 +643,9 @@ module Time {
         // Shift the resulting time by the local time-zone offset.
         time.setUTCMinutes(time.getUTCMinutes() - time.getTimezoneOffset())
 
-        return #{Maybe::Just(`time`)};
+        return #{Maybe.Just(`time`)};
       } catch {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `

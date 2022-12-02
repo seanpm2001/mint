@@ -23,7 +23,7 @@ module String {
   Returns an integer between 0 and 65535 representing the UTF-16 code unit at
   the given index.
 
-    String.charCodeAt(4, "The quick brown fox jumps over the lazy dog.") == Maybe::Just(113)
+    String.charCodeAt(4, "The quick brown fox jumps over the lazy dog.") == Maybe.Just(113)
   */
   fun charCodeAt (index : Number, string : String) : Maybe(Number) {
     `
@@ -31,9 +31,9 @@ module String {
       const result = #{string}.charCodeAt(#{index});
 
       if (isNaN(result)) {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       } else {
-        return #{Maybe::Just(`result`)}
+        return #{Maybe.Just(`result`)}
       }
     })()
     `
@@ -78,12 +78,12 @@ module String {
   /*
   Returns a non-negative integer that is the UTF-16 code point value.
 
-  * If there is no element at pos, returns `Maybe::Nothing`.
+  * If there is no element at pos, returns `Maybe.Nothing`.
   * If the element at pos is a UTF-16 high surrogate, returns the code point of the surrogate pair.
   * If the element at pos is a UTF-16 low surrogate, returns only the low surrogate code point.
 
 
-    String.codePointAt(1, "☃★♲") == Maybe::Just(9733)
+    String.codePointAt(1, "☃★♲") == Maybe.Just(9733)
   */
   fun codePointAt (index : Number, string : String) : Maybe(Number) {
     `
@@ -91,9 +91,9 @@ module String {
       const result = #{string}.codePointAt(#{index});
 
       if (result === undefined) {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       } else {
-        return #{Maybe::Just(`result`)}
+        return #{Maybe.Just(`result`)}
       }
     })()
     `
@@ -192,10 +192,10 @@ module String {
 
   /*
   Returns the index within the calling String object of the first occurrence of
-  the specified value, returns `Maybe::Nothing` if the value is not found.
+  the specified value, returns `Maybe.Nothing` if the value is not found.
 
-    String.indexOf("whale", "The quick brown fox jumps over the lazy dog.") == Maybe::Nothing
-    String.indexOf("fox", "The quick brown fox jumps over the lazy dog.") == Maybe::Just(16)
+    String.indexOf("whale", "The quick brown fox jumps over the lazy dog.") == Maybe.Nothing
+    String.indexOf("fox", "The quick brown fox jumps over the lazy dog.") == Maybe.Just(16)
   */
   fun indexOf (search : String, string : String) : Maybe(Number) {
     `
@@ -203,9 +203,9 @@ module String {
       const result = #{string}.indexOf(#{search});
 
       if (result == -1) {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       } else {
-        return #{Maybe::Just(`result`)}
+        return #{Maybe.Just(`result`)}
       }
     })()
     `
@@ -286,10 +286,10 @@ module String {
 
   /*
   Returns the index within the calling String object of the last occurrence of
-  the specified value, returns `Maybe::Nothing` if the value is not found.
+  the specified value, returns `Maybe.Nothing` if the value is not found.
 
-    String.lastIndexOf("whale", "The quick brown fox jumps over the lazy dog.") == Maybe::Nothing
-    String.lastIndexOf("the", "The quick brown fox jumps over the lazy dog.") == Maybe::Just(31)
+    String.lastIndexOf("whale", "The quick brown fox jumps over the lazy dog.") == Maybe.Nothing
+    String.lastIndexOf("the", "The quick brown fox jumps over the lazy dog.") == Maybe.Just(31)
   */
   fun lastIndexOf (search : String, string : String) : Maybe(Number) {
     `
@@ -297,9 +297,9 @@ module String {
       const result = #{string}.lastIndexOf(#{search});
 
       if (result == -1) {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       } else {
-        return #{Maybe::Just(`result`)}
+        return #{Maybe.Just(`result`)}
       }
     })()
     `

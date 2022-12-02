@@ -20,14 +20,14 @@ provider Provider.Mutation : Provider.Mutation.Subscription {
     for (entry of entries) {
       for (subscription of subscriptions) {
         case (subscription.element) {
-          Maybe::Just(element) =>
+          Maybe.Just(element) =>
             if (Dom.contains(entry.target, element)) {
               subscription.changes()
             } else {
               next { }
             }
 
-          Maybe::Nothing => next { }
+          Maybe.Nothing => next { }
         }
       }
     }
@@ -43,13 +43,13 @@ provider Provider.Mutation : Provider.Mutation.Subscription {
     /* For each subscription observe the given elements. */
     for (subscription of subscriptions) {
       case (subscription.element) {
-        Maybe::Just(element) =>
+        Maybe.Just(element) =>
           {
             MutationObserver.observe(element, true, true, observer)
             subscription.changes()
           }
 
-        Maybe::Nothing => next { }
+        Maybe.Nothing => next { }
       }
     }
 

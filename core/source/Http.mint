@@ -51,10 +51,10 @@ request = await
   |> Http.send()
 
 case (request) {
-  Result::Ok(response) =>
+  Result.Ok(response) =>
     Debug.log(response)
 
-  Result::Err(error) =>
+  Result.Err(error) =>
     Debug.log(error)
 }
 ```
@@ -272,8 +272,8 @@ module Http {
       } catch (error) {
         delete this._requests[#{uid}]
 
-        resolve(#{Result::Err({
-          type = Http.Error::BadUrl,
+        resolve(#{Result.Err({
+          type = Http.Error.BadUrl,
           status = `xhr.status`,
           url = request.url
         })})
@@ -286,8 +286,8 @@ module Http {
       xhr.addEventListener('error', (event) => {
         delete this._requests[#{uid}]
 
-        resolve(#{Result::Err({
-          type = Http.Error::NetworkError,
+        resolve(#{Result.Err({
+          type = Http.Error.NetworkError,
           status = `xhr.status`,
           url = request.url
         })})
@@ -296,8 +296,8 @@ module Http {
       xhr.addEventListener('timeout', (event) => {
         delete this._requests[#{uid}]
 
-        resolve(#{Result::Err({
-          type = Http.Error::Timeout,
+        resolve(#{Result.Err({
+          type = Http.Error.Timeout,
           status = `xhr.status`,
           url = request.url
         })})
@@ -306,7 +306,7 @@ module Http {
       xhr.addEventListener('load', (event) => {
         delete this._requests[#{uid}]
 
-        resolve(#{Result::Ok({
+        resolve(#{Result.Ok({
           body = `xhr.responseText`,
           status = `xhr.status`
         })})
@@ -315,8 +315,8 @@ module Http {
       xhr.addEventListener('abort', (event) => {
         delete this._requests[#{uid}]
 
-        resolve(#{Result::Err({
-          type = Http.Error::Aborted,
+        resolve(#{Result.Err({
+          type = Http.Error.Aborted,
           status = `xhr.status`,
           url = request.url
         })})

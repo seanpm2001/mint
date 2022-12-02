@@ -29,7 +29,7 @@ module Mint
       unified =
         Comparer.compare_raw(option_type, resolved_type)
 
-      raise EnumIdTypeMismatch, {
+      raise CallTypeMismatch, {
         "got"      => resolved_type,
         "expected" => option_type,
         "node"     => node,
@@ -112,6 +112,21 @@ module Mint
       } unless result
 
       resolve_type(result.parameters.last)
+    end
+
+    def extract_variables(node : Checkable) : Hash(String, Checkable)
+      extracted = {} of String => Checkable
+
+      case node
+      when Type
+        node.parameters.each do |param|
+          extracted.merge!(extract_variables(param))
+        end
+      when Variable
+        extracted[node.name] = Comparer.prune(node)
+      end
+
+      extracted
     end
   end
 end

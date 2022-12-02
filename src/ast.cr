@@ -20,7 +20,6 @@ module Mint
                        Variable |
                        Routes |
                        Encode |
-                       EnumId |
                        Decode |
                        Record |
                        Access |

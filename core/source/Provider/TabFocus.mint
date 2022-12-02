@@ -12,7 +12,7 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
 
   /* The `keyUp` event handler. */
   fun handleKeyUp (event : Html.Event) : Array(Promise(Void)) {
-    if (event.keyCode == Html.Event:TAB) {
+    if (event.keyCode == Html.Event.TAB) {
       activeElement:
         Dom.getActiveElement()
 
@@ -28,7 +28,7 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
 
   /* The `keyDown` event handler. */
   fun handleKeyDown (event : Html.Event) : Array(Promise(Void)) {
-    if (event.keyCode == Html.Event:TAB) {
+    if (event.keyCode == Html.Event.TAB) {
       target:
         Maybe.Just(event.target)
 

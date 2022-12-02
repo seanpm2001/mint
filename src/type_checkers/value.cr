@@ -6,43 +6,47 @@ module Mint
         tail = parts.pop
         head = parts.join(".")
 
-        item =
-          case entity = find_simple_entity(head)
-          when Ast::Enum
-            entity.options.find(&.value.==(tail))
-          when Ast::Module
-            entity.functions.find(&.name.value.==(tail)) ||
-              entity.constants.find(&.name.==(tail))
-          when Ast::Component
-            entity.functions.find(&.name.value.==(tail)) ||
-              entity.gets.find(&.name.value.==(tail)) ||
-              entity.states.find(&.name.value.==(tail)) ||
-              entity.constants.find(&.name.==(tail))
-          when Ast::Store
-            entity.functions.find(&.name.value.==(tail)) ||
-              entity.gets.find(&.name.value.==(tail)) ||
-              entity.states.find(&.name.value.==(tail)) ||
-              entity.constants.find(&.name.==(tail))
-          end
+        find_simple_entity(head).compact_map do |entity|
+          item =
+            case entity
+            when Ast::Enum
+              entity.options.find(&.value.==(tail))
+            when Ast::Module
+              entity.functions.find(&.name.value.==(tail)) ||
+                entity.constants.find(&.name.==(tail))
+            when Ast::Component
+              entity.functions.find(&.name.value.==(tail)) ||
+                entity.gets.find(&.name.value.==(tail)) ||
+                entity.states.find(&.name.value.==(tail)) ||
+                entity.constants.find(&.name.==(tail))
+            when Ast::Store
+              entity.functions.find(&.name.value.==(tail)) ||
+                entity.gets.find(&.name.value.==(tail)) ||
+                entity.states.find(&.name.value.==(tail)) ||
+                entity.constants.find(&.name.==(tail))
+            end
 
-        if item
-          {item, entity}
-        elsif entity
-          {entity, nil}
-        end
+          {item, entity} if item
+        end.first?
       else
-        item = find_simple_entity(name)
+        item = find_simple_entity(name).first?
         {item, nil} if item
       end
     end
 
     def find_simple_entity(name)
-      ast.records.find(&.name.==(name)) ||
-        ast.components.find(&.name.==(name)) ||
-        ast.stores.find(&.name.==(name)) ||
-        ast.unified_modules.find(&.name.==(name)) ||
-        ast.enums.compact_map(&.options.find(&.value.==(name))).first? ||
-        ast.enums.find(&.name.==(name))
+      option =
+        ast.enums.compact_map(&.options.select(&.value.==(name))).flatten.first?
+
+      if option
+        [option]
+      else
+        (ast.records.select(&.name.==(name)) +
+          ast.components.select(&.name.==(name)) +
+          ast.stores.select(&.name.==(name)) +
+          ast.unified_modules.select(&.name.==(name)) +
+          ast.enums.select(&.name.==(name)))
+      end
     end
 
     def check(node : Ast::Value) : Checkable

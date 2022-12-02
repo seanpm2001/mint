@@ -81,7 +81,7 @@ module Time {
   Formats the given time using the given pattern in the given language.
 
     Time.format(
-      Time.Format:ENGLISH,
+      Time.Format.ENGLISH,
       "%Y-%m-%dT%H:%M:%S.%LZ",
       Time.utcDate(2018, 4, 5)) == "2018-04-05T00:00:00.000Z"
 
@@ -183,13 +183,13 @@ module Time {
     Time.formatISO(Time.utcDate(2018, 4, 5)) == "2018-04-05T00:00:00.000Z"
   */
   fun formatISO (time : Time) : String {
-    format(Time.Format:ENGLISH, "%Y-%m-%dT%H:%M:%S.%LZ", time)
+    format(Time.Format.ENGLISH, "%Y-%m-%dT%H:%M:%S.%LZ", time)
   }
 
   /*
   Formates the given time by the given single token using the given language.
 
-    Time.formatToken(Time.Format:ENGLISH, "%Y", Time.utcDate(2018, 4, 5)) == "2018"
+    Time.formatToken(Time.Format.ENGLISH, "%Y", Time.utcDate(2018, 4, 5)) == "2018"
   */
   fun formatToken (
     language : Time.Format.Language,

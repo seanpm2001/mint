@@ -8,9 +8,6 @@ module Mint
     #     export extends for if import in instanceof new return super
     #     switch this throw typeof var void while yield state)
 
-    def find_enum_2(name : String)
-    end
-
     def check(node : Ast::Value) : Checkable
       raise VariableReserved, {
         "name" => node.name,
@@ -22,8 +19,7 @@ module Mint
 
       entity =
         ast.records.find(&.name.==(node.name)) ||
-          ast.enums.find(&.name.==(node.name)) ||
-          ast.enums.map(&.options.find(&.value.==(option))).compact.first?
+          ast.enums.compact_map(&.options.find(&.value.==(option))).first?
 
       case entity
       when Ast::EnumOption
@@ -33,22 +29,23 @@ module Mint
         enum_type =
           resolve(item)
 
-        if entity.parameters.any?
+        lookups[node] = entity
+
+        if !entity.parameters.empty?
           option_type = resolve(entity)
 
           case defi = entity.parameters.first?
           when Ast::EnumRecordDefinition
             enum_constructor_data[node] = {resolve(defi).as(Record), enum_type.as(Type)}
-            # Comparer.normalize(Type.new("Function", option_type.fields.values + [enum_type]))
           end
 
           Comparer.normalize(Type.new("Function", option_type.parameters + [enum_type]))
         else
           enum_type
         end
-      when Ast::Enum
-        resolve(entity)
       when Ast::RecordDefinition
+        lookups[node] = entity
+
         case record_type = resolve(entity)
         when Record
           Type.new("Function", record_type.fields.values + [record_type])

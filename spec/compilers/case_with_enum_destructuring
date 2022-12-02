@@ -20,7 +20,7 @@ component Main {
   }
 
   fun render : String {
-    test(C::D(A::B("")))
+    test(C.D(A.B("")))
 
     ""
   }

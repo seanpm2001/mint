@@ -5,7 +5,7 @@ enum Maybe(a) {
 
 component Main {
   fun test : String {
-    Maybe::Nothing or "Hello"
+    Maybe.Nothing or "Hello"
   }
 
   fun render : String {
@@ -32,7 +32,7 @@ class C extends _E {
 
 class A extends _C {
   a() {
-    return _o(new B()._0, `Hello`);
+    return _o((new B())._0, `Hello`);
   }
 
   render() {

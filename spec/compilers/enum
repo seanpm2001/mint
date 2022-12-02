@@ -12,15 +12,15 @@ enum Res(error, value) {
 
 component Main {
   fun a : Test(a) {
-    Test::X
+    Test.X
   }
 
   fun b : Res(String, String) {
-    Res::Other("", "")
+    Res.Other("", "")
   }
 
   fun c : Test(String) {
-    Test::Z(Res::Error(""))
+    Test.Z(Res.Error(""))
   }
 
   fun render : String {
@@ -81,7 +81,7 @@ class C extends _E {
 
 class A extends _C {
   a() {
-    return new B();
+    return (new B());
   }
 
   b() {

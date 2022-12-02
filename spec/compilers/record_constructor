@@ -24,10 +24,12 @@ const A = _R({
 
 class B extends _C {
   render() {
-    new A({
-      a: `A`,
-      b: 0
-    });
+    ((_0, _1) => {
+      return new A({
+        a: _0,
+        b: _1
+      })
+    })(`A`, 0);
 
     return _h("div", {});
   }

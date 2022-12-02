@@ -8,8 +8,8 @@ describe "Operation" do
         .as(Mint::Ast::Operation)
 
     operation.operator.should eq "=="
-    operation.left.should be_a(Mint::Ast::Variable)
-    operation.right.should be_a(Mint::Ast::Variable)
+    operation.left.should be_a(Mint::Ast::Value)
+    operation.right.should be_a(Mint::Ast::Value)
   end
 
   it "honors precedence" do
@@ -19,7 +19,7 @@ describe "Operation" do
         .as(Mint::Ast::Operation)
 
     operation.operator.should eq "=="
-    operation.left.should be_a(Mint::Ast::Variable)
+    operation.left.should be_a(Mint::Ast::Value)
     operation.right.should be_a(Mint::Ast::Operation)
   end
 
@@ -31,11 +31,11 @@ describe "Operation" do
 
     operation.operator.should eq "=="
     operation.left.should be_a(Mint::Ast::Operation)
-    operation.right.should be_a(Mint::Ast::Variable)
+    operation.right.should be_a(Mint::Ast::Value)
 
     left = operation.left.as(Mint::Ast::Operation)
     left.operator.should eq "*"
-    left.left.should be_a(Mint::Ast::Variable)
-    left.right.should be_a(Mint::Ast::Variable)
+    left.left.should be_a(Mint::Ast::Value)
+    left.right.should be_a(Mint::Ast::Value)
   end
 end

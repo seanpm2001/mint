@@ -9,15 +9,19 @@ module Mint
         switch this throw typeof var void while yield state)
 
     def check(node : Ast::Variable) : Checkable
+      check(node.value, node)
+    end
+
+    def check(name : String, node : Ast::Variable | Ast::Value) : Checkable
       raise VariableReserved, {
-        "name" => node.value,
+        "name" => name,
         "node" => node,
-      } if RESERVED.includes?(node.value)
+      } if RESERVED.includes?(name)
 
       item = lookup_with_level(node)
 
       raise VariableMissing, {
-        "name" => node.value,
+        "name" => name,
         "node" => node,
       } unless item
 

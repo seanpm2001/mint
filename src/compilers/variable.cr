@@ -1,10 +1,22 @@
 module Mint
   class Compiler
     def _compile(node : Ast::Variable) : String
+      _compile_variable(node)
+    end
+
+    def _compile_variable(node : Ast::Variable | Ast::Value) : String
+      variable_name =
+        case node
+        in Ast::Variable
+          node.value
+        in Ast::Value
+          node.name
+        end
+
       entity, parent = variables[node]
 
       # Subscriptions for providers are handled here
-      if node.value == "subscriptions" && parent.is_a?(Ast::Provider)
+      if variable_name == "subscriptions" && parent.is_a?(Ast::Provider)
         return "this._subscriptions"
       end
 
@@ -48,7 +60,7 @@ module Mint
             ref =
               parent
                 .refs
-                .find { |(ref, _)| ref.value == node.value }
+                .find { |(ref, _)| ref.value == variable_name }
                 .try { |(ref, _)| js.variable_of(ref) }
 
             "this.#{ref}"
@@ -116,7 +128,7 @@ module Mint
             js.variable_of(node)
           end
         else
-          "this.#{node.value}"
+          "this.#{variable_name}"
         end
       end
     end

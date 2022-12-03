@@ -4,6 +4,6 @@ store Test {
   }
 
   fun b : String {
-    Test.a
+    a
   }
 }

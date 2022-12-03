@@ -31,7 +31,7 @@ module Mint
       when item[0].is_a?(Ast::HtmlElement) && item[1].is_a?(Ast::Component)
         Type.new("Maybe", [Type.new("Dom.Element")] of Checkable)
       when item[0].is_a?(Ast::Component) && item[1].is_a?(Ast::Component)
-        Type.new("Maybe", [component_records[item[0]]] of Checkable)
+        Type.new("Maybe", [entity_records[item[0]]] of Checkable)
       else
         case value = item[0]
         when Ast::Statement

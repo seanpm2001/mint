@@ -4,7 +4,7 @@ module Test {
   }
 
   fun b : Function(String) {
-    Test.a
+    a
   }
 }
 
@@ -16,7 +16,7 @@ component Main {
     x()
   }
 }
-----------------------------------------------------ModuleAccessNotFoundFunction
+-------------------------------------------------------------AccessFieldNotFound
 module Test {
   fun b : Function(String) {
     Test.a
@@ -28,7 +28,7 @@ component Main {
     Test.b()
   }
 }
-------------------------------------------------------ModuleAccessNotFoundModule
+-----------------------------------------------------------------VariableMissing
 module Test {
   fun b : Function(String) {
     XTest.a

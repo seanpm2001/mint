@@ -2,6 +2,24 @@ module Mint
   class TypeChecker
     type_error StoreEntityNameConflict
 
+    def static_type_signature(node : Ast::Store)
+      fields = {} of String => Checkable
+
+      node.gets.each do |item|
+        fields[item.name.value] = static_type_signature(item)
+      end
+
+      node.functions.each do |item|
+        fields[item.name.value] = static_type_signature(item)
+      end
+
+      node.states.each do |item|
+        fields[item.name.value] = static_type_signature(item)
+      end
+
+      Record.new(node.name, fields)
+    end
+
     def check(node : Ast::Store) : Checkable
       # Checking for global naming conflict
       check_global_names node.name, node

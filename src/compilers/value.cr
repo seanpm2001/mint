@@ -3,20 +3,25 @@ module Mint
     def _compile(node : Ast::Value) : String
       case x = value_lookup[node]?
       when Tuple(Ast::Node, Ast::Node | Nil)
-        name =
-          js.class_of(x[1].not_nil!)
+        case parent = x[1]
+        when nil
+          js.class_of(x[0])
+        else
+          name =
+            js.class_of(parent)
 
-        case x[1]
-        when Ast::Provider
-          if node.name == "subscriptions"
-            return "#{name}._subscriptions"
+          case parent
+          when Ast::Provider
+            if node.name == "subscriptions"
+              return "#{name}._subscriptions"
+            end
           end
+
+          variable =
+            js.variable_of(x[0])
+
+          "#{name}.#{variable}"
         end
-
-        variable =
-          js.variable_of(x[0])
-
-        "#{name}.#{variable}"
       else
         case item = lookups[node]?
         when Ast::EnumOption

@@ -19,6 +19,11 @@ module Mint
                 entity.gets.find(&.name.value.==(tail)) ||
                 entity.states.find(&.name.value.==(tail)) ||
                 entity.constants.find(&.name.==(tail))
+            when Ast::Provider
+              entity.functions.find(&.name.value.==(tail)) ||
+                entity.gets.find(&.name.value.==(tail)) ||
+                entity.states.find(&.name.value.==(tail)) ||
+                entity.constants.find(&.name.==(tail))
             when Ast::Store
               entity.functions.find(&.name.value.==(tail)) ||
                 entity.gets.find(&.name.value.==(tail)) ||
@@ -28,7 +33,7 @@ module Mint
 
           {item, entity} if item
         end.first?
-      else
+      end || begin
         item = find_simple_entity(name).first?
         {item, nil} if item
       end
@@ -41,7 +46,8 @@ module Mint
       if option
         [option]
       else
-        (ast.records.select(&.name.==(name)) +
+        (ast.providers.select(&.name.==(name)) +
+          ast.records.select(&.name.==(name)) +
           ast.components.select(&.name.==(name)) +
           ast.stores.select(&.name.==(name)) +
           ast.unified_modules.select(&.name.==(name)) +
@@ -50,15 +56,26 @@ module Mint
     end
 
     def check(node : Ast::Value) : Checkable
-      raise VariableReserved, {
-        "name" => node.name,
-        "node" => node,
-      } if RESERVED.includes?(node.name)
-
       x =
         find_entity(node.name)
 
       case entity = x.try(&.first)
+      when Ast::Module
+        resolve(entity)
+        value_lookup[node] = x.not_nil!
+        entity_records[entity]? || NEVER
+      when Ast::Component
+        check!(entity)
+        value_lookup[node] = x.not_nil!
+        entity_records[entity]? || NEVER
+      when Ast::Provider
+        check!(entity)
+        value_lookup[node] = x.not_nil!
+        entity_records[entity]? || NEVER
+      when Ast::Store
+        check!(entity)
+        value_lookup[node] = x.not_nil!
+        entity_records[entity]? || NEVER
       when Ast::Constant
         value_lookup[node] = x.not_nil!
 

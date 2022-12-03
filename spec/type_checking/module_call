@@ -5,7 +5,7 @@ module Test {
 
   fun b : String {
     true
-    |> Test.a("test")
+    |> a("test")
   }
 }
 
@@ -30,7 +30,7 @@ component Main {
     Test.b()
   }
 }
-------------------------------------------------------ModuleAccessNotFoundModule
+-----------------------------------------------------------------VariableMissing
 module Test {
   fun b : String {
     X.x()
@@ -42,7 +42,7 @@ component Main {
     Test.b()
   }
 }
-----------------------------------------------------ModuleAccessNotFoundFunction
+-------------------------------------------------------------AccessFieldNotFound
 module Test {
   fun b : String {
     Test.a("test")
@@ -70,7 +70,7 @@ component Main {
     Test.b()
   }
 }
---------------------------------------------------------CallArgumentTypeMismatch
+----------------------------------------------------------------CallTypeMismatch
 module Test {
   fun a (value : a, x : a) : String {
     value

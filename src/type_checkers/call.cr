@@ -73,6 +73,7 @@ module Mint
       raise CallArgumentSizeMismatch, {
         "call_size" => node.arguments.size.to_s,
         "size"      => argument_size.to_s,
+        "type"      => function_type,
         "node"      => node,
       } if node.arguments.size > argument_size ||       # If it's more than the maxium
            node.arguments.size < required_argument_size # If it's less then the minimum

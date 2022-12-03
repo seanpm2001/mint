@@ -2,6 +2,16 @@ module Mint
   class TypeChecker
     type_error ModuleEntityNameConflict
 
+    def static_type_signature(node : Ast::Module)
+      fields = {} of String => Checkable
+
+      node.functions.each do |item|
+        fields[item.name.value] = static_type_signature(item)
+      end
+
+      Record.new(node.name, fields)
+    end
+
     def check_all(node : Ast::Module) : Checkable
       resolve node
 

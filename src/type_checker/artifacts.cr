@@ -2,12 +2,12 @@ module Mint
   class TypeChecker
     class Artifacts
       getter ast, lookups, cache, checked, record_field_lookup, assets
-      getter types, variables, component_records, resolve_order
+      getter types, variables, entity_records, resolve_order
       getter enum_constructor_data, value_lookup
 
       def initialize(@ast : Ast,
                      @enum_constructor_data = {} of Ast::Node => {Record, Type},
-                     @component_records = {} of Ast::Component => Record,
+                     @entity_records = {} of Ast::Node => Record,
                      @record_field_lookup = {} of Ast::Node => String,
                      @variables = {} of Ast::Node => Scope::Lookup,
                      @value_lookup = {} of Ast::Node => Tuple(Ast::Node, Ast::Node?),

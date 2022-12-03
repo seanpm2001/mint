@@ -32,7 +32,7 @@ module Mint
 
     property? checking = true
 
-    delegate checked, record_field_lookup, component_records, to: artifacts
+    delegate checked, record_field_lookup, entity_records, to: artifacts
     delegate types, variables, ast, lookups, cache, value_lookup, to: artifacts
     delegate assets, resolve_order, enum_constructor_data, to: artifacts
 
@@ -94,7 +94,19 @@ module Mint
       end
 
       ast.components.each do |component|
-        component_records[component] = static_type_signature(component)
+        entity_records[component] = static_type_signature(component)
+      end
+
+      ast.unified_modules.each do |item|
+        entity_records[item] = static_type_signature(item)
+      end
+
+      ast.providers.each do |item|
+        entity_records[item] = static_type_signature(item)
+      end
+
+      ast.stores.each do |item|
+        entity_records[item] = static_type_signature(item)
       end
     end
 
@@ -132,7 +144,7 @@ module Mint
 
     def resolve_type(node : Type)
       resolve_record_definition(node.name) ||
-        component_records.values.find(&.name.==(node.name)) || begin
+        entity_records.select { |item| item.is_a?(Ast::RecordDefinition) }.values.find(&.name.==(node.name)) || begin
         parameters = node.parameters.map do |param|
           resolve_type(param).as(Checkable)
         end

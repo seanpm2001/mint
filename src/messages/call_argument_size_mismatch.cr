@@ -6,6 +6,8 @@ message CallArgumentSizeMismatch do
     bold size
     text "arguments, while you tried to call it with"
     bold call_size
+    text "the function type is"
+    bold type
   end
 
   snippet node, "You tried to call it here:"

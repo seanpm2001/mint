@@ -41,7 +41,7 @@ module Mint
         end
 
         node
-      rescue error : Error | Error2
+      rescue error : Error2
         @position = start_position
 
         ast.nodes.delete_at(nodes_size...)

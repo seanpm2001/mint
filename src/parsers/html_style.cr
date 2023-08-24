@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         name = parse do
           next unless keyword "::"
-          next unless value = variable_with_dashes track: false
+          next unless value = variable track: false, extra_chars: ['-']
           value
         end
 

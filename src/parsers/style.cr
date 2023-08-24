@@ -8,7 +8,7 @@ module Mint
         next error :style_expected_name do
           expected "the name of a style", word
           snippet self
-        end unless name = variable_with_dashes
+        end unless name = variable extra_chars: ['-']
         whitespace
 
         arguments = [] of Ast::Argument

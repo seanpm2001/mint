@@ -2,7 +2,7 @@ module Mint
   class Parser
     def html_attribute(with_dashes : Bool = true, fixed_name : String? = nil) : Ast::HtmlAttribute?
       parse do |start_position|
-        name = with_dashes ? variable_attribute_name : variable(track: false)
+        name = variable track: false, extra_chars: with_dashes ? ['-', ':'] : [] of Char
 
         next unless name
         next if fixed_name && name.value != fixed_name

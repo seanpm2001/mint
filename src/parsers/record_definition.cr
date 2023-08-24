@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def record_definition : Ast::RecordDefinition?
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
 
         next unless keyword "record"

@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def env : Ast::Env?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '@'
 
         head =

@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def decode : Ast::Decode?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "decode"
         next unless whitespace?
         whitespace

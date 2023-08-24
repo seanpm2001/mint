@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def style : Ast::Style?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "style"
 
         whitespace

@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def spread
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "..."
 
         next error :spread_expected_variable do

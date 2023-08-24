@@ -5,19 +5,19 @@ module Mint
         while char != '\0' && !keyword_ahead?(token)
           break if char == '#' &&
                    next_char == '{' &&
-                   prev_char != '\\'
+                   previous_char != '\\'
           step
         end
       end
     end
 
     def here_doc(with_interpolation : Bool = true) : Ast::HereDoc?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "<<"
         next unless char!('~') || char!('#') || char!('-')
 
         modifier =
-          prev_char
+          previous_char
 
         head =
           gather { chars &.ascii_uppercase? }

@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def argument(parse_default_value : Bool = true) : Ast::Argument?
-      start do |start_position|
+      parse do |start_position|
         next unless name = variable
 
         whitespace

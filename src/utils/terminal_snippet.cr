@@ -30,7 +30,7 @@ module Mint
           self[0, diff_from]
 
         center =
-          self[diff_from, diff_to].colorize(:light_yellow).mode(:bright).to_s
+          self[diff_from, diff_to].colorize.on(:white).fore(:red).to_s
 
         right =
           self[diff_to, contents.size]

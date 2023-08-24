@@ -1,28 +1,29 @@
 module Mint
   class Parser
     def comment : Ast::Comment?
-      start do |start_position|
-        next unless keyword_ahead?("/*") || keyword_ahead?("//")
+      parse do |start_position|
+        value, type =
+          if keyword "/*"
+            consumed =
+              gather { consume { !keyword_ahead?("*/") && !eof? } }.to_s
 
-        value = nil
+            next error :comment_expected_closing_tag do
+              expected "the closing tag of a comment", word
+              snippet self
+            end unless keyword "*/"
 
-        if keyword_ahead? "/*"
-          keyword "/*"
+            {consumed, Ast::Comment::Type::Block}
+          elsif keyword "//"
+            consumed =
+              gather { consume { char != '\n' && !eof? } }.to_s
 
-          type = Ast::Comment::Type::Block
-          value =
-            gather { consume_while((!keyword_ahead?("*/") || char == '\0') && !eof?) }.to_s
+            {consumed, Ast::Comment::Type::Inline}
+          else
+            {nil, Ast::Comment::Type::Block}
+          end
 
-          keyword "*/"
-        else
-          keyword "//"
-
-          type = Ast::Comment::Type::Inline
-          value =
-            gather { consume_while(!(keyword_ahead?("\n") || char == '\0') && !eof?) }.to_s
-        end
-
-        whitespace
+        whitespace # TODO: Figure out why is this is needed
+        next unless value
 
         self << Ast::Comment.new(
           from: start_position,

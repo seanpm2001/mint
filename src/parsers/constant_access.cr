@@ -1,8 +1,8 @@
 module Mint
   class Parser
     def constant_access : Ast::ModuleAccess?
-      start do |start_position|
-        name = start do
+      parse do |start_position|
+        name = parse do
           value = type_id
           next unless char! ':'
           value

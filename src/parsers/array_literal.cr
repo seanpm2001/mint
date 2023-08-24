@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def array : Ast::ArrayLiteral?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '['
 
         whitespace
@@ -17,7 +17,7 @@ module Mint
           snippet self
         end unless char! ']'
 
-        type = start do
+        type = parse do
           whitespace
           next unless keyword "of"
           whitespace

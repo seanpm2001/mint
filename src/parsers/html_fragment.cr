@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def html_fragment : Ast::HtmlFragment?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '<'
 
         # Test for closing tag

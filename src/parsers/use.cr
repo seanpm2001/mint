@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def use : Ast::Use?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "use"
 
         whitespace

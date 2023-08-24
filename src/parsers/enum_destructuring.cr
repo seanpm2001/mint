@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def enum_destructuring
-      start do |start_position|
+      parse do |start_position|
         next unless option = type_id track: false
 
         if keyword "::"

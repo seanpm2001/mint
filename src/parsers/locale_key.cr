@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def locale_key : Ast::LocaleKey?
-      start do |start_position|
+      parse do |start_position|
         next unless char! ':'
 
         value = gather do
@@ -16,7 +16,6 @@ module Mint
           value: value,
           to: position,
           input: data).tap do |node|
-          locales << node
           self << node
         end
       end

@@ -1,13 +1,13 @@
 module Mint
   class Parser
     def css_keyframes : Ast::CssKeyframes?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@keyframes"
 
         whitespace
 
         name =
-          gather { chars_until '{' }.presence.try(&.strip)
+          gather { chars { char != '{' } }.presence.try(&.strip)
 
         next error :css_keyframes_expected_name do
           expected "the name of a CSS keyframes rule", word

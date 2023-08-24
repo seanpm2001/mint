@@ -1,9 +1,9 @@
 module Mint
   class Parser
     def call_expression : Ast::CallExpression?
-      start do |start_position|
+      parse do |start_position|
         name =
-          start do
+          parse do
             next unless key = variable
             whitespace
 

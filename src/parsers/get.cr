@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def get : Ast::Get?
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
 
         next unless keyword "get"

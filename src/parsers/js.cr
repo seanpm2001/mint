@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def js : Ast::Js?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '`'
 
         value = many(parse_whitespace: false) do
@@ -36,21 +36,21 @@ module Mint
       value =
         if stop_on_interpolation
           # Until we find either a terminator or interpolation
-          gather { chars_until terminator, '#' }
+          gather { chars { |char| !char.in?(terminator, '#') } }
         else
           # Until we find the terminator
-          gather { chars_until terminator }
+          gather { chars { |char| char != terminator } }
         end
 
-      if prev_char == '\\'
+      if previous_char == '\\'
         # if we found backslashthen it means it's an escape so we consume it
         step
 
         # if we are in an inline JavaScript
-        if prev_char == '`' && terminator == '`'
-          value.to_s.rchop + prev_char
+        if previous_char == '`' && terminator == '`'
+          value.to_s.rchop + previous_char
         else
-          value.to_s + prev_char
+          value.to_s + previous_char
         end
       elsif char == '#' && next_char != '{' && stop_on_interpolation
         # If we found a hashtag then it could be an interpolation, if

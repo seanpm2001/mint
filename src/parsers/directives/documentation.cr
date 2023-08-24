@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def documentation_directive : Ast::Directives::Documentation?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@documentation"
 
         next error :documentation_directive_expected_opening_parenthesis do

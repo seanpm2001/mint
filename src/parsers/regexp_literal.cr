@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def regexp_literal : Ast::RegexpLiteral?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '/'
 
         # This is a safe check because a regexp cannot start

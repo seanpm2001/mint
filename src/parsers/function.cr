@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def function : Ast::Function?
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
 
         next unless keyword "fun"

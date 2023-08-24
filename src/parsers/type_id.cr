@@ -1,18 +1,18 @@
 module Mint
   class Parser
     def type_id(*, track : Bool = true, raise : Bool = false) : Ast::TypeId?
-      start do |start_position|
+      parse do |start_position|
         value = gather do
           return unless char.ascii_uppercase?
           step
-          letters_numbers_or_underscore
+          ascii_letters_numbers_or_underscore
         end
 
         return unless value
 
-        start do
+        parse do
           if char == '.'
-            other = start do
+            other = parse do
               step
               next_part = type_id(track: false)
               next unless next_part

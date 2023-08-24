@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def asset_directive : Ast::Directives::Asset?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@asset"
 
         next error :asset_directive_expected_opening_parenthesis do
@@ -13,7 +13,7 @@ module Mint
         next error :asset_directive_expected_path do
           expected "the path of an asset directive", word
           snippet self
-        end unless path = gather { chars_until ')' }
+        end unless path = gather { chars { char != ')' } }.presence.try(&.strip)
 
         whitespace
         next error :asset_directive_expected_closing_parenthesis do

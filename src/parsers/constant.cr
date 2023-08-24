@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def constant : Ast::Constant?
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
         whitespace
 

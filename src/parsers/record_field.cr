@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def record_field : Ast::RecordField?
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
 
         next unless key = variable

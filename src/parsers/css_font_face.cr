@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def css_font_face : Ast::CssFontFace?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@font-face"
 
         definitions = block2(

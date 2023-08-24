@@ -26,7 +26,7 @@ module Mint
     }
 
     def operator : String?
-      start do
+      parse do
         whitespace
         saved_position = position
         operator = OPERATORS.keys.find { |item| keyword item }

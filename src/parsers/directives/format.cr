@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def format_directive : Ast::Directives::Format?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@format"
 
         content =

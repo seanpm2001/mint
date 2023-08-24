@@ -1,8 +1,8 @@
 module Mint
   class Parser
     def record_update : Ast::RecordUpdate?
-      start do |start_position|
-        expression = start do
+      parse do |start_position|
+        expression = parse do
           next unless char! '{'
 
           whitespace

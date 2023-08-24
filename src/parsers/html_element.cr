@@ -1,8 +1,8 @@
 module Mint
   class Parser
     def html_element : Ast::HtmlElement?
-      start do |start_position|
-        tag = start do
+      parse do |start_position|
+        tag = parse do
           next unless char! '<'
           next unless value = variable_with_dashes track: false
           value

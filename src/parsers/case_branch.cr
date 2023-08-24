@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def case_branch(for_css : Bool = false) : Ast::CaseBranch?
-      start do |start_position|
+      parse do |start_position|
         unless keyword "=>"
           match = destructuring
           whitespace

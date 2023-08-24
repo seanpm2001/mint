@@ -1,8 +1,8 @@
 module Mint
   class Parser
     def array_destructuring : Ast::ArrayDestructuring?
-      start do |start_position|
-        head = start do
+      parse do |start_position|
+        head = parse do
           next unless char! '['
           value = spread || destructuring
           whitespace

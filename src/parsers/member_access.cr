@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def member_access : Ast::MemberAccess?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '.'
 
         next error :member_access_expected_variable do

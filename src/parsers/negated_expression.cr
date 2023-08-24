@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def negated_expression : Ast::NegatedExpression?
-      start do |start_position|
+      parse do |start_position|
         negations = gather { chars '!' }
         next unless negations
 

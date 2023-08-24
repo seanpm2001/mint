@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def type : Ast::Type?
-      start do |start_position|
+      parse do |start_position|
         next unless name = type_id
 
         if char! '('

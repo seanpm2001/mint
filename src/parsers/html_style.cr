@@ -1,8 +1,8 @@
 module Mint
   class Parser
     def html_style : Ast::HtmlStyle?
-      start do |start_position|
-        name = start do
+      parse do |start_position|
+        name = parse do
           next unless keyword "::"
           next unless value = variable_with_dashes track: false
           value

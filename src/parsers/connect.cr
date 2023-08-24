@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def connect : Ast::Connect?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "connect"
         whitespace
 

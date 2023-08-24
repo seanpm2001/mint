@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def access(lhs : Ast::Expression) : Ast::Expression
-      start do |start_position|
+      parse do |start_position|
         next unless char! '.'
 
         next error :access_expected_entity do

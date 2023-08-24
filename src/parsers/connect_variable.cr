@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def connect_variable
-      start do |start_position|
+      parse do |start_position|
         value = variable(track: false) || variable_constant
 
         next unless value

@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def block(&)
-      start do
+      parse do
         whitespace
         next unless char! '{'
         whitespace

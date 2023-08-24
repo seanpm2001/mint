@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def provider : Ast::Provider?
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
 
         next unless keyword "provider"

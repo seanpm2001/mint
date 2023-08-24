@@ -1,8 +1,8 @@
 module Mint
   class Parser
     def statement : Ast::Statement?
-      start do |start_position|
-        target = start do
+      parse do |start_position|
+        target = parse do
           next unless keyword "let"
           whitespace
 

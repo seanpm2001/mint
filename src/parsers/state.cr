@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def state : Ast::State?
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
         whitespace
 

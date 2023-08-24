@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def highlight_directive : Ast::Directives::Highlight?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@highlight"
 
         content =

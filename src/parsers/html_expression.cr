@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def html_expression : Ast::HtmlExpression?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "<{"
 
         whitespace

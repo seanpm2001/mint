@@ -3,7 +3,7 @@ module Mint
     INVALID_VARIABLE_NAMES = %w[true false]
 
     def variable_attribute_name : Ast::Variable?
-      start do |start_position|
+      parse do |start_position|
         value = gather do
           next unless char.ascii_lowercase?
           chars { |char| char.ascii_letter? || char.ascii_number? || char == '-' || char == ':' }
@@ -20,10 +20,10 @@ module Mint
     end
 
     def variable_with_dashes(track = true) : Ast::Variable?
-      start do |start_position|
+      parse do |start_position|
         value = gather do
           next unless char.ascii_lowercase?
-          letters_numbers_or_dash
+          ascii_letters_numbers_or_dash
         end
 
         next unless value
@@ -40,7 +40,7 @@ module Mint
     end
 
     def variable_constant : Ast::Variable?
-      start do |start_position|
+      parse do |start_position|
         head =
           gather { chars &.ascii_uppercase? }
 
@@ -60,10 +60,10 @@ module Mint
     end
 
     def variable(track = true) : Ast::Variable?
-      start do |start_position|
+      parse do |start_position|
         value = gather do
           next unless char.ascii_lowercase?
-          letters_or_numbers
+          ascii_letters_or_numbers
         end
 
         next unless value

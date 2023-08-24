@@ -1,12 +1,12 @@
 module Mint
   class Parser
     def css_definition : Ast::CssDefinition?
-      start do |start_position|
+      parse do |start_position|
         next unless char.ascii_lowercase? || char == '-'
 
         name = gather do
           step
-          letters_numbers_or_dash
+          ascii_letters_numbers_or_dash
         end.to_s
 
         next unless char! ':'
@@ -14,13 +14,7 @@ module Mint
 
         value =
           many(parse_whitespace: false) do
-            string_literal ||
-              interpolation ||
-              gather do
-                consume_while char.in_set?("^;{\0") &&
-                              !keyword_ahead?("\#{") &&
-                              char != '"'
-              end
+            string_literal || interpolation || raw { char.in_set?("^;{\0\"") }
           end.map do |item|
             if item.is_a?(Ast::StringLiteral) && item.static?
               %("#{item.static_value}")

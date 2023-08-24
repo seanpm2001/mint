@@ -1,12 +1,11 @@
 module Mint
   class Parser
     def css_selector(only_definitions : Bool = false) : Ast::CssSelector?
-      start do |start_position|
+      parse do |start_position|
         selectors = list(
           terminator: '{',
           separator: ','
         ) { css_selector_name }
-
         next if selectors.empty?
         next unless char == '{'
 
@@ -42,22 +41,22 @@ module Mint
 
     def css_selector_name : String?
       if ampersand = char! '&'
-        colon = char!(':')
         double_colon = keyword("::")
-        dot = char!('.')
         bracket = char!('[')
+        colon = char!(':')
+        dot = char!('.')
       end
 
       name =
-        gather { chars_until ',', '{', '}' }.presence.try(&.strip)
+        gather { chars { |char| !char.in?(',', '{', '}') } }.presence.try(&.strip)
 
       return unless name || ampersand
 
       case
-      when colon        then ":#{name}"
       when double_colon then "::#{name}"
-      when dot          then ".#{name}"
       when bracket      then "[#{name}"
+      when colon        then ":#{name}"
+      when dot          then ".#{name}"
       else                   " #{name}"
       end
     end

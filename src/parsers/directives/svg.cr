@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def svg_directive : Ast::Directives::Svg?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@svg"
 
         next error :svg_directive_expected_opening_parenthesis do
@@ -13,7 +13,7 @@ module Mint
         next error :svg_directive_expected_path do
           expected "the path of an svg directive", word
           snippet self
-        end unless path = gather { chars_until ')' }
+        end unless path = gather { chars { char != ')' } }.presence.try(&.strip)
 
         whitespace
         next error :svg_directive_expected_closing_parenthesis do

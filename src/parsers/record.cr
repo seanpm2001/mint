@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def record : Ast::Record?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '{'
 
         fields = [] of Ast::RecordField

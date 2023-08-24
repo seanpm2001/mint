@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def bool_literal : Ast::BoolLiteral?
-      start do |start_position|
+      parse do |start_position|
         value =
           case
           when keyword "true"

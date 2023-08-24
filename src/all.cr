@@ -17,7 +17,6 @@ require "./ext/**"
 require "./errorable"
 
 require "./constants"
-require "./macros"
 require "./assets"
 require "./skippable"
 require "./js"

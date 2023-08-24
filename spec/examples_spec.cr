@@ -51,16 +51,21 @@ Dir
           end
 
           item.should be_a(Mint::Error)
-
           # Check if they are rendered correctly.
           # item.try(&.to_terminal)
           # item.try(&.to_html)
         else
-          ast = Mint::Parser.parse(source, file)
-          ast.class.should eq(Mint::Ast)
+          begin
+            ast = Mint::Parser.parse(source, file)
+            ast.class.should eq(Mint::Ast)
 
-          type_checker = Mint::TypeChecker.new(ast)
-          type_checker.check
+            type_checker = Mint::TypeChecker.new(ast)
+            type_checker.check
+          rescue item : Mint::Error
+            fail item.to_terminal.to_s
+          rescue item
+            fail item.to_s
+          end
         end
       end
     end

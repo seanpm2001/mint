@@ -1,8 +1,8 @@
 module Mint
   class Parser
     def html_component : Ast::HtmlComponent?
-      start do |start_position|
-        component = start do
+      parse do |start_position|
+        component = parse do
           next unless char! '<'
           type_id
         end

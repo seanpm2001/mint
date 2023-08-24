@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def for_expression : Ast::For?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "for"
         next unless whitespace?
         whitespace

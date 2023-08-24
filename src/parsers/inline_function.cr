@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def inline_function : Ast::InlineFunction?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '('
 
         whitespace

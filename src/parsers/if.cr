@@ -43,7 +43,7 @@ module Mint
         snippet self
       end }
 
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "if"
 
         whitespace

@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def enum_option
-      start do |start_position|
+      parse do |start_position|
         comment = self.comment
 
         next unless value = type_id

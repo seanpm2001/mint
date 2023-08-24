@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def option
-      start do |start_position|
+      parse do |start_position|
         next unless name = type_id
 
         self << Ast::Option.new(

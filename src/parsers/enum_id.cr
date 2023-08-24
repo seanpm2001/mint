@@ -25,7 +25,7 @@ module Mint
     end
 
     def enum_id
-      start do |start_position|
+      parse do |start_position|
         next unless option = type_id track: false
 
         if keyword "::"

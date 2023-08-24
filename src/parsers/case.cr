@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def case_expression(for_css : Bool = false) : Ast::Case?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "case"
 
         whitespace

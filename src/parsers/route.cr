@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def route : Ast::Route?
-      start do |start_position|
+      parse do |start_position|
         next unless char.in?('*', '/')
 
         url =
@@ -10,7 +10,7 @@ module Mint
             step
             "*"
           else
-            gather { chars_until ' ', '\n', '\r', '\t', '{', '(' }.to_s
+            gather { chars { |char| !char.in?(' ', '\n', '\r', '\t', '{', '(') } }.to_s
           end
 
         whitespace

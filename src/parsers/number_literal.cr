@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def number_literal : Ast::NumberLiteral?
-      start do |start_position|
+      parse do |start_position|
         negation =
           char! '-'
 

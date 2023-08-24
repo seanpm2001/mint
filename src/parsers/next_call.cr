@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def next_call : Ast::NextCall?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "next"
         next unless whitespace?
         whitespace

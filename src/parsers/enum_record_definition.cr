@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def enum_record_definition
-      start do |start_position|
+      parse do |start_position|
         fields =
           list(
             terminator: ')',

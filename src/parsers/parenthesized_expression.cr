@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def parenthesized_expression : Ast::ParenthesizedExpression?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '('
 
         whitespace

@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def tuple_literal : Ast::TupleLiteral?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '{'
 
         whitespace

@@ -1,27 +1,33 @@
 module Mint
   class Parser
     def string_literal(with_interpolation : Bool = true) : Ast::StringLiteral?
-      start do |start_position|
+      parse do |start_position|
         next unless char! '"'
 
-        value = many(parse_whitespace: false) do
-          if with_interpolation
-            not_interpolation_part('"') || interpolation
-          else
-            not_interpolation_part('"')
-          end.as(Ast::Interpolation | String?)
-        end
+        value =
+          many(parse_whitespace: false) do
+            if with_interpolation
+              raw('"') || interpolation
+            else
+              raw('"')
+            end
+          end
 
         next error :string_expected_closing_quote do
-          expected "I was looking for the closing quoute of a string literal", word
+          expected "the closing quoute of a string literal", word
           snippet self
         end unless char! '"'
-        whitespace
 
-        broken = false
+        broken =
+          parse do
+            whitespace
+            next unless char! '\\'
+            true
+          end || false
 
-        if char! '\\'
+        if broken
           whitespace
+
           literal =
             string_literal(with_interpolation)
 
@@ -30,10 +36,7 @@ module Mint
             snippet self
           end unless literal
 
-          broken = true
           value.concat(literal.value)
-        else
-          track_back_whitespace
         end
 
         # Normalize the value so there are consecutive Strings

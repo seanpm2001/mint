@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def property : Ast::Property?
-      start do
+      parse do
         comment = self.comment
         whitespace
 

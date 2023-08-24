@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def component : Ast::Component?
-      start do |start_position|
+      parse do |start_position, start_nodes_position|
         comment = self.comment
 
         global = keyword "global"
@@ -22,7 +22,6 @@ module Mint
         end unless name = type_id
 
         # Clear refs and locales here because it's on the parser
-        locales.clear
         refs.clear
 
         body = block2(
@@ -89,7 +88,7 @@ module Mint
         end
 
         self << Ast::Component.new(
-          locales: !locales.empty?,
+          locales: ast.nodes[start_nodes_position...].any?(Ast::LocaleKey),
           global: global || false,
           properties: properties,
           functions: functions,

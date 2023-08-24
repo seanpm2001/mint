@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def inline_directive : Ast::Directives::Inline?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "@inline"
 
         next error :inline_directive_expected_opening_parenthesis do
@@ -13,7 +13,7 @@ module Mint
         next error :inline_directive_expected_path do
           expected "the closing parenthesis of an inline directive", word
           snippet self
-        end unless path = gather { chars_until ')' }
+        end unless path = gather { chars { char != ')' } }.presence.try(&.strip)
 
         whitespace
         next error :inline_directive_expected_closing_parenthesis do

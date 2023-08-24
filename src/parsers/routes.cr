@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def routes : Ast::Routes?
-      start do |start_position|
+      parse do |start_position|
         next unless keyword "routes"
 
         body =

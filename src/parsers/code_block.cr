@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def code_block_naked : Ast::Block?
-      start do |start_position|
+      parse do |start_position|
         statements =
           many { comment || statement }
 
@@ -14,7 +14,7 @@ module Mint
     end
 
     def code_block : Ast::Block?
-      start do |start_position|
+      parse do |start_position|
         statements =
           block do
             many { comment || statement }
@@ -31,7 +31,7 @@ module Mint
     def code_block2(opening_bracket_error : Proc(Nil)? = nil,
                     closing_bracket_error : Proc(Nil)? = nil,
                     statement_error : Proc(Nil)? = nil) : Ast::Block?
-      start do |start_position|
+      parse do |start_position|
         statements =
           block2(
             opening_bracket_error: opening_bracket_error,

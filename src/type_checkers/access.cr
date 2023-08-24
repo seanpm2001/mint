@@ -2,7 +2,7 @@ module Mint
   class TypeChecker
     def check(node : Ast::Access) : Checkable
       target =
-        resolve node.lhs
+        resolve node.expression
 
       error :access_not_record do
         snippet "You are trying to access a field on an object which is not a record:", target

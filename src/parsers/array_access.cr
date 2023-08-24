@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def array_access(lhs : Ast::Expression) : Ast::Expression
+    def array_access(lhs : Ast::Expression) : Ast::ArrayAccess?
       parse do |start_position|
         next unless char! '['
 
@@ -27,16 +27,14 @@ module Mint
           snippet self
         end unless char! ']'
 
-        node = self << Ast::ArrayAccess.new(
+        self << Ast::ArrayAccess.new(
           from: start_position,
           to: position,
           index: index,
           input: data,
           lhs: lhs,
         )
-
-        array_access_or_call(node)
-      end || lhs
+      end
     end
   end
 end

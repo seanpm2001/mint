@@ -1,23 +1,29 @@
 module Mint
   class Parser
-    def access(lhs : Ast::Expression) : Ast::Expression
+    def access(expression : Ast::Expression) : Ast::Access?
       parse do |start_position|
-        next unless char! '.'
+        type =
+          if keyword "::"
+            Ast::Access::Type::DoubleColon
+          elsif char! '.'
+            Ast::Access::Type::Dot
+          end
+
+        next unless type
 
         next error :access_expected_entity do
           expected "the name of the accessed entity", word
           snippet self
         end unless field = variable track: false
 
-        node = self << Ast::Access.new(
+        self << Ast::Access.new(
+          expression: expression,
           from: start_position,
           field: field,
           to: position,
           input: data,
-          lhs: lhs)
-
-        array_access_or_call(node)
-      end || lhs
+          type: type)
+      end
     end
   end
 end

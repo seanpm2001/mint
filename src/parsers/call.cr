@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def call(lhs : Ast::Expression) : Ast::Expression
+    def call(lhs : Ast::Expression) : Ast::Call?
       parse do |start_position|
         next unless char! '('
 
@@ -24,15 +24,13 @@ module Mint
           snippet self
         end unless char! ')'
 
-        node = self << Ast::Call.new(
+        self << Ast::Call.new(
           from: start_position,
           arguments: arguments,
           expression: lhs,
           to: position,
           input: data)
-
-        array_access_or_call(node)
-      end || lhs
+      end
     end
   end
 end

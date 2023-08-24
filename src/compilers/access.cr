@@ -2,7 +2,7 @@ module Mint
   class Compiler
     def _compile(node : Ast::Access) : String
       first =
-        compile node.lhs
+        compile node.expression
 
       field =
         if record_field_lookup[node.field]?

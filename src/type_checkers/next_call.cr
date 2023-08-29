@@ -1,7 +1,7 @@
 module Mint
   class TypeChecker
     def check(node : Ast::NextCall) : Checkable
-      entity = stateful?
+      entity = node.entity
 
       error :next_call_invalid_invocation do
         block do
@@ -19,14 +19,7 @@ module Mint
 
         state =
           case entity
-          when Ast::Provider
-            lookups[node] =
-              entity
-
-            entity
-              .states
-              .find(&.name.value.==(name))
-          when Ast::Component, Ast::Store
+          when Ast::Component, Ast::Store, Ast::Provider
             lookups[node] =
               entity
 

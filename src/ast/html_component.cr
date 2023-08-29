@@ -3,6 +3,9 @@ module Mint
     class HtmlComponent < Node
       getter attributes, children, component, comments, ref, closing_tag_position
 
+      property component_node : Ast::Component? = nil
+      property in_component : Bool = false
+
       def initialize(@attributes : Array(HtmlAttribute),
                      @closing_tag_position : Int32?,
                      @comments : Array(Comment),

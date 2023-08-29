@@ -37,10 +37,8 @@ module Mint
     def check_all(node : Ast::Component) : Checkable
       resolve node
 
-      scope node do
-        resolve node.gets
-        resolve node.functions
-      end
+      resolve node.gets
+      resolve node.functions
 
       VOID
     end
@@ -184,62 +182,60 @@ module Mint
       end
 
       # Type checking the entities
-      scope node do
-        resolve node.connects
-        resolve node.properties
-        resolve node.states
-        resolve node.uses
+      resolve node.connects
+      resolve node.properties
+      resolve node.states
+      resolve node.uses
 
-        error :component_no_render_function do
-          block do
-            text "A component must have a"
-            bold "render"
-            text "function."
-          end
+      error :component_no_render_function do
+        block do
+          text "A component must have a"
+          bold "render"
+          text "function."
+        end
 
-          snippet "This component does not have one:", node
-        end unless node.functions.any?(&.name.value.==("render"))
+        snippet "This component does not have one:", node
+      end unless node.functions.any?(&.name.value.==("render"))
 
-        node.functions.each do |function|
-          case function.name.value
-          when "render"
-            type =
-              resolve function
+      node.functions.each do |function|
+        case function.name.value
+        when "render"
+          type =
+            resolve function
 
-            matches =
-              [HTML, STRING, HTML_CHILDREN, TEXT_CHILDREN].any? do |item|
-                Comparer.compare(type, Type.new("Function", [item] of Checkable))
-              end
+          matches =
+            [HTML, STRING, HTML_CHILDREN, TEXT_CHILDREN].any? do |item|
+              Comparer.compare(type, Type.new("Function", [item] of Checkable))
+            end
 
-            error :component_render_function_mismatch do
-              block do
-                text "I was expecting the type of the"
-                bold "render"
-                text "function to match one of these types:"
-              end
+          error :component_render_function_mismatch do
+            block do
+              text "I was expecting the type of the"
+              bold "render"
+              text "function to match one of these types:"
+            end
 
-              snippet "Function(Html), Function(String), Function(Array(String)), Function(Array(Html))"
-              snippet "The type of the function is:", type.parameters.first
-              snippet "The render function is here:", function
-            end unless matches
-          when "componentDidMount",
-               "componentDidUpdate",
-               "componentWillUnmount"
-            type =
-              resolve function
+            snippet "Function(Html), Function(String), Function(Array(String)), Function(Array(Html))"
+            snippet "The type of the function is:", type.parameters.first
+            snippet "The render function is here:", function
+          end unless matches
+        when "componentDidMount",
+             "componentDidUpdate",
+             "componentWillUnmount"
+          type =
+            resolve function
 
-            error :component_lifecycle_function_mismatch do
-              block do
-                text "The type of the function"
-                bold function.name.value
-                text "of a component must be:"
-              end
+          error :component_lifecycle_function_mismatch do
+            block do
+              text "The type of the function"
+              bold function.name.value
+              text "of a component must be:"
+            end
 
-              snippet VOID_FUNCTION
-              snippet "Instead it is:", type
-              snippet "The function is here:", function
-            end unless Comparer.compare(type, VOID_FUNCTION)
-          end
+            snippet VOID_FUNCTION
+            snippet "Instead it is:", type
+            snippet "The function is here:", function
+          end unless Comparer.compare(type, VOID_FUNCTION)
         end
       end
 

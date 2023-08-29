@@ -113,9 +113,7 @@ module Mint
         lookups[node] = prop
 
         prop_type =
-          scope component do
-            resolve prop
-          end
+          resolve prop
 
         error :html_attribute_component_property_type_mismatch do
           block do

@@ -13,12 +13,10 @@ module Mint
       check_names(node.gets, "store", checked)
 
       # Type checking the entities
-      scope node do
-        resolve node.constants
-        resolve node.functions
-        resolve node.states
-        resolve node.gets
-      end
+      resolve node.constants
+      resolve node.functions
+      resolve node.states
+      resolve node.gets
 
       VOID
     end

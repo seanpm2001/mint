@@ -48,9 +48,7 @@ module Mint
             refs[node.field.value]? ||
             component.states.find(&.name.value.==(node.field.value))).not_nil!
 
-        scope(component) do
-          resolve lookups[node.field]
-        end
+        resolve lookups[node.field]
       else
         record_field_lookup[node.field] = new_target.name
       end

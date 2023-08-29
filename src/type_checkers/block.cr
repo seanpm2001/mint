@@ -9,19 +9,24 @@ module Mint
           variables = [] of VariableScope
 
           while item = items.shift?
+            variables.each do |var|
+              @scope2.add(node, var[0], var[2])
+            end
+
             # This is to allow recursion
             case target = item.target
             when Ast::Variable
               case value = item.expression
               when Ast::InlineFunction
-                variables << {target.value, static_type_signature(value), target}
+                cache[target] =
+                  static_type_signature(value)
+
+                @scope2.add(item, target.value, target)
               end
             end
 
-            scope variables do
-              type = resolve item
-              variables.concat(destructure(item.target, type))
-            end
+            type = resolve item
+            variables = destructure(item.target, type)
           end
         end
 

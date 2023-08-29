@@ -8,33 +8,6 @@ module Mint
         return "this._subscriptions"
       end
 
-      connected = nil
-
-      case parent
-      when Ast::Component
-        parent.connects.each do |connect|
-          store = ast.stores.find(&.name.value.==(connect.store.value))
-
-          name =
-            case entity
-            when Ast::Function, Ast::State, Ast::Get, Ast::Constant
-              entity.name.value
-            end
-
-          if store
-            connect.keys.each do |key|
-              if (store.functions.includes?(entity) ||
-                 store.constants.includes?(entity) ||
-                 store.states.includes?(entity) ||
-                 store.gets.includes?(entity)) &&
-                 key.variable.value == name
-                connected = key
-              end
-            end
-          end
-        end
-      end
-
       case parent
       when Tuple(String, TypeChecker::Checkable, Ast::Node)
         js.variable_of(parent[2])
@@ -55,16 +28,16 @@ module Mint
           end
         when Ast::Function
           function =
-            if connected
-              js.variable_of(connected)
-            else
-              js.variable_of(entity.as(Ast::Node))
-            end
+            js.variable_of(entity.as(Ast::Node))
 
-          case parent
+          x =
+            ast.unified_modules.find(&.functions.find(&.==(entity))) ||
+              ast.stores.find(&.functions.find(&.==(entity)))
+
+          case x
           when Ast::Module, Ast::Store
             name =
-              js.class_of(parent.as(Ast::Node))
+              js.class_of(x.as(Ast::Node))
 
             "#{name}.#{function}"
           else
@@ -72,11 +45,7 @@ module Mint
           end
         when Ast::Property, Ast::Get, Ast::State, Ast::Constant
           name =
-            if connected
-              js.variable_of(connected)
-            else
-              js.variable_of(entity.as(Ast::Node))
-            end
+            js.variable_of(entity.as(Ast::Node))
 
           case parent
           when Ast::Suite

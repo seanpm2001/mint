@@ -94,9 +94,44 @@ module Mint
       self.class.new.merge(self)
     end
 
+    def includes?(node : Ast::Node, other : Ast::Node)
+      node.input == other.input &&
+        node.from <= other.from &&
+        node.to >= other.to
+    end
+
     # Normalizes the ast:
     # - merges multiple modules with the same name
     def normalize
+      nodes.select(Ast::HtmlElement).each do |element|
+        components.each do |component|
+          if includes?(component, element)
+            element.styles.each do |style|
+              style.style_node = component.styles.find(&.name.value.==(style.name.value))
+            end
+
+            element.component = true
+            break
+          end
+        end
+      end
+
+      nodes.select(Ast::HtmlComponent).each do |item|
+        item.component_node = components.find(&.name.value.==(item.component.value))
+
+        components.each do |component|
+          if includes?(component, item)
+            item.in_component = true
+            break
+          end
+        end
+      end
+
+      nodes.select(Ast::NextCall).each do |node|
+        node.entity =
+          (components + providers + stores).find { |item| includes?(item, node) }
+      end
+
       @unified_modules =
         @modules
           .group_by(&.name.value)

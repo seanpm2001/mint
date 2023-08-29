@@ -20,9 +20,7 @@ module Mint
         {argument.name.value, argument_type, argument}
       end
 
-      scope args do
-        resolve node.expression
-      end
+      resolve node.expression
     end
   end
 end

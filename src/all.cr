@@ -31,6 +31,7 @@ require "./ast/**"
 require "./ast"
 
 require "./style_builder"
+require "./scope"
 
 require "./type_checkers/**"
 require "./type_checker/**"

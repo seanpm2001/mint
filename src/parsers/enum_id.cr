@@ -36,13 +36,22 @@ module Mint
           end unless option = type_id track: false
         end
 
-        self << Ast::EnumId.new(
-          expressions: enum_id_expressions || [] of Ast::Expression,
-          from: start_position,
-          option: option,
-          to: position,
-          input: data,
-          name: name)
+        if name ||
+           (option.value[0].ascii_uppercase? && !option.value.chars.all? { |char| char == '_' || char.ascii_uppercase? })
+          self << Ast::EnumId.new(
+            expressions: enum_id_expressions || [] of Ast::Expression,
+            from: start_position,
+            option: option,
+            to: position,
+            input: data,
+            name: name)
+        else
+          self << Ast::Variable.new(
+            from: start_position,
+            value: option.value,
+            to: position,
+            input: data)
+        end
       end
     end
   end

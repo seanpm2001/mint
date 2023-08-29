@@ -2,7 +2,7 @@ module Mint
   class TypeChecker
     def check(node : Ast::HtmlComponent) : Checkable
       component =
-        ast.components.find(&.name.value.==(node.component.value))
+        node.component_node
 
       error :html_component_not_found_component do
         block do
@@ -51,7 +51,7 @@ module Mint
         error :html_component_reference_outside_of_component do
           block "Referencing components are not allowed outside of components."
           snippet ref
-        end unless component?
+        end unless node.in_component
       end
 
       check_html node.children

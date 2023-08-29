@@ -9,7 +9,7 @@ enum Test {
 component Main {
   fun content (item : Test) : String {
     case item {
-      Test::Item(content) => content
+      Test::Item(value) => value
       Test::None => ""
     }
   }

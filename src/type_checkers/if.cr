@@ -10,7 +10,7 @@ module Mint
           if item.target.is_a?(Ast::EnumDestructuring)
             destructure(item.target.as(Ast::EnumDestructuring), condition)
           end
-        end || [] of Ast::Node
+        end || [] of VariableScope
 
       error :if_condition_type_mismatch do
         block do
@@ -28,10 +28,12 @@ module Mint
         node.branches
 
       if truthy_item.is_a?(Ast::Node)
+        variables.each do |var|
+          @scope2.add(truthy_item, var[0], var[2])
+        end
+
         truthy =
-          scope(variables) do
-            resolve truthy_item.as(Ast::Node)
-          end
+          resolve truthy_item.as(Ast::Node)
 
         if falsy_item
           falsy =
@@ -67,9 +69,9 @@ module Mint
 
         truthy
       else
-        scope(variables) do
-          resolve truthy_item
-        end
+        # scope(variables) do
+        resolve truthy_item
+        # end
 
         falsy_item.try { |data| resolve data }
 

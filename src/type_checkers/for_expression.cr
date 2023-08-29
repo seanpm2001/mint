@@ -43,16 +43,19 @@ module Mint
       arguments =
         node
           .arguments
-          .each_with_index
-          .reduce([] of Tuple(String, Checkable, Ast::Node)) do |memo, (argument, index)|
-            memo << if (is_map && index == 2) || (is_array_or_set && index == 1)
-              {argument.value, NUMBER, argument}
+          .each_with_index do |argument, index|
+            if (is_map && index == 2) || (is_array_or_set && index == 1)
+              cache[argument] = NUMBER
+
+              @scope2.add(node, argument.value, argument)
             else
-              {argument.value, subject.parameters[index], argument}
+              cache[argument] = subject.parameters[index]
+
+              @scope2.add(node, argument.value, argument)
             end
           end
 
-      type = scope(arguments) do
+      type = begin
         node.condition.try do |condition|
           condition_type = resolve condition
 

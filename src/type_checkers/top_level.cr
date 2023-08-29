@@ -31,9 +31,7 @@ module Mint
             .functions
             .find(&.name.value.==("fromEvent"))
             .try do |function|
-              scope item do
-                resolve function
-              end
+              resolve function
             end
         end
 

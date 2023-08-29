@@ -21,51 +21,6 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
-component Main {
-  state greeting : String = ""
-
-  fun test : Void {
-    test()
-  }
-
-  fun render : Html {
-    test()
-
-    <div/>
-  }
-}
--------------------------------------------------------------------------------
-component Main {
-  state greeting : String = ""
-
-  fun test : Promise(Void) {
-    let greeting =
-      if (greeting == "hello") {
-        "bye"
-      } else {
-        "hello"
-      }
-
-    next { greeting: greeting }
-  }
-
-  fun render : Html {
-    test()
-
-    <div/>
-  }
-}
--------------------------------------------------------------------------------
-component Main {
-  fun a : Void {
-    void
-  }
-
-  fun render : String {
-    ""
-  }
-}
---------------------------------------------------------------------------------
 module Test {
   fun factorial(n : Number) : Number {
     let helper = (n : Number, acc : Number) : Number {

@@ -57,6 +57,22 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
+enum Maybe(a) {
+  Nothing
+  Just(a)
+}
+
+component Main {
+  fun render : Html {
+    case test {
+      Maybe::Just(item) => ""
+      Maybe::Nothing => ""
+    }
+
+    <div as test><{ "Hello" }></div>
+  }
+}
+-------------------------------------------------------------------------------
 component Main {
   style base {
     color: red;

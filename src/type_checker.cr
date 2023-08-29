@@ -39,7 +39,7 @@ module Mint
       HTML,
     ] of Checkable
 
-    getter records, scope, artifacts, formatter, web_components
+    getter records, artifacts, formatter, web_components
 
     property? checking = true
 
@@ -47,7 +47,7 @@ module Mint
     delegate types, variables, ast, lookups, cache, to: artifacts
     delegate assets, resolve_order, locales, argument_order, to: artifacts
 
-    delegate component?, component, stateful?, current_top_level_entity?, to: scope
+    # delegate current_top_level_entity?, to: scope
     delegate format, to: formatter
 
     @record_names = {} of String => Ast::Node
@@ -86,6 +86,9 @@ module Mint
       @languages = ast.unified_locales.map(&.language)
       @artifacts = Artifacts.new(ast)
       @scope = Scope.new(ast, records)
+      @levels = [] of VariableScope
+
+      @scope2 = Mint::Scope.new(ast)
 
       resolve_records
 
@@ -216,22 +219,46 @@ module Mint
     # ----------------------------------------------------------------------------
 
     def lookup(node : Ast::Variable)
-      scope.find(node.value)
+      @levels.find(&.first.==(node.value)).try { |item| item[1]? } ||
+        @scope2.resolve(node).try(&.node)
+      # scope.find(node.value)
     end
 
     def lookup_with_level(node : Ast::Variable)
-      scope.find_with_level(node.value).try do |item|
-        {item[0], item[1], scope.levels.dup}
+      # puts "----------------------"
+      # puts node.value
+      # puts @levels.map { |item| item[0].as(String) }
+      # puts @scope2.resolve(node).try(&.node.class)
+      # puts @levels.find(&.first.==(node.value))
+
+      # @scope2.scopes[node].each_with_index do |item, index|
+      #   puts @scope2.debug_name(item.node).indent(index * 2)
+      #   item.items.each do |key, value|
+      #     puts "#{" " * (index * 2)}#{key} -> #{value.class.name}"
+      #   end
+      # end
+
+      @levels.find(&.first.==(node.value)).try do |item|
+        {item[1].as(Ast::Node | Checkable), item, [] of Scope::Node}
+      end || @scope2.resolve(node).try do |item|
+        {item.node.as(Ast::Node | Checkable), item.parent, [] of Scope::Node}
       end
+      # scope.find_with_level(node.value).try do |item|
+      #   {item[0], item[1], scope.levels.dup}
+      # end
     end
 
-    def scope(node : Scope::Node, &)
-      scope.with(node) { yield }
+    def scope(nodes : Array(VariableScope), &)
+      nodes.each { |node| @levels.unshift node }
+      yield
+    ensure
+      nodes.each { |node| @levels.delete node }
     end
 
-    def scope(nodes, &)
-      scope.with(nodes) { yield }
-    end
+    # def scope(nodes, &)
+    #   yield
+    #   # scope.with(nodes) { yield }
+    # end
 
     # Helpers for checking things
     # --------------------------------------------------------------------------
@@ -451,7 +478,7 @@ module Mint
     end
 
     def with_restricted_top_level_entity(@referee, &)
-      @top_level_entity = current_top_level_entity?
+      @top_level_entity = @scope2.scopes[@referee][1]?.try(&.node)
       yield
     ensure
       @top_level_entity = nil

@@ -20,15 +20,16 @@ module Mint
         when Ast::Provider
           if node.variable.value == "subscriptions"
             subscription =
-              scope entity do
-                lookup(node.variable)
-              end
+              records.find(&.name.==(entity.subscription.value))
 
             case subscription
-            when Type
+            when Record
+              type =
+                Type.new("Array", [subscription] of Checkable)
+
               check!(entity)
               lookups[node] = entity
-              return subscription
+              return type
             else
               # Should not happen
               raise Mint::Error.new(:never)
@@ -77,9 +78,7 @@ module Mint
 
       check!(entity)
 
-      scope entity do
-        resolve item
-      end
+      resolve item
     end
   end
 end

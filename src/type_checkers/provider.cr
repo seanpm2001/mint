@@ -27,12 +27,10 @@ module Mint
       end unless subscription
 
       # Type checking the entities
-      scope node do
-        resolve node.constants
-        resolve node.functions
-        resolve node.states
-        resolve node.gets
-      end
+      resolve node.constants
+      resolve node.functions
+      resolve node.states
+      resolve node.gets
 
       VOID
     end

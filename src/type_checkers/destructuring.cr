@@ -51,6 +51,7 @@ module Mint
       condition : Checkable,
       variables : Array(VariableScope) = [] of VariableScope
     )
+      cache[node] = condition
       variables.tap(&.push({node.value, condition, node}))
     end
 
@@ -83,6 +84,7 @@ module Mint
       node.items.each do |item|
         case item
         when Ast::Spread
+          cache[item] = condition
           variables << {item.variable.value, condition, item}
         else
           destructure(item, condition.parameters[0], variables)

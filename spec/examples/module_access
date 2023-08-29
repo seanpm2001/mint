@@ -79,6 +79,7 @@ component Main {
 record Test {
   test : String
 }
+
 provider Test : Test {
   fun print (a : String) : String {
     a
@@ -95,4 +96,3 @@ component Main {
     Test.print("a")
   }
 }
-

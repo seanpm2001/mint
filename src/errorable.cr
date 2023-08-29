@@ -112,6 +112,8 @@ module Mint
         #   renderer.title element.value
         when Error::Snippet
           case node = element.value
+          when TypeChecker::Checkable
+            renderer.pre node.to_pretty
           when Ast::Node
             renderer.snippet node
           end
@@ -156,6 +158,8 @@ module Mint
         #   renderer.title element.value
         when Error::Snippet
           case node = element.value
+          when TypeChecker::Checkable
+            renderer.snippet node
           when Ast::Node
             renderer.snippet node
           end

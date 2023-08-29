@@ -2,7 +2,7 @@ module Mint
   class TypeChecker
     def check(node : Ast::HtmlStyle) : Checkable
       style =
-        component.styles.find(&.name.value.==(node.name.value))
+        node.style_node
 
       error :html_style_not_found do
         block do

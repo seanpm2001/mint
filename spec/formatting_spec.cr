@@ -13,9 +13,13 @@ Dir
       ast = Mint::Parser.parse(sample, file)
       ast.class.should eq(Mint::Ast)
 
-      # Type check
-      type_checker = Mint::TypeChecker.new(ast)
-      type_checker.check
+      begin
+        # Type check
+        type_checker = Mint::TypeChecker.new(ast)
+        type_checker.check
+      rescue error : Mint::Error
+        fail error.to_terminal.to_s
+      end
 
       formatter = Mint::Formatter.new
 

@@ -30,10 +30,20 @@ module Mint
       variables[node] = item
 
       case
+      when node.value == "subscriptions" && item[1].is_a?(Ast::Provider)
+        subscription =
+          records.find(&.name.==(item[1].as(Ast::Provider).subscription.value))
+
+        case subscription
+        when Record
+          return Type.new("Array", [subscription] of Checkable)
+        else
+          raise "Cannot happen!"
+        end
       when item[0].is_a?(Ast::HtmlElement) && item[1].is_a?(Ast::Component)
         Type.new("Maybe", [Type.new("Dom.Element")] of Checkable)
-      when item[0].is_a?(Ast::Component) && item[1].is_a?(Ast::Component)
-        Type.new("Maybe", [component_records[item[0]]] of Checkable)
+      when item[0].is_a?(Ast::HtmlComponent) && item[1].is_a?(Ast::Component)
+        Type.new("Maybe", [component_records[item[1]]] of Checkable)
       else
         case value = item[0]
         when Ast::Statement

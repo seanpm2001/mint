@@ -30,3 +30,42 @@ provider Provider : Subscription {
     ONE_PLUS_ONE == TWO
   }
 }
+-------------------------------------------------------------------------------
+record Subscription {
+  a : Bool
+}
+
+provider Provider : Subscription {
+  fun test : Bool {
+    subscriptions
+    true
+  }
+}
+-------------------------------------------------------------------------------
+record Subscription {
+  a : Bool
+}
+
+provider Provider : Subscription {
+  state observers : Array(Tuple(String, String)) = []
+
+  fun update {
+    let currentObservers =
+      for item of observers {
+        ""
+      }
+
+    subscriptions
+    true
+  }
+}
+
+component Main {
+  use Provider {
+    a: true
+  }
+
+  fun render : String {
+    ""
+  }
+}

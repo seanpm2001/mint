@@ -170,6 +170,11 @@ module Mint
         print "\n\n"
       end
 
+      def snippet(type : TypeChecker::Checkable)
+        print type.to_pretty
+        print "\n\n"
+      end
+
       def header(text)
         puts text.colorize.mode(:bold)
       end

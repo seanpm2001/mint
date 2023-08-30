@@ -5,28 +5,26 @@ module Mint
         lookup = workspace.type_checker.variables[node]?
 
         if lookup
-          variable_lookup_parent(node, lookup[1], workspace) ||
-            variable_connect(node, lookup[2]) ||
+          case {lookup[0], lookup[1]}
+          when {Ast::Variable, _}
+            variable_lookup_parent(node, lookup[0].as(Ast::Variable), workspace)
+          when {Ast::ConnectVariable, Ast::Node}
+            connect =
+              workspace.ast.nodes
+                .select(Ast::Connect)
+                .find(&.keys.find(&.==(lookup[0].as(Ast::ConnectVariable))))
+                .not_nil!
+
+            key =
+              lookup[0].as(Ast::ConnectVariable)
+
+            location_link node, key.name || key.variable, connect
+          else
             variable_lookup(node, lookup[0])
+          end
         else
           variable_record_key(node, workspace, stack) ||
             variable_next_key(node, workspace, stack)
-        end
-      end
-
-      def variable_connect(node : Ast::Variable, parents : Array(TypeChecker::Artifacts::Node))
-        # Check to see if this variable is defined as an Ast::ConnectVariable
-        # as the `.variables` cache links directly to the stores state/function etc
-        return unless component = parents.select(Ast::Component).first?
-
-        component.connects.each do |connect|
-          connect.keys.each do |key|
-            variable = key.name || key.variable
-
-            if variable.value == node.value
-              return location_link node, variable, connect
-            end
-          end
         end
       end
 
@@ -47,6 +45,19 @@ module Mint
             location_link node, variable, parent
           end
         end
+      end
+
+      def variable_lookup_parent(node : Ast::Variable, variable : Ast::Variable, server : Server, workspace : Workspace)
+        # For some variables in the .variables` cache, we only have access to the
+        # target Ast::Variable and not its containing node, so we must search for it
+        return unless parent = workspace
+                        .ast
+                        .nodes
+                        .select { |other| other.is_a?(Ast::EnumDestructuring) || other.is_a?(Ast::Statement) || other.is_a?(Ast::For) }
+                        .select(&.input.file.==(variable.input.file))
+                        .find { |other| other.from < variable.from && other.to > variable.to }
+
+        location_link server, node, variable, parent
       end
 
       def variable_lookup(node : Ast::Variable, target : Ast::Node | TypeChecker::Checkable)

@@ -14,7 +14,7 @@ module Mint
         end
       end
 
-      def variable_connect(node : Ast::Variable, parents : Array(TypeChecker::Scope::Node))
+      def variable_connect(node : Ast::Variable, parents : Array(TypeChecker::Artifacts::Node))
         # Check to see if this variable is defined as an Ast::ConnectVariable
         # as the `.variables` cache links directly to the stores state/function etc
         return unless component = parents.select(Ast::Component).first?
@@ -30,7 +30,7 @@ module Mint
         end
       end
 
-      def variable_lookup_parent(node : Ast::Variable, target : TypeChecker::Scope::Node, workspace : Workspace)
+      def variable_lookup_parent(node : Ast::Variable, target : TypeChecker::Artifacts::Node, workspace : Workspace)
         case target
         when Tuple(String, TypeChecker::Checkable, Ast::Node)
           case variable = target[2]

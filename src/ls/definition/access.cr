@@ -2,17 +2,17 @@ module Mint
   module LS
     class Definition < LSP::RequestMessage
       def definition(node : Ast::Access, workspace : Workspace, stack : Array(Ast::Node))
-        lhs = workspace
+        expression = workspace
           .type_checker
-          .cache[node.lhs]?
+          .cache[node.expression]?
 
-        case lhs
+        case expression
         when TypeChecker::Record
           return unless record =
                           workspace
                             .ast
                             .records
-                            .find(&.name.value.==(lhs.name))
+                            .find(&.name.value.==(expression.name))
 
           return if Core.ast.records.includes?(record)
 

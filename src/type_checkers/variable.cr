@@ -36,7 +36,7 @@ module Mint
 
         case subscription
         when Record
-          return Type.new("Array", [subscription] of Checkable)
+          Type.new("Array", [subscription] of Checkable)
         else
           raise "Cannot happen!"
         end

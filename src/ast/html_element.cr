@@ -4,7 +4,7 @@ module Mint
       getter attributes, children, styles, tag, comments, ref
       getter closing_tag_position
 
-      property component : Bool = false
+      property? component : Bool = false
 
       def initialize(@attributes : Array(HtmlAttribute),
                      @closing_tag_position : Int32?,

@@ -1,7 +1,7 @@
 module Mint
   class TypeChecker
     def check(node : Ast::Route) : Checkable
-      args = node.arguments.map do |argument|
+      node.arguments.map do |argument|
         argument_type =
           resolve argument
 

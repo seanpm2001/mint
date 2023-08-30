@@ -1,7 +1,7 @@
 module Mint
   class Compiler
     def _compile(node : Ast::Variable) : String
-      entity, parent, stack = variables[node]
+      entity, parent = variables[node]
 
       # Subscriptions for providers are handled here
       if node.value == "subscriptions" && parent.is_a?(Ast::Provider)

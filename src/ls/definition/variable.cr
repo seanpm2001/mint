@@ -12,8 +12,7 @@ module Mint
             connect =
               workspace.ast.nodes
                 .select(Ast::Connect)
-                .find(&.keys.find(&.==(lookup[0].as(Ast::ConnectVariable))))
-                .not_nil!
+                .find!(&.keys.find(&.==(lookup[0].as(Ast::ConnectVariable))))
 
             key =
               lookup[0].as(Ast::ConnectVariable)

@@ -40,20 +40,19 @@ module Mint
         snippet node
       end if is_array_or_set && !node.arguments.size.in?(1, 2)
 
-      arguments =
-        node
-          .arguments
-          .each_with_index do |argument, index|
-            if (is_map && index == 2) || (is_array_or_set && index == 1)
-              cache[argument] = NUMBER
+      node
+        .arguments
+        .each_with_index do |argument, index|
+          if (is_map && index == 2) || (is_array_or_set && index == 1)
+            cache[argument] = NUMBER
 
-              @scope2.add(node, argument.value, argument)
-            else
-              cache[argument] = subject.parameters[index]
+            @scope2.add(node, argument.value, argument)
+          else
+            cache[argument] = subject.parameters[index]
 
-              @scope2.add(node, argument.value, argument)
-            end
+            @scope2.add(node, argument.value, argument)
           end
+        end
 
       type = begin
         node.condition.try do |condition|

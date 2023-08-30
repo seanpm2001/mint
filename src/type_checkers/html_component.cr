@@ -51,7 +51,7 @@ module Mint
         error :html_component_reference_outside_of_component do
           block "Referencing components are not allowed outside of components."
           snippet ref
-        end unless node.in_component
+        end unless node.in_component?
       end
 
       check_html node.children

@@ -125,7 +125,7 @@ module Mint
             when store.constants.any?(&.name.value.==(original)),
                  store.gets.any?(&.name.value.==(original)),
                  store.states.find(&.name.value.==(original))
-              memo << js.get(id, "return #{store_name}.#{id};")
+              memo << js.get(name, "return #{store_name}.#{id};")
             when store.functions.any?(&.name.value.==(original))
               memo << "#{name} (...params) { return #{store_name}.#{id}(...params); }"
             end

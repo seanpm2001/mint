@@ -16,7 +16,7 @@ component Main {
 --------------------------------------------------------------------------------
 class A extends _C {
   get a() {
-    return B.a;
+    return B.b;
   }
 
   componentWillUnmount() {
@@ -39,12 +39,12 @@ const B = new(class extends _S {
     super();
 
     this.state = {
-      a: ``
+      b: ``
     };
   }
 
-  get a() {
-    return this.state.a;
+  get b() {
+    return this.state.b;
   }
 
   c() {

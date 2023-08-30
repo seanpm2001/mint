@@ -46,7 +46,7 @@ const B = new(class extends _P {
 });
 
 class C extends _C {
-  get c() {
+  get d() {
     return D.c;
   }
 

@@ -78,7 +78,7 @@ module Mint
           when Ast::Store
             connect.keys.each do |key|
               @scopes[store][0].items[key.variable.value]?.try do |value|
-                stack[0].items[key.name.try(&.value) || key.variable.value] = value
+                stack[0].items[key.name.try(&.value) || key.variable.value] = Target.new(key, value.node)
               end
             end
           end
@@ -349,7 +349,7 @@ module Mint
 
           case component
           when Ast::Component
-            scopes[parent][0].items[ref.value] = Target.new(node, component)
+            scopes[parent][0].items[ref.value] = Target.new(component, root)
           end
         end
       else

@@ -1,10 +1,11 @@
 module Mint
   class Ast
     class Access < Node
-      getter field, expression
+      getter field, expression, type
 
       enum Type
         DoubleColon
+        Colon
         Dot
       end
 

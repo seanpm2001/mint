@@ -8,7 +8,7 @@ module Mint
           elsif char! '.'
             Ast::Access::Type::Dot
           elsif char! ':'
-            Ast::Access::Type::Dot
+            Ast::Access::Type::Colon
           end
 
         next unless type

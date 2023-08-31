@@ -2,12 +2,6 @@ module Mint
   class Parser
     include Errorable
 
-    # This contains all the references of HtmlElement to a variable:
-    #
-    #   <div as variable></div>
-    #
-    getter refs = [] of {Ast::Variable, Ast::HtmlComponent | Ast::HtmlElement}
-
     # The position of the cursor, which is at the character we are currently
     # parsing.
     getter position : Int32 = 0
@@ -215,7 +209,7 @@ module Mint
         # Using parse here will not consume the whitespace if
         # the parsing is not successfull.
         # Consume whitespace
-        item = parse do
+        item = parse(track: false) do
           whitespace if parse_whitespace
           yield
         end

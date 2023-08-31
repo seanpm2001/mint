@@ -8,6 +8,7 @@ module Mint
         end
 
         next unless component
+
         whitespace
         if keyword "as"
           whitespace
@@ -35,7 +36,7 @@ module Mint
               end
             })
 
-        node = Ast::HtmlComponent.new(
+        Ast::HtmlComponent.new(
           closing_tag_position: closing_tag_position,
           attributes: attributes,
           from: start_position,
@@ -45,10 +46,6 @@ module Mint
           to: position,
           input: data,
           ref: ref)
-
-        refs << {ref, node} if ref
-
-        node
       end
     end
   end

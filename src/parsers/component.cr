@@ -21,9 +21,6 @@ module Mint
           snippet self
         end unless name = type_id
 
-        # Clear refs and locales here because it's on the parser
-        refs.clear
-
         body = block2(
           ->{ error :component_expected_opening_bracket do
             expected "the opening bracket of the component", word
@@ -89,6 +86,7 @@ module Mint
 
         Ast::Component.new(
           locales: ast.nodes[start_nodes_position...].any?(Ast::LocaleKey),
+          refs: [] of Tuple(Ast::Variable, Ast::Node),
           global: global || false,
           properties: properties,
           functions: functions,
@@ -99,7 +97,6 @@ module Mint
           comment: comment,
           styles: styles,
           states: states,
-          refs: refs.dup,
           to: position,
           input: data,
           name: name,

@@ -47,7 +47,7 @@ module Mint
               end
             })
 
-        node = Ast::HtmlElement.new(
+        Ast::HtmlElement.new(
           closing_tag_position: closing_tag_position,
           attributes: attributes,
           from: start_position,
@@ -58,10 +58,6 @@ module Mint
           input: data,
           tag: tag,
           ref: ref)
-
-        refs << {ref, node} if ref
-
-        node
       end
     end
   end

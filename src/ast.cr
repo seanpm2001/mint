@@ -110,6 +110,11 @@ module Mint
             end
 
             element.component = true
+
+            if ref = element.ref
+              component.refs << {ref, element}
+            end
+
             break
           end
         end
@@ -121,6 +126,11 @@ module Mint
         components.each do |component|
           if includes?(component, item)
             item.in_component = true
+
+            if ref = item.ref
+              component.refs << {ref, item}
+            end
+
             break
           end
         end

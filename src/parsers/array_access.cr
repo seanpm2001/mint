@@ -3,7 +3,6 @@ module Mint
     def array_access(lhs : Ast::Expression) : Ast::ArrayAccess?
       parse do |start_position|
         next unless char! '['
-
         whitespace
 
         index =
@@ -32,8 +31,7 @@ module Mint
           to: position,
           index: index,
           input: data,
-          lhs: lhs,
-        )
+          lhs: lhs)
       end
     end
   end

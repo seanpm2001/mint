@@ -6,8 +6,10 @@ module Mint
           next unless char! '['
           value = spread || destructuring
           whitespace
+
           char! ','
           whitespace
+
           value
         end
 

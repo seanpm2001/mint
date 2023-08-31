@@ -227,7 +227,7 @@ module Mint
       # end
 
       @scope2.resolve(node).try do |item|
-        {item.node.as(Ast::Node | Checkable), item.parent, [] of Artifacts::Node}
+        {item.node, item.parent}
       end
     end
 

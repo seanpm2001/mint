@@ -5,13 +5,10 @@ module Mint
       getter types, variables, component_records, resolve_order, locales
       getter argument_order
 
-      alias Node = Tuple(String, Checkable, Ast::Node) | Ast::Node
-      alias Lookup = Tuple(Ast::Node | Checkable, Node, Array(Node))
-
       def initialize(@ast : Ast,
                      @component_records = {} of Ast::Component => Record,
                      @record_field_lookup = {} of Ast::Node => String,
-                     @variables = {} of Ast::Node => Lookup,
+                     @variables = {} of Ast::Node => Tuple(Ast::Node, Ast::Node),
                      @lookups = {} of Ast::Node => Ast::Node,
                      @assets = [] of Ast::Directives::Asset,
                      @types = {} of Ast::Node => Checkable,

@@ -5,10 +5,10 @@ module Mint
         type =
           if keyword "::"
             Ast::Access::Type::DoubleColon
-          elsif char! '.'
-            Ast::Access::Type::Dot
           elsif char! ':'
             Ast::Access::Type::Colon
+          elsif char! '.'
+            Ast::Access::Type::Dot
           end
 
         next unless type

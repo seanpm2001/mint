@@ -5,11 +5,11 @@ module Mint
       when Ast::Variable
         if variable.value[0].ascii_uppercase?
           if entity = lookup(variable)
-            variables[variable] = {entity, entity, [] of Artifacts::Node}
+            variables[variable] = {entity, entity}
             check!(entity)
             if target_node = @scope2.resolve(node.field.value, entity).try(&.node)
-              variables[node] = {target_node, entity, [] of Artifacts::Node}
-              variables[node.field] = {target_node, entity, [] of Artifacts::Node}
+              variables[node] = {target_node, entity}
+              variables[node.field] = {target_node, entity}
               return resolve target_node
             end
           end

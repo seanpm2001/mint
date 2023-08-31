@@ -5,21 +5,37 @@ module Mint
         lookup = workspace.type_checker.variables[node]?
 
         if lookup
-          case {lookup[0], lookup[1]}
+          entity, parent = lookup
+
+          case {entity, parent}
+          when {Ast::Component, _},
+               {Ast::Store, _}
+            location_link node, entity.name, entity
+          when {Ast::Module, _}
+            links = workspace.ast.modules
+              .select(&.name.value.==(node.value))
+              .reject(&.in?(Core.ast.nodes))
+              .sort_by!(&.input.file)
+              .map do |mod|
+                location_link node, mod.name, mod
+              end
+
+            return links.first if links.size == 1
+            return links unless links.empty?
           when {Ast::Variable, _}
-            variable_lookup_parent(node, lookup[0].as(Ast::Variable), workspace)
+            variable_lookup_parent(node, entity, workspace)
           when {Ast::ConnectVariable, Ast::Node}
             connect =
               workspace.ast.nodes
                 .select(Ast::Connect)
-                .find!(&.keys.find(&.==(lookup[0].as(Ast::ConnectVariable))))
+                .find!(&.keys.find(&.==(entity)))
 
             key =
               lookup[0].as(Ast::ConnectVariable)
 
             location_link node, key.name || key.variable, connect
           else
-            variable_lookup(node, lookup[0])
+            variable_lookup(node, entity)
           end
         else
           variable_record_key(node, workspace, stack) ||

@@ -1,6 +1,21 @@
 module Mint
   class TypeChecker
     def check(node : Ast::Access) : Checkable
+      case variable = node.expression
+      when Ast::Variable
+        if variable.value[0].ascii_uppercase?
+          if entity = lookup(variable)
+            variables[variable] = {entity, entity, [] of Artifacts::Node}
+            check!(entity)
+            if target_node = @scope2.resolve(node.field.value, entity).try(&.node)
+              variables[node] = {target_node, entity, [] of Artifacts::Node}
+              variables[node.field] = {target_node, entity, [] of Artifacts::Node}
+              return resolve target_node
+            end
+          end
+        end
+      end
+
       target =
         resolve node.expression
 
@@ -31,8 +46,8 @@ module Mint
             when Ast::HtmlComponent
               component_records
                 .find(&.first.name.value.==(ref.component.value))
-                .try do |entity|
-                  memo[variable.value] = entity.first
+                .try do |record|
+                  memo[variable.value] = record.first
                 end
             when Ast::HtmlElement
               memo[variable.value] = variable

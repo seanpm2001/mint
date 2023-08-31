@@ -27,8 +27,6 @@ module Mint
           html_component ||
           html_fragment ||
           member_access ||
-          constant_access ||
-          module_access ||
           decode ||
           encode ||
           if_expression ||
@@ -53,6 +51,8 @@ module Mint
               access(left)
             else
               case char
+              when ':'
+                access(left)
               when '.'
                 access(left)
               when '('

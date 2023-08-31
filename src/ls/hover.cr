@@ -54,6 +54,15 @@ module Mint
             stack =
               server.nodes_at_cursor(params)
 
+            # stack.each do |item|
+            #   print item.class.name.sub("Mint::Ast::", "")
+            #   case item
+            #   when Ast::TypeId, Ast::Variable
+            #     print "(#{item.value})"
+            #   end
+            #   puts item.location.start
+            # end
+
             node = stack[0]?
             parent = stack[1]?
 

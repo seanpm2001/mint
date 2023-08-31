@@ -1,11 +1,13 @@
 module Mint
   class Parser
     def access(expression : Ast::Expression) : Ast::Access?
-      parse do |start_position|
+      parse do
         type =
           if keyword "::"
             Ast::Access::Type::DoubleColon
           elsif char! '.'
+            Ast::Access::Type::Dot
+          elsif char! ':'
             Ast::Access::Type::Dot
           end
 
@@ -14,11 +16,11 @@ module Mint
         next error :access_expected_entity do
           expected "the name of the accessed entity", word
           snippet self
-        end unless field = variable track: false
+        end unless field = variable || variable_constant
 
         self << Ast::Access.new(
           expression: expression,
-          from: start_position,
+          from: expression.from,
           field: field,
           to: position,
           input: data,

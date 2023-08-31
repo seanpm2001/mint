@@ -36,8 +36,7 @@ module Mint
           end unless option = type_id track: false
         end
 
-        if name ||
-           (option.value[0].ascii_uppercase? && !option.value.chars.all? { |char| char == '_' || char.ascii_uppercase? })
+        if name
           self << Ast::EnumId.new(
             expressions: enum_id_expressions || [] of Ast::Expression,
             from: start_position,
@@ -46,6 +45,7 @@ module Mint
             input: data,
             name: name)
         else
+          ast.nodes.delete(option)
           self << Ast::Variable.new(
             from: start_position,
             value: option.value,

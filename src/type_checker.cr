@@ -449,7 +449,7 @@ module Mint
     end
 
     def with_restricted_top_level_entity(@referee, &)
-      @top_level_entity = @scope2.scopes[@referee][0]?.try(&.node)
+      @top_level_entity = @scope2.scopes[@referee][1]?.try(&.node)
       yield
     ensure
       @top_level_entity = nil

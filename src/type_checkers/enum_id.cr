@@ -10,8 +10,6 @@ module Mint
 
       if parent
         check(node, parent)
-      elsif parent = records.find(&.name.==(node.option.value))
-        check(node, parent)
       elsif name = node.name
         error :enum_id_type_missing do
           block do

@@ -10,7 +10,6 @@ module Mint
                        HtmlComponent |
                        HtmlFragment |
                        RecordUpdate |
-                       ModuleAccess |
                        ArrayLiteral |
                        ArrayAccess |
                        BoolLiteral |

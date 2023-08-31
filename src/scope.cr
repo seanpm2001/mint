@@ -55,6 +55,8 @@ module Mint
     # We track the level of a node in here.
     getter nodes = {} of Ast::Node => Level
 
+    getter root = Level.new(Ast::Node.new(Ast::Data.new("", ""), 0, 0))
+
     def initialize(@ast : Ast)
       (@ast.unified_locales +
         @ast.unified_modules +
@@ -77,8 +79,8 @@ module Mint
           case store = @ast.stores.find(&.name.value.==(connect.store.value))
           when Ast::Store
             connect.keys.each do |key|
-              @scopes[store][0].items[key.variable.value]?.try do |value|
-                stack[0].items[key.name.try(&.value) || key.variable.value] = Target.new(key, value.node)
+              @scopes[store][1].items[key.variable.value]?.try do |value|
+                stack[1].items[key.name.try(&.value) || key.variable.value] = Target.new(key, value.node)
               end
             end
           end
@@ -93,11 +95,15 @@ module Mint
 
     # Tries to find the target of the given variable.
     def resolve(node : Ast::Variable)
-      case stack = @scopes[node]?
+      resolve(node.value, node)
+    end
+
+    def resolve(target : String, base : Ast::Node)
+      case stack = @scopes[base]?
       when Array(Level)
         stack.reverse_each do |level|
           level.items.each do |key, value|
-            return value if key == node.value
+            return value if key == target
           end
         end
       end
@@ -110,7 +116,7 @@ module Mint
         if parent
           scopes[parent].dup
         else
-          [] of Level
+          [root] of Level
         end
 
       # Create a level for the node
@@ -145,6 +151,18 @@ module Mint
     # Builds the scope for the given node and it's child nodes.
     def build(node : Ast::Node)
       create(node)
+
+      name =
+        case node
+        when Ast::Component
+          node.name.value if node.global?
+        when Ast::Provider,
+             Ast::Module,
+             Ast::Store
+          node.name.value
+        end
+
+      root.items[name] = Target.new(node, root.node) if name
 
       case node
       when Ast::Component
@@ -205,7 +223,6 @@ module Mint
            Ast::EnumDestructuring,
            Ast::NumberLiteral,
            Ast::RegexpLiteral,
-           Ast::ModuleAccess,
            Ast::MemberAccess,
            Ast::BoolLiteral,
            Ast::LocaleKey,
@@ -334,7 +351,7 @@ module Mint
         build(node.children, node)
         build(node.styles, node)
 
-        if (root = scopes[parent][0].node).is_a?(Ast::Component) &&
+        if (root = scopes[parent][1].node).is_a?(Ast::Component) &&
            (ref = node.ref)
           add(root, ref.value, node)
         end
@@ -342,14 +359,14 @@ module Mint
         build(node.attributes, node)
         build(node.children, node)
 
-        if (root = scopes[parent][0].node).is_a?(Ast::Component) &&
+        if (root = scopes[parent][1].node).is_a?(Ast::Component) &&
            (ref = node.ref)
           component =
             @ast.components.find(&.name.value.==(node.component.value))
 
           case component
           when Ast::Component
-            scopes[parent][0].items[ref.value] = Target.new(component, root)
+            scopes[parent][1].items[ref.value] = Target.new(component, root)
           end
         end
       else

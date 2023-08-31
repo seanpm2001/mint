@@ -1,8 +1,8 @@
-------------------------------------------------module_access_expected_function
+---------------------------------------------------------access_expected_entity
 component Main {
   fun render : String {
     A.
------------------------------------------------module_access_not_found_function
+--------------------------------------------------------------access_not_record
 module Test {
   fun b : Function(String) {
     Test.a
@@ -14,7 +14,7 @@ component Main {
     Test.b()
   }
 }
--------------------------------------------------module_access_not_found_module
+---------------------------------------------------------------variable_missing
 module Test {
   fun b : Function(String) {
     XTest.a

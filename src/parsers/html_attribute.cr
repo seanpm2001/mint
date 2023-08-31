@@ -35,7 +35,7 @@ module Mint
             end })
         end
 
-        self << Ast::HtmlAttribute.new(
+        Ast::HtmlAttribute.new(
           value: value.as(Ast::Expression),
           from: start_position,
           to: position,

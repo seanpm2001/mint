@@ -18,7 +18,7 @@ module Mint
           snippet self
         end if name.blank?
 
-        self << Ast::Env.new(
+        Ast::Env.new(
           from: start_position,
           to: position,
           input: data,

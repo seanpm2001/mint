@@ -38,7 +38,7 @@ module Mint
           snippet self
         end unless default = expression
 
-        self << Ast::State.new(
+        Ast::State.new(
           default: default,
           from: start_position,
           comment: comment,

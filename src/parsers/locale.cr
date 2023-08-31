@@ -36,7 +36,7 @@ module Mint
             list(terminator: '}', separator: ',') { record_field }
           end
 
-        self << Ast::Locale.new(
+        Ast::Locale.new(
           from: start_position,
           language: language,
           comment: comment,

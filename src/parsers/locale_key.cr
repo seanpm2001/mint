@@ -15,9 +15,7 @@ module Mint
           from: start_position,
           value: value,
           to: position,
-          input: data).tap do |node|
-          self << node
-        end
+          input: data)
       end
     end
   end

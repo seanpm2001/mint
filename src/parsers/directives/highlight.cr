@@ -19,7 +19,7 @@ module Mint
               snippet self
             end })
 
-        self << Ast::Directives::Highlight.new(
+        Ast::Directives::Highlight.new(
           from: start_position,
           content: content,
           to: position,

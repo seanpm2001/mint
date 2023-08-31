@@ -114,7 +114,7 @@ module Mint
           end
         end
 
-        self << Ast::If.new(
+        Ast::If.new(
           branches: {truthy, falsy},
           condition: condition,
           from: start_position,

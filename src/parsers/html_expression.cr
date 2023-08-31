@@ -13,7 +13,7 @@ module Mint
           snippet self
         end unless keyword "}>"
 
-        self << Ast::HtmlExpression.new(
+        Ast::HtmlExpression.new(
           expressions: expressions,
           from: start_position,
           to: position,

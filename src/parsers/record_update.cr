@@ -2,7 +2,7 @@ module Mint
   class Parser
     def record_update : Ast::RecordUpdate?
       parse do |start_position|
-        expression = parse do
+        expression = parse(track: false) do
           next unless char! '{'
 
           whitespace
@@ -37,7 +37,7 @@ module Mint
           snippet self
         end unless char! '}'
 
-        self << Ast::RecordUpdate.new(
+        Ast::RecordUpdate.new(
           expression: expression,
           from: start_position,
           fields: fields,

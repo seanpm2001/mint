@@ -29,16 +29,11 @@ module Mint
       @input = input.chars
     end
 
-    def <<(node)
-      ast.nodes << node
-      node
-    end
-
     # Parses a thing (an ast node). Yielding the start position so the thing
     # getting parsed can use it. If the block returns nil or if there is an
     # error we rollback to the start position since it means the parsing
     # has failed.
-    def parse(&)
+    def parse(*, track : Bool = true, &)
       rollback = begin
         start_position = position
         nodes_size = ast.nodes.size
@@ -57,6 +52,7 @@ module Mint
         (yield position, nodes_size).tap do |node|
           case node
           when Ast::Node
+            ast.nodes << node if track
           when Nil
             rollback.call
           end

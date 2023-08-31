@@ -26,7 +26,7 @@ module Mint
             item
           end
 
-        self << Ast::CaseBranch.new(
+        Ast::CaseBranch.new(
           match: match.as(Ast::EnumDestructuring | Ast::TupleDestructuring | Ast::Expression?),
           expression: expression,
           from: start_position,

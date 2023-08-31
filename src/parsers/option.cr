@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         next unless name = type_id
 
-        self << Ast::Option.new(
+        Ast::Option.new(
           from: start_position,
           to: position,
           input: data,

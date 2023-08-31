@@ -43,7 +43,7 @@ module Mint
           end
         end
 
-        self << Ast::Argument.new(
+        Ast::Argument.new(
           from: start_position,
           default: default,
           to: position,

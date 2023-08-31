@@ -27,7 +27,7 @@ module Mint
           end unless char! ')'
         end
 
-        self << Ast::EnumDestructuring.new(
+        Ast::EnumDestructuring.new(
           parameters: parameters,
           from: start_position,
           option: option,

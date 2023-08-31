@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def type_id(*, track : Bool = true, raise : Bool = false) : Ast::TypeId?
-      parse do |start_position|
+      parse(track: track) do |start_position|
         value = gather do
           return unless char.ascii_uppercase?
           step
@@ -29,9 +29,7 @@ module Mint
           from: start_position,
           value: value,
           to: position,
-          input: data).tap do |node|
-          self << node if track
-        end
+          input: data)
       end
     end
   end

@@ -13,7 +13,7 @@ module Mint
           snippet self
         end unless expression = self.expression
 
-        self << Ast::NegatedExpression.new(
+        Ast::NegatedExpression.new(
           expression: expression,
           negations: negations,
           from: start_position,

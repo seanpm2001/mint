@@ -25,7 +25,7 @@ module Mint
         whitespace # TODO: Figure out why is this is needed
         next unless value
 
-        self << Ast::Comment.new(
+        Ast::Comment.new(
           from: start_position,
           value: value,
           type: type,

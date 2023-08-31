@@ -5,7 +5,7 @@ module Mint
         statements =
           many { comment || statement }
 
-        self << Ast::Block.new(
+        Ast::Block.new(
           statements: statements,
           from: start_position,
           to: position,
@@ -20,7 +20,7 @@ module Mint
             many { comment || statement }
           end
 
-        self << Ast::Block.new(
+        Ast::Block.new(
           statements: statements,
           from: start_position,
           to: position,
@@ -41,7 +41,7 @@ module Mint
             end
           end
 
-        self << Ast::Block.new(
+        Ast::Block.new(
           statements: statements,
           from: start_position,
           to: position,

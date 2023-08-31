@@ -23,7 +23,7 @@ module Mint
     end
 
     def variable(track = true, extra_chars = [] of Char) : Ast::Variable?
-      parse do |start_position|
+      parse(track: track) do |start_position|
         value = gather do
           next unless char.ascii_lowercase?
           chars { |char| char.ascii_letter? || char.ascii_number? || char.in?(extra_chars) }
@@ -32,14 +32,11 @@ module Mint
         next unless value
         next if value.in?(INVALID_VARIABLE_NAMES)
 
-        node = Ast::Variable.new(
+        Ast::Variable.new(
           from: start_position,
           value: value,
           to: position,
           input: data)
-
-        self << node if track
-        node
       end
     end
   end

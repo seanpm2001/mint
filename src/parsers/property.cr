@@ -37,7 +37,7 @@ module Mint
             item
           end
 
-        self << Ast::Property.new(
+        Ast::Property.new(
           from: start_position,
           default: default,
           comment: comment,

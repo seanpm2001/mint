@@ -44,7 +44,7 @@ module Mint
               snippet self
             end })
 
-        self << Ast::InlineFunction.new(
+        Ast::InlineFunction.new(
           arguments: arguments,
           from: start_position,
           to: position,

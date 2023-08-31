@@ -2,7 +2,7 @@ module Mint
   class Parser
     def statement : Ast::Statement?
       parse do |start_position|
-        target = parse do
+        target = parse(track: false) do
           next unless keyword "let"
           whitespace
 
@@ -26,7 +26,7 @@ module Mint
 
         next unless body
 
-        self << Ast::Statement.new(
+        Ast::Statement.new(
           from: start_position,
           expression: body,
           target: target,

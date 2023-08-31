@@ -21,7 +21,7 @@ module Mint
           snippet self
         end unless char! ')'
 
-        self << Ast::Directives::Documentation.new(
+        Ast::Directives::Documentation.new(
           from: start_position,
           entity: entity,
           to: position,

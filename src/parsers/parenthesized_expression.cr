@@ -12,7 +12,7 @@ module Mint
 
         next unless char! ')'
 
-        self << Ast::ParenthesizedExpression.new(
+        Ast::ParenthesizedExpression.new(
           expression: expression,
           from: start_position,
           to: position,

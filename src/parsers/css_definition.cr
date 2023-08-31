@@ -28,7 +28,7 @@ module Mint
           snippet self
         end unless char! ';'
 
-        self << Ast::CssDefinition.new(
+        Ast::CssDefinition.new(
           from: start_position,
           name: name,
           value: value,

@@ -2,7 +2,7 @@ module Mint
   class Parser
     def tuple_destructuring : Ast::TupleDestructuring?
       parse do |start_position|
-        head = parse do
+        head = parse(track: false) do
           next unless char! '{'
           value = destructuring
           whitespace

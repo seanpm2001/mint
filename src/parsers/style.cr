@@ -44,7 +44,7 @@ module Mint
           items
         end
 
-        self << Ast::Style.new(
+        Ast::Style.new(
           from: start_position,
           arguments: arguments,
           to: position,

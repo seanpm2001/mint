@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         next unless keyword "void"
 
-        self << Ast::Void.new(
+        Ast::Void.new(
           from: start_position,
           to: position,
           input: data)

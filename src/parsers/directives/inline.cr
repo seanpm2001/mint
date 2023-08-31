@@ -21,7 +21,7 @@ module Mint
           snippet self
         end unless char! ')'
 
-        self << Ast::Directives::Inline.new(
+        Ast::Directives::Inline.new(
           from: start_position,
           to: position,
           input: data,

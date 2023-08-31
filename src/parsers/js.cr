@@ -23,7 +23,7 @@ module Mint
           end unless type = type_or_type_variable
         end
 
-        self << Ast::Js.new(
+        Ast::Js.new(
           from: start_position,
           value: value,
           type: type,

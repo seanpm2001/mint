@@ -33,7 +33,7 @@ module Mint
           snippet self
         end if body.empty?
 
-        self << Ast::CssNestedAt.new(
+        Ast::CssNestedAt.new(
           from: start_position,
           content: content,
           to: position,

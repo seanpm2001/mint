@@ -2,7 +2,7 @@ module Mint
   class Parser
     def html_component : Ast::HtmlComponent?
       parse do |start_position|
-        component = parse do
+        component = parse(track: false) do
           next unless char! '<'
           type_id
         end
@@ -35,7 +35,7 @@ module Mint
               end
             })
 
-        node = self << Ast::HtmlComponent.new(
+        node = Ast::HtmlComponent.new(
           closing_tag_position: closing_tag_position,
           attributes: attributes,
           from: start_position,

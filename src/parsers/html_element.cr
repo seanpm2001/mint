@@ -2,7 +2,7 @@ module Mint
   class Parser
     def html_element : Ast::HtmlElement?
       parse do |start_position|
-        tag = parse do
+        tag = parse(track: false) do
           next unless char! '<'
           next unless value = variable track: false, extra_chars: ['-']
           value
@@ -47,7 +47,7 @@ module Mint
               end
             })
 
-        node = self << Ast::HtmlElement.new(
+        node = Ast::HtmlElement.new(
           closing_tag_position: closing_tag_position,
           attributes: attributes,
           from: start_position,

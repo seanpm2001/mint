@@ -18,7 +18,7 @@ module Mint
           snippet self
         end unless field = variable || variable_constant
 
-        self << Ast::Access.new(
+        Ast::Access.new(
           expression: expression,
           from: expression.from,
           field: field,

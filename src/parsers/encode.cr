@@ -18,7 +18,7 @@ module Mint
           snippet self
         end unless expression = self.expression
 
-        self << Ast::Encode.new(
+        Ast::Encode.new(
           expression: expression,
           from: start_position,
           to: position,

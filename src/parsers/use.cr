@@ -36,7 +36,7 @@ module Mint
           end
         end
 
-        self << Ast::Use.new(
+        Ast::Use.new(
           from: start_position,
           condition: condition,
           provider: provider,

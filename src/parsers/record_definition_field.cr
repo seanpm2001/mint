@@ -19,7 +19,7 @@ module Mint
         end unless type = self.type
 
         mapping =
-          parse do
+          parse(track: false) do
             whitespace
             next unless keyword "using"
             whitespace
@@ -32,7 +32,7 @@ module Mint
             item
           end
 
-        self << Ast::RecordDefinitionField.new(
+        Ast::RecordDefinitionField.new(
           from: start_position,
           comment: comment,
           mapping: mapping,

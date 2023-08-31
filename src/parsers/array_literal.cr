@@ -17,7 +17,7 @@ module Mint
           snippet self
         end unless char! ']'
 
-        type = parse do
+        type = parse(track: false) do
           whitespace
           next unless keyword "of"
           whitespace
@@ -38,7 +38,7 @@ module Mint
           item
         end
 
-        self << Ast::ArrayLiteral.new(
+        Ast::ArrayLiteral.new(
           from: start_position,
           items: items,
           type: type,

@@ -26,7 +26,7 @@ module Mint
           snippet self
         end unless char! ']'
 
-        self << Ast::ArrayAccess.new(
+        Ast::ArrayAccess.new(
           from: start_position,
           to: position,
           index: index,

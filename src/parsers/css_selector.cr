@@ -30,7 +30,7 @@ module Mint
           snippet self
         end if body.empty?
 
-        self << Ast::CssSelector.new(
+        Ast::CssSelector.new(
           selectors: selectors,
           from: start_position,
           to: position,

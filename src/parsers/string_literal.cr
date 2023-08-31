@@ -51,7 +51,7 @@ module Mint
             memo
           end
 
-        self << Ast::StringLiteral.new(
+        Ast::StringLiteral.new(
           from: start_position,
           broken: broken,
           value: value,

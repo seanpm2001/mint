@@ -24,7 +24,7 @@ module Mint
           snippet self
         end unless char! ')'
 
-        self << Ast::Call.new(
+        Ast::Call.new(
           from: start_position,
           arguments: arguments,
           expression: lhs,

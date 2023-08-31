@@ -23,7 +23,7 @@ module Mint
           end unless name = variable
         end
 
-        self << Ast::ConnectVariable.new(
+        Ast::ConnectVariable.new(
           from: start_position,
           variable: value,
           to: position,

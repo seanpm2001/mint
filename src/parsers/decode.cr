@@ -25,7 +25,7 @@ module Mint
           snippet self
         end unless type = self.type
 
-        self << Ast::Decode.new(
+        Ast::Decode.new(
           expression: expression,
           from: start_position,
           type: type,

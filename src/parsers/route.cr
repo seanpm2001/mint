@@ -43,7 +43,7 @@ module Mint
               snippet self
             end })
 
-        self << Ast::Route.new(
+        Ast::Route.new(
           arguments: arguments,
           from: start_position,
           expression: body,

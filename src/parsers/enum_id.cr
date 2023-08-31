@@ -37,7 +37,7 @@ module Mint
         end
 
         if name
-          self << Ast::EnumId.new(
+          Ast::EnumId.new(
             expressions: enum_id_expressions || [] of Ast::Expression,
             from: start_position,
             option: option,
@@ -46,7 +46,7 @@ module Mint
             name: name)
         else
           ast.nodes.delete(option)
-          self << Ast::Variable.new(
+          Ast::Variable.new(
             from: start_position,
             value: option.value,
             to: position,

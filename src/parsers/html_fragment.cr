@@ -38,7 +38,7 @@ module Mint
           snippet self
         end unless keyword "</>"
 
-        self << Ast::HtmlFragment.new(
+        Ast::HtmlFragment.new(
           from: start_position,
           children: children,
           comments: comments,

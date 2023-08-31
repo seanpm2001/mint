@@ -11,7 +11,7 @@ module Mint
           snippet self
         end unless item = record
 
-        self << Ast::NextCall.new(
+        Ast::NextCall.new(
           from: start_position,
           to: position,
           input: data,

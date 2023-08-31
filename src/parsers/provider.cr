@@ -67,7 +67,7 @@ module Mint
           end
         end
 
-        self << Ast::Provider.new(
+        Ast::Provider.new(
           subscription: subscription,
           functions: functions,
           constants: constants,

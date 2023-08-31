@@ -38,7 +38,7 @@ module Mint
               snippet self
             end })
 
-        self << Ast::Get.new(
+        Ast::Get.new(
           from: start_position,
           comment: comment,
           to: position,

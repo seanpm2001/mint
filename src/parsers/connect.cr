@@ -36,7 +36,7 @@ module Mint
           end
         end
 
-        self << Ast::Connect.new(
+        Ast::Connect.new(
           from: start_position,
           store: store,
           to: position,

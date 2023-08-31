@@ -12,7 +12,7 @@ module Mint
 
         next unless value = expression
 
-        self << Ast::RecordField.new(
+        Ast::RecordField.new(
           value: value,
           from: start_position,
           comment: comment,

@@ -15,7 +15,7 @@ module Mint
           next unless char! '}'
         end
 
-        self << Ast::Record.new(
+        Ast::Record.new(
           from: start_position,
           fields: fields,
           to: position,

@@ -28,7 +28,7 @@ module Mint
               snippet self
             end })
 
-        self << Ast::Test.new(
+        Ast::Test.new(
           expression: expression,
           from: start_position,
           to: position,

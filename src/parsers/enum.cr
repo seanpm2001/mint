@@ -59,7 +59,7 @@ module Mint
           end
         end
 
-        self << Ast::Enum.new(
+        Ast::Enum.new(
           parameters: parameters,
           from: start_position,
           comments: comments,

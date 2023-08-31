@@ -3,7 +3,7 @@ module Mint
     def call_expression : Ast::CallExpression?
       parse do |start_position|
         name =
-          parse do
+          parse(track: false) do
             next unless key = variable
             whitespace
 

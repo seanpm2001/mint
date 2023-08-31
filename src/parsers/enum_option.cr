@@ -24,7 +24,7 @@ module Mint
           end unless char! ')'
         end
 
-        self << Ast::EnumOption.new(
+        Ast::EnumOption.new(
           parameters: parameters,
           from: start_position,
           comment: comment,

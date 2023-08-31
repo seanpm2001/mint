@@ -54,7 +54,7 @@ module Mint
               snippet self
             end })
 
-        self << Ast::Function.new(
+        Ast::Function.new(
           arguments: arguments,
           from: start_position,
           comment: comment,

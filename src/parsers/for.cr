@@ -72,7 +72,7 @@ module Mint
             item
           end
 
-        self << Ast::For.new(
+        Ast::For.new(
           condition: condition,
           arguments: arguments,
           from: start_position,

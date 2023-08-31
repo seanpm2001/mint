@@ -87,7 +87,7 @@ module Mint
           end
         end
 
-        self << Ast::Component.new(
+        Ast::Component.new(
           locales: ast.nodes[start_nodes_position...].any?(Ast::LocaleKey),
           global: global || false,
           properties: properties,

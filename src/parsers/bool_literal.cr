@@ -12,7 +12,7 @@ module Mint
             next
           end
 
-        self << Ast::BoolLiteral.new(
+        Ast::BoolLiteral.new(
           from: start_position,
           value: value,
           to: position,

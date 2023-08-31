@@ -51,7 +51,7 @@ module Mint
           end
         end
 
-        self << Ast::Module.new(
+        Ast::Module.new(
           functions: functions,
           constants: constants,
           from: start_position,

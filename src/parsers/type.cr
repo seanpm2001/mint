@@ -28,7 +28,7 @@ module Mint
           parameters = [] of Ast::Type | Ast::TypeVariable
         end
 
-        self << Ast::Type.new(
+        Ast::Type.new(
           parameters: parameters,
           from: start_position,
           to: position,

@@ -47,7 +47,7 @@ module Mint
         # We try to chain accesses and calls until we can in this loop.
         loop do
           node =
-            if keyword_ahead? "::"
+            if word? "::"
               access(left)
             else
               case char

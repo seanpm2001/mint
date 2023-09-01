@@ -3,7 +3,7 @@ module Mint
     def access(expression : Ast::Expression) : Ast::Access?
       parse do
         type =
-          if keyword "::"
+          if word! "::"
             Ast::Access::Type::DoubleColon
           elsif char! ':'
             Ast::Access::Type::Colon

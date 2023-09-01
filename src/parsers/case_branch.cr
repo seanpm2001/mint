@@ -2,10 +2,10 @@ module Mint
   class Parser
     def case_branch(for_css : Bool = false) : Ast::CaseBranch?
       parse do |start_position|
-        unless keyword "=>"
+        unless word! "=>"
           match = destructuring
           whitespace
-          next unless keyword "=>"
+          next unless word! "=>"
         end
 
         whitespace

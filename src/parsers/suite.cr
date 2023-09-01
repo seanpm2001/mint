@@ -2,7 +2,7 @@ module Mint
   class Parser
     def suite : Ast::Suite?
       parse do |start_position|
-        next unless keyword "suite"
+        next unless word! "suite"
 
         whitespace
 

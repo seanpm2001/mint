@@ -10,7 +10,7 @@ module Mint
         next unless component
 
         whitespace
-        if keyword "as"
+        if word! "as"
           whitespace
 
           next error :html_component_expected_reference do

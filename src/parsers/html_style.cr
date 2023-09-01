@@ -3,7 +3,7 @@ module Mint
     def html_style : Ast::HtmlStyle?
       parse do |start_position|
         name = parse do
-          next unless keyword "::"
+          next unless word! "::"
           next unless value = variable track: false, extra_chars: ['-']
           value
         end

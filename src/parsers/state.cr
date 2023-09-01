@@ -5,7 +5,7 @@ module Mint
         comment = self.comment
         whitespace
 
-        next unless keyword "state"
+        next unless word! "state"
         whitespace
 
         next error :state_expected_name do

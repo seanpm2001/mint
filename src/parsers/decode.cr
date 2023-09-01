@@ -2,11 +2,10 @@ module Mint
   class Parser
     def decode : Ast::Decode?
       parse do |start_position|
-        next unless keyword "decode"
-        next unless whitespace?
-        whitespace
+        next unless word! "decode"
+        next unless whitespace!
 
-        unless keyword "as"
+        unless word! "as"
           next error :decode_expected_subject do
             expected "the subject of a decode expression", word
             snippet self
@@ -14,9 +13,9 @@ module Mint
 
           whitespace
           next error :decode_expected_as do
-            expected "the as keyword of a decode expression", word
+            expected "the as word! of a decode expression", word
             snippet self
-          end unless keyword "as"
+          end unless word! "as"
         end
 
         whitespace

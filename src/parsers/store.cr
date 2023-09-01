@@ -1,11 +1,11 @@
 module Mint
   class Parser
     def store : Ast::Store?
-      parse do |start_position|
+      parse do |start_position, start_nodes_position|
         comment = self.comment
         whitespace
 
-        next unless keyword "store"
+        next unless word! "store"
         whitespace
 
         next error :store_expected_name do
@@ -66,7 +66,11 @@ module Mint
           to: position,
           input: data,
           gets: gets,
-          name: name)
+          name: name).tap do |node|
+          ast.nodes[start_nodes_position...]
+            .select(Ast::NextCall)
+            .each(&.entity=(node))
+        end
       end
     end
   end

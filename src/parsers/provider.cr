@@ -1,10 +1,10 @@
 module Mint
   class Parser
     def provider : Ast::Provider?
-      parse do |start_position|
+      parse do |start_position, start_nodes_position|
         comment = self.comment
 
-        next unless keyword "provider"
+        next unless word! "provider"
         whitespace
 
         next error :provider_expected_name do
@@ -78,7 +78,11 @@ module Mint
           to: position,
           input: data,
           gets: gets,
-          name: name)
+          name: name).tap do |node|
+          ast.nodes[start_nodes_position...]
+            .select(Ast::NextCall)
+            .each(&.entity=(node))
+        end
       end
     end
   end

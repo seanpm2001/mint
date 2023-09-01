@@ -102,43 +102,8 @@ module Mint
     # Normalizes the ast:
     # - merges multiple modules with the same name
     def normalize
-      nodes.select(Ast::HtmlElement).each do |element|
-        components.each do |component|
-          if includes?(component, element)
-            element.styles.each do |style|
-              style.style_node = component.styles.find(&.name.value.==(style.name.value))
-            end
-
-            element.component = true
-
-            if ref = element.ref
-              component.refs << {ref, element}
-            end
-
-            break
-          end
-        end
-      end
-
       nodes.select(Ast::HtmlComponent).each do |item|
         item.component_node = components.find(&.name.value.==(item.component.value))
-
-        components.each do |component|
-          if includes?(component, item)
-            item.in_component = true
-
-            if ref = item.ref
-              component.refs << {ref, item}
-            end
-
-            break
-          end
-        end
-      end
-
-      nodes.select(Ast::NextCall).each do |node|
-        node.entity =
-          (components + providers + stores).find { |item| includes?(item, node) }
       end
 
       @unified_modules =

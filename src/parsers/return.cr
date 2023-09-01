@@ -2,9 +2,8 @@ module Mint
   class Parser
     def return_call : Ast::ReturnCall?
       parse do |start_position|
-        next unless keyword "return"
-        next unless whitespace?
-        whitespace
+        next unless word! "return"
+        next unless whitespace!
 
         next error :return_call_expected_expression do
           expected "the expression of a return call", word

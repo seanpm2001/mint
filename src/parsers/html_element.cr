@@ -12,7 +12,7 @@ module Mint
 
         styles = [] of Ast::HtmlStyle
 
-        if keyword_ahead? "::"
+        if word? "::"
           styles = many(parse_whitespace: false) { html_style }
 
           next error :html_element_expected_style do
@@ -22,7 +22,7 @@ module Mint
         end
 
         whitespace
-        if keyword "as"
+        if word! "as"
           whitespace
           next error :html_element_expected_reference do
             expected "the reference of an HTML element", word

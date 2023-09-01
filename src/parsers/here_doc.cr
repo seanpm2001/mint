@@ -2,7 +2,7 @@ module Mint
   class Parser
     def here_doc_part(token : String)
       gather do
-        while char != '\0' && !keyword_ahead?(token)
+        while char != '\0' && !word?(token)
           break if char == '#' &&
                    next_char == '{' &&
                    previous_char != '\\'
@@ -13,7 +13,7 @@ module Mint
 
     def here_doc(with_interpolation : Bool = true) : Ast::HereDoc?
       parse do |start_position|
-        next unless keyword "<<"
+        next unless word! "<<"
         next unless char!('~') || char!('#') || char!('-')
 
         modifier =
@@ -38,7 +38,7 @@ module Mint
         next error :here_doc_expected_end do
           expected "the end tag of a here document", word
           snippet self
-        end unless keyword(token)
+        end unless word!(token)
 
         Ast::HereDoc.new(
           from: start_position,

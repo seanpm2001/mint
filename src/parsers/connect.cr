@@ -2,7 +2,7 @@ module Mint
   class Parser
     def connect : Ast::Connect?
       parse do |start_position|
-        next unless keyword "connect"
+        next unless word! "connect"
         whitespace
 
         next error :connect_expected_store do
@@ -12,9 +12,9 @@ module Mint
         whitespace
 
         next error :connect_expected_exposing do
-          expected "the exposing keyword for a connect", word
+          expected "the exposing word! for a connect", word
           snippet self
-        end unless keyword "exposing"
+        end unless word! "exposing"
 
         keys = block2(
           ->{ error :connect_expected_opening_bracket do

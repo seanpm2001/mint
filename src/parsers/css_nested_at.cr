@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         next unless char! '@'
 
-        name = gather { keyword("media") || keyword("supports") }
+        name = gather { word!("media") || word!("supports") }
 
         next unless name
         next unless whitespace?

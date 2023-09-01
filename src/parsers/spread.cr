@@ -2,7 +2,7 @@ module Mint
   class Parser
     def spread
       parse do |start_position|
-        next unless keyword "..."
+        next unless word! "..."
 
         next error :spread_expected_variable do
           expected "the name of a spread", word

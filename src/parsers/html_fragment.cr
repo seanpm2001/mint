@@ -36,7 +36,7 @@ module Mint
         next error :html_fragment_expected_closing_tag do
           expected "the closing tag of an HTML fragment", word
           snippet self
-        end unless keyword "</>"
+        end unless word! "</>"
 
         Ast::HtmlFragment.new(
           from: start_position,

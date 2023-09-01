@@ -2,7 +2,7 @@ module Mint
   class Parser
     def routes : Ast::Routes?
       parse do |start_position|
-        next unless keyword "routes"
+        next unless word! "routes"
 
         body =
           block2(

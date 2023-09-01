@@ -2,7 +2,7 @@ module Mint
   class Parser
     def css_keyframes : Ast::CssKeyframes?
       parse do |start_position|
-        next unless keyword "@keyframes"
+        next unless word! "@keyframes"
 
         whitespace
 

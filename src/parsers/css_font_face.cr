@@ -2,7 +2,7 @@ module Mint
   class Parser
     def css_font_face : Ast::CssFontFace?
       parse do |start_position|
-        next unless keyword "@font-face"
+        next unless word! "@font-face"
 
         definitions = block2(
           ->{ error :css_font_face_expected_opening_bracket do

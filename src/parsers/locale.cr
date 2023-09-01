@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         comment = self.comment
 
-        next unless keyword "locale"
+        next unless word! "locale"
         whitespace
 
         language = gather do

@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         comment = self.comment
 
-        next unless keyword "record"
+        next unless word! "record"
         whitespace
 
         next error :record_definition_expected_name do

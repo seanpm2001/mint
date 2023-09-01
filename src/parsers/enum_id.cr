@@ -28,7 +28,7 @@ module Mint
       parse do |start_position|
         next unless option = type_id track: false
 
-        if keyword "::"
+        if word! "::"
           name = option
           next error :enum_id_expected_option do
             expected "the option of an enum id", word

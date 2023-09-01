@@ -2,7 +2,7 @@ module Mint
   class Parser
     def style : Ast::Style?
       parse do |start_position|
-        next unless keyword "style"
+        next unless word! "style"
 
         whitespace
         next error :style_expected_name do

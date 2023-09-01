@@ -2,7 +2,7 @@ module Mint
   class Parser
     def format_directive : Ast::Directives::Format?
       parse do |start_position|
-        next unless keyword "@format"
+        next unless word! "@format"
 
         content =
           code_block2(

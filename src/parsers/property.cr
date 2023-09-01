@@ -7,7 +7,7 @@ module Mint
 
         start_position = position
 
-        next unless keyword "property"
+        next unless word! "property"
         whitespace
 
         next error :property_expected_name do

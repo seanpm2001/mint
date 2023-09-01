@@ -4,10 +4,10 @@ module Mint
       parse do |start_position, start_nodes_position|
         comment = self.comment
 
-        global = keyword "global"
+        global = word! "global"
         whitespace
 
-        next unless keyword "component"
+        next unless word! "component"
         whitespace
 
         next error :component_expected_name do
@@ -84,9 +84,29 @@ module Mint
           end
         end
 
+        refs = [] of Tuple(Ast::Variable, Ast::Node)
+
+        ast.nodes[start_nodes_position...].each do |node|
+          case node
+          when Ast::HtmlElement
+            node.styles.each do |style|
+              style.style_node =
+                styles.find(&.name.value.==(style.name.value))
+            end
+          end
+
+          case node
+          when Ast::HtmlComponent,
+               Ast::HtmlElement
+            if ref = node.ref
+              refs << {ref, node.as(Ast::Node)}
+            end
+            node.in_component = true
+          end
+        end
+
         Ast::Component.new(
           locales: ast.nodes[start_nodes_position...].any?(Ast::LocaleKey),
-          refs: [] of Tuple(Ast::Variable, Ast::Node),
           global: global || false,
           properties: properties,
           functions: functions,
@@ -99,10 +119,14 @@ module Mint
           states: states,
           to: position,
           input: data,
+          refs: refs,
           name: name,
           uses: uses,
-          gets: gets
-        )
+          gets: gets).tap do |node|
+          ast.nodes[start_nodes_position...]
+            .select(Ast::NextCall)
+            .each(&.entity=(node))
+        end
       end
     end
   end

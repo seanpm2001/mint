@@ -10,7 +10,7 @@ module Mint
           whitespace
 
           next unless value
-          next if keyword_ahead?("|>") # Skip if tuple with a pipe `{ x |> Number.toString }`
+          next if word?("|>") # Skip if tuple with a pipe `{ x |> Number.toString }`
           next unless char! '|'
 
           value

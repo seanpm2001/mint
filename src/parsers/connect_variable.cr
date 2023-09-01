@@ -8,7 +8,7 @@ module Mint
 
         whitespace
 
-        if keyword "as"
+        if word! "as"
           whitespace
           next error :connect_variable_expected_as do
             block do

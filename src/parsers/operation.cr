@@ -29,9 +29,13 @@ module Mint
       parse do
         whitespace
         saved_position = position
-        operator = OPERATORS.keys.find { |item| keyword item }
+        operator = OPERATORS.keys.find { |item| word! item }
         next unless operator
-        next unless whitespace?
+
+        unless operator == "|>"
+          next unless whitespace?
+        end
+
         ast.operators << {saved_position, saved_position + operator.size}
         whitespace
         operator

@@ -21,7 +21,7 @@ module Mint
         mapping =
           parse(track: false) do
             whitespace
-            next unless keyword "using"
+            next unless word! "using"
             whitespace
 
             next error :record_definition_field_expected_mapping do

@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         next unless option = type_id track: false
 
-        if keyword "::"
+        if word! "::"
           name = option
           next error :enum_destructuring_expected_option do
             expected "the the type of an enum destructuring", word

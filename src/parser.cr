@@ -11,14 +11,12 @@ module Mint
     getter input : Array(Char)
 
     # The parsed file, we save it so we can show parse errors.
-    getter file : String
+    getter data : Ast::Data
 
     # The AST.
     getter ast = Ast.new
 
-    getter data : Ast::Data
-
-    def initialize(input : String, @file)
+    def initialize(input : String, @file : String)
       @data = Ast::Data.new(input, @file)
       @input = input.chars
     end
@@ -29,16 +27,16 @@ module Mint
     # has failed.
     def parse(*, track : Bool = true, &)
       rollback = begin
-        start_position = position
-        nodes_size = ast.nodes.size
-        keywords_size = ast.keywords.size
         operators_size = ast.operators.size
+        keywords_size = ast.keywords.size
+        nodes_size = ast.nodes.size
+        start_position = position
 
         ->{
-          @position = start_position
-          ast.nodes.delete_at(nodes_size...)
-          ast.keywords.delete_at(keywords_size...)
           ast.operators.delete_at(operators_size...)
+          ast.keywords.delete_at(keywords_size...)
+          ast.nodes.delete_at(nodes_size...)
+          @position = start_position
         }
       end
 
@@ -162,27 +160,40 @@ module Mint
       end
     end
 
-    def keyword_ahead?(word) : Bool
+    # Returns the word a the cursor.
+    def word : String?
+      start_position = position
+      word = ""
+
+      while !(eof? || whitespace?)
+        word += char
+        step
+      end
+
+      @position = start_position
+      word
+    end
+
+    # Returns whether or not the word is at the current position.
+    def word?(word) : Bool
       word.chars.each_with_index.all? do |char, i|
         input[position + i]? == char
       end
     end
 
-    def keyword(word) : Bool
-      if keyword_ahead?(word)
+    # Consumes a word and steps the cursor forward if successful.
+    def word!(expected : String) : Bool
+      if word?(expected)
         if word.chars.all?(&.ascii_lowercase?) && !word.blank? && word != "or"
           @ast.keywords << {position, position + word.size}
         end
 
-        @position += word.size
+        @position += expected.size
         true
       else
         false
       end
     end
-
-    # Consuming whitespaces
-    # ----------------------------------------------------------------------------
 
     # Returns whether the current character is a whitespace.
     def whitespace?
@@ -190,8 +201,18 @@ module Mint
     end
 
     # Consumes all available whitespace.
-    def whitespace : String?
+    def whitespace : Nil
       chars &.ascii_whitespace?
+    end
+
+    # Consumes all available whitespace and returns true / false whether
+    # there were any.
+    def whitespace!
+      parse do |start_position|
+        whitespace
+        next false if position == start_position
+        true
+      end
     end
 
     # Consuming variables

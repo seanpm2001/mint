@@ -2,13 +2,13 @@ module Mint
   class Parser
     def case_expression(for_css : Bool = false) : Ast::Case?
       parse do |start_position|
-        next unless keyword "case"
+        next unless word! "case"
 
         whitespace
         parens = char! '('
 
         whitespace
-        await = keyword "await"
+        await = word! "await"
 
         whitespace
         next error :case_expected_condition do

@@ -2,7 +2,7 @@ module Mint
   class Parser
     def asset_directive : Ast::Directives::Asset?
       parse do |start_position|
-        next unless keyword "@asset"
+        next unless word! "@asset"
 
         next error :asset_directive_expected_opening_parenthesis do
           expected "the opening parenthesis of an asset directive", word

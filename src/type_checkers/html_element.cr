@@ -10,7 +10,7 @@ module Mint
           block "Referencing elements are not allowed outside of components."
 
           snippet node
-        end unless node.component?
+        end unless node.in_component?
 
         resolve node.styles
       end
@@ -20,7 +20,7 @@ module Mint
           block "Styling of elements are not allowed outside of components."
 
           snippet ref
-        end unless node.component?
+        end unless node.in_component?
       end
 
       node.attributes.each { |attribute| resolve attribute, node }

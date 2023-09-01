@@ -2,7 +2,7 @@ module Mint
   class Parser
     def use : Ast::Use?
       parse do |start_position|
-        next unless keyword "use"
+        next unless word! "use"
 
         whitespace
         next error :use_expected_provider do
@@ -17,7 +17,7 @@ module Mint
         end unless item = record
         whitespace
 
-        if keyword "when"
+        if word! "when"
           condition = block2(
             ->{ error :use_expected_condition_opening_bracket do
               expected "the opening bracket of a use condition", word

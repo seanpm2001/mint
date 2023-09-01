@@ -41,7 +41,7 @@ module Mint
 
     def css_selector_name : String?
       if ampersand = char! '&'
-        double_colon = keyword("::")
+        double_colon = word!("::")
         bracket = char!('[')
         colon = char!(':')
         dot = char!('.')

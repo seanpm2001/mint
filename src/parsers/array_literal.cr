@@ -19,7 +19,7 @@ module Mint
 
         type = parse(track: false) do
           whitespace
-          next unless keyword "of"
+          next unless word! "of"
           whitespace
 
           next error :array_literal_expected_type_or_variable do
@@ -28,7 +28,7 @@ module Mint
               bold "array literal"
               text "must be defined after the"
               bold "of"
-              text "keyword."
+              text "word!."
             end
 
             expected "the type", word

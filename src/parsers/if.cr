@@ -44,7 +44,7 @@ module Mint
       end }
 
       parse do |start_position|
-        next unless keyword "if"
+        next unless word! "if"
 
         whitespace
         parens = char! '('
@@ -94,7 +94,7 @@ module Mint
         falsy = nil
         whitespace
 
-        if keyword "else"
+        if word! "else"
           whitespace
 
           unless falsy = if_expression(for_css: for_css)

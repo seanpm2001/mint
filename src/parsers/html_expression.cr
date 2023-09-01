@@ -2,7 +2,7 @@ module Mint
   class Parser
     def html_expression : Ast::HtmlExpression?
       parse do |start_position|
-        next unless keyword "<{"
+        next unless word! "<{"
 
         whitespace
         expressions = many { expression }
@@ -11,7 +11,7 @@ module Mint
         next error :html_expression_expected_closing_tag do
           expected "the closing tag of an HTML expression", word
           snippet self
-        end unless keyword "}>"
+        end unless word! "}>"
 
         Ast::HtmlExpression.new(
           expressions: expressions,

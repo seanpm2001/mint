@@ -2,7 +2,7 @@ module Mint
   class Parser
     def test : Ast::Test?
       parse do |start_position|
-        next unless keyword "test"
+        next unless word! "test"
 
         whitespace
 

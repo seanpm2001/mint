@@ -14,7 +14,7 @@ module Mint
         end unless char! '`'
 
         whitespace
-        if keyword "as"
+        if word! "as"
           whitespace
 
           next error :js_expected_type_or_variable do

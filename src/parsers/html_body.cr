@@ -47,7 +47,7 @@ module Mint
         closing_tag_position =
           position + 2
 
-        expected_closing_tag.call unless keyword "</#{closing_tag}>"
+        expected_closing_tag.call unless word! "</#{closing_tag}>"
 
         items.each do |item|
           case item

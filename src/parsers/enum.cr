@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         comment = self.comment
 
-        next unless keyword "enum"
+        next unless word! "enum"
         whitespace
 
         next error :enum_expected_name do

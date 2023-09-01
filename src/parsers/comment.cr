@@ -3,17 +3,17 @@ module Mint
     def comment : Ast::Comment?
       parse do |start_position|
         value, type =
-          if keyword "/*"
+          if word! "/*"
             consumed =
-              gather { consume { !keyword_ahead?("*/") && !eof? } }.to_s
+              gather { consume { !word?("*/") && !eof? } }.to_s
 
             next error :comment_expected_closing_tag do
               expected "the closing tag of a comment", word
               snippet self
-            end unless keyword "*/"
+            end unless word! "*/"
 
             {consumed, Ast::Comment::Type::Block}
-          elsif keyword "//"
+          elsif word! "//"
             consumed =
               gather { consume { char != '\n' && !eof? } }.to_s
 

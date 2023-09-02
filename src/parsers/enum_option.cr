@@ -7,7 +7,7 @@ module Mint
         next unless value = type_id
         whitespace
 
-        parameters = [] of Ast::TypeVariable | Ast::Type
+        parameters = [] of Ast::Node
 
         if char! '('
           whitespace

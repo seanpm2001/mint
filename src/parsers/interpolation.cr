@@ -3,14 +3,14 @@ module Mint
     def interpolation : Ast::Interpolation?
       parse do |start_position|
         next unless word! "\#{"
-
         whitespace
+
         next error :interpolation_expected_expression do
           expected "the expression of an interpolation", word
           snippet self
         end unless expression = self.expression
-
         whitespace
+
         next error :interpolation_expected_closing_bracket do
           expected "the closing bracket of an interpolation", word
           snippet self

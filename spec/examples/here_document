@@ -1,4 +1,4 @@
---------------------------------------------------------here_doc_expected_start
+---------------------------------------------------here_document_expected_start
 component Main {
   fun render {
     <<-

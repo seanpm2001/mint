@@ -17,7 +17,6 @@ module Mint
 
         if char! '('
           whitespace
-
           parameters.concat list(
             terminator: ')',
             separator: ','
@@ -44,9 +43,7 @@ module Mint
                 expected "the closing bracket of an enum", word
                 snippet self
               end
-            }) do
-            many { enum_option || self.comment }
-          end
+            }) { many { enum_option || self.comment } }
 
         next unless body
 

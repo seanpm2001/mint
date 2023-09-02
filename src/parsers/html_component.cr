@@ -8,8 +8,8 @@ module Mint
         end
 
         next unless component
-
         whitespace
+
         if word! "as"
           whitespace
 
@@ -19,7 +19,7 @@ module Mint
           end unless ref = variable
         end
 
-        attributes, children, comments, closing_tag_position =
+        body =
           html_body(
             with_dashes: false,
             tag: component,
@@ -35,6 +35,10 @@ module Mint
                 snippet self
               end
             })
+
+        next unless body
+
+        attributes, children, comments, closing_tag_position = body
 
         Ast::HtmlComponent.new(
           closing_tag_position: closing_tag_position,

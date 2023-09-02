@@ -25,25 +25,23 @@ module Mint
         end unless subscription = type_id
         whitespace
 
-        next unless body = brackets(
-                      ->{ error :provider_expected_opening_bracket do
-                        expected "the opening bracket of a provider", word
-                        snippet self
-                      end },
-                      ->{ error :provider_expected_closing_bracket do
-                        expected "the closing bracket of a provider", word
-                        snippet self
-                      end }
-                    ) do
-                      items = many { function || state || get || constant || self.comment }
+        body = brackets(
+          ->{ error :provider_expected_opening_bracket do
+            expected "the opening bracket of a provider", word
+            snippet self
+          end },
+          ->{ error :provider_expected_closing_bracket do
+            expected "the closing bracket of a provider", word
+            snippet self
+          end },
+          ->(items : Array(Ast::Node)) {
+            error :provider_expected_body do
+              expected "the body of a provider", word
+              snippet self
+            end if items.reject(Ast::Comment).empty?
+          }) { many { function || state || get || constant || self.comment } }
 
-                      next error :provider_expected_body do
-                        expected "the body of a provider", word
-                        snippet self
-                      end if items.reject(Ast::Comment).empty?
-
-                      items
-                    end
+        next unless body
 
         functions = [] of Ast::Function
         constants = [] of Ast::Constant
@@ -55,12 +53,12 @@ module Mint
           case item
           when Ast::Function
             functions << item
-          when Ast::State
-            states << item
           when Ast::Constant
             constants << item
           when Ast::Comment
             comments << item
+          when Ast::State
+            states << item
           when Ast::Get
             gets << item
           end

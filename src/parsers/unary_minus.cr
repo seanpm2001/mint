@@ -3,10 +3,7 @@ module Mint
     def unary_minus : Ast::UnaryMinus?
       parse do |start_position|
         next unless char! '-'
-
-        expression = self.expression
-
-        next unless expression
+        next unless expression = self.expression
 
         Ast::UnaryMinus.new(
           expression: expression,

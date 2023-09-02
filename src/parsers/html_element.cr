@@ -30,22 +30,26 @@ module Mint
           end unless ref = variable
         end
 
-        attributes, children, comments, closing_tag_position =
+        body =
           html_body(
             with_dashes: true,
             tag: tag,
             expected_closing_bracket: ->{
-              error :html_component_expected_closing_bracket do
+              error :html_element_expected_closing_bracket do
                 expected "the closing bracket of an HTML element", word
                 snippet self
               end
             },
             expected_closing_tag: ->{
-              error :html_component_expected_closing_tag do
+              error :html_element_expected_closing_tag do
                 expected "the closing tag of an HTML element", word
                 snippet self
               end
             })
+
+        next unless body
+
+        attributes, children, comments, closing_tag_position = body
 
         Ast::HtmlElement.new(
           closing_tag_position: closing_tag_position,

@@ -7,15 +7,10 @@ module Mint
         next unless word! "locale"
         whitespace
 
-        language = gather do
-          next unless char.ascii_lowercase?
-          chars { |char| char.ascii_letter? || char.ascii_number? }
-        end
-
         next error :locale_expected_language do
           expected "the language code of the locale", word
           snippet self
-        end unless language
+        end unless language = identifier_variable
         whitespace
 
         fields =

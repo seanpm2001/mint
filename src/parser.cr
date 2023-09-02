@@ -100,7 +100,7 @@ module Mint
     end
 
     # Parses any number of ascii latters or numbers.
-    def ascii_letters_or_numbers(*, extra_char : Char?)
+    def ascii_letters_or_numbers(*, extra_char : Char? = nil)
       chars { |char| char.ascii_letter? || char.ascii_number? || char == extra_char }
     end
 
@@ -197,6 +197,40 @@ module Mint
         whitespace
         next false if position == start_position
         true
+      end
+    end
+
+    # Parses a variable identifier.
+    def identifier_variable : String?
+      return unless char.ascii_lowercase?
+      gather { ascii_letters_or_numbers }
+    end
+
+    # Parses a constant identifier.
+    def identifier_constant : String?
+      return unless char.ascii_uppercase?
+      gather { ascii_uppercase_and_underscore }
+    end
+
+    # Parses a type identifier.
+    def identifier_type : String?
+      parse do
+        name = gather do
+          next unless char.ascii_uppercase?
+          ascii_letters_or_numbers
+        end
+
+        next if char == '_'
+        next unless name
+
+        parse do
+          next unless char! '.'
+          next unless other = identifier_type
+
+          name += ".#{other}"
+        end
+
+        name
       end
     end
 
@@ -330,13 +364,6 @@ module Mint
           step
         end
       end
-    end
-
-    # Consuming variables
-    # ----------------------------------------------------------------------------
-
-    def type_or_type_variable
-      type || type_variable
     end
   end
 end

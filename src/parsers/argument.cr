@@ -18,7 +18,7 @@ module Mint
           expected "the type of the argument", word
 
           snippet self
-        end unless type = type_or_type_variable
+        end unless type = self.type || type_variable
 
         if parse_default_value
           whitespace

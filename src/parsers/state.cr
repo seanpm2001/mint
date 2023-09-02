@@ -22,7 +22,6 @@ module Mint
               snippet self
             end unless item = self.type
             whitespace
-
             item
           end
 

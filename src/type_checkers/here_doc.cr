@@ -17,7 +17,7 @@ module Mint
       end
     end
 
-    def check(node : Ast::HereDoc) : Checkable
+    def check(node : Ast::HereDocument) : Checkable
       if node.modifier == '#'
         node.value.each do |item|
           case item

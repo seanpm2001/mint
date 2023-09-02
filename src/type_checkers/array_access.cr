@@ -11,7 +11,7 @@ module Mint
         resolve lhs
 
       case index
-      in Ast::Expression
+      in Ast::Node
         index_type =
           resolve index
 

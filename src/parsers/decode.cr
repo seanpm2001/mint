@@ -6,6 +6,7 @@ module Mint
         next unless whitespace!
 
         unless word! "as"
+          whitespace
           next error :decode_expected_subject do
             expected "the subject of a decode expression", word
             snippet self
@@ -13,7 +14,7 @@ module Mint
 
           whitespace
           next error :decode_expected_as do
-            expected "the as word! of a decode expression", word
+            expected "the as word of a decode expression", word
             snippet self
           end unless word! "as"
         end
@@ -27,8 +28,8 @@ module Mint
         Ast::Decode.new(
           expression: expression,
           from: start_position,
-          type: type,
           to: position,
+          type: type,
           file: file)
       end
     end

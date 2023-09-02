@@ -19,7 +19,7 @@ module Mint
             next error :get_expected_type do
               expected "the type of a get", word
               snippet self
-            end unless item = type_or_type_variable
+            end unless item = self.type || type_variable
             whitespace
             item
           end

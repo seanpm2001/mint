@@ -3,7 +3,7 @@ module Mint
     class NegatedExpression < Node
       getter expression, negations
 
-      def initialize(@expression : Expression,
+      def initialize(@expression : Node,
                      @negations : String,
                      @file : Parser::File,
                      @from : Int64,

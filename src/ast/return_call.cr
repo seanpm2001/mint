@@ -5,7 +5,7 @@ module Mint
 
       property statement : Ast::Statement? = nil
 
-      def initialize(@expression : Expression,
+      def initialize(@expression : Node,
                      @file : Parser::File,
                      @from : Int64,
                      @to : Int64)

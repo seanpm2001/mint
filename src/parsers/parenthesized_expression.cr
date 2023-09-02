@@ -3,11 +3,9 @@ module Mint
     def parenthesized_expression : Ast::ParenthesizedExpression?
       parse do |start_position|
         next unless char! '('
-
         whitespace
-        expression = self.expression
-        next unless expression
 
+        next unless expression = self.expression
         whitespace
 
         next unless char! ')'

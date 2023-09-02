@@ -6,15 +6,15 @@ component Main {
 component Main {
   fun render : Html {
     <test as
-----------------------------------------html_component_expected_closing_bracket
+------------------------------------------html_element_expected_closing_bracket
 component Main {
   fun render : Html {
     <test
-----------------------------------------html_component_expected_closing_bracket
+------------------------------------------html_element_expected_closing_bracket
 component Main {
   fun render : Html {
     <test
---------------------------------------------html_component_expected_closing_tag
+----------------------------------------------html_element_expected_closing_tag
 component Main {
   fun render : Html {
     <test>

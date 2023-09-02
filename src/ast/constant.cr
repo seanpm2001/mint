@@ -3,7 +3,7 @@ module Mint
     class Constant < Node
       getter name, value, comment
 
-      def initialize(@value : Expression,
+      def initialize(@value : Node,
                      @comment : Comment?,
                      @name : Variable,
                      @file : Parser::File,

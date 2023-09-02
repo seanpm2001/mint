@@ -12,20 +12,20 @@ module Mint
           terminator: parens ? ')' : '{',
           separator: ','
         ) { variable }
-
         whitespace
+
         next error :for_expected_of do
           expected "the of word! of a for expression", word
           snippet self
         end unless word! "of"
-
         whitespace
+
         next error :for_expected_subject do
           expected "the subject of a for expression", word
           snippet self
         end unless subject = expression
-
         whitespace
+
         next error :for_expected_closing_parenthesis do
           expected "the closing parenthesis of a for expression", word
           snippet self
@@ -54,23 +54,21 @@ module Mint
           if word! "when"
             whitespace
 
-            item =
-              block(
-                ->{ error :for_condition_expected_opening_bracket do
-                  expected "the opening bracket of a for condition", word
+            block(
+              ->{ error :for_condition_expected_opening_bracket do
+                expected "the opening bracket of a for condition", word
+                snippet self
+              end },
+              ->{ error :for_condition_expected_closing_bracket do
+                expected "the closing bracket of a for condition", word
+                snippet self
+              end },
+              ->{
+                error :for_condition_expected_body do
+                  expected "the body of a for condition", word
                   snippet self
-                end },
-                ->{ error :for_condition_expected_closing_bracket do
-                  expected "the closing bracket of a for condition", word
-                  snippet self
-                end })
-
-            next error :for_condition_expected_body do
-              expected "the body of a for condition", word
-              snippet self
-            end unless item
-
-            item
+                end
+              })
           end
 
         Ast::For.new(

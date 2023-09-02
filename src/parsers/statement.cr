@@ -22,9 +22,7 @@ module Mint
         await = word! "await"
 
         whitespace
-        body = expression
-
-        next unless body
+        next unless body = expression
 
         Ast::Statement.new(
           from: start_position,
@@ -37,9 +35,9 @@ module Mint
           case body
           when Ast::Operation
             case target
-            when Ast::EnumDestructuring,
-                 Ast::ArrayDestructuring,
-                 Ast::TupleDestructuring
+            when Ast::ArrayDestructuring,
+                 Ast::TupleDestructuring,
+                 Ast::EnumDestructuring
               case item = body.right
               when Ast::ReturnCall
                 item.statement = node

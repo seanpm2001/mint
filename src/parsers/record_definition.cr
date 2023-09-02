@@ -33,6 +33,7 @@ module Mint
         end
 
         next unless body
+
         fields, block_comment = body
 
         Ast::RecordDefinition.new(

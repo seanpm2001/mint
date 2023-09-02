@@ -3,14 +3,11 @@ module Mint
     def tuple_literal : Ast::TupleLiteral?
       parse do |start_position|
         next unless char! '{'
-
-        whitespace
-        items = list(
-          terminator: '}',
-          separator: ','
-        ) { expression }
         whitespace
 
+        items = list(terminator: '}', separator: ',') { expression }
+
+        whitespace
         next unless char! '}'
 
         Ast::TupleLiteral.new(

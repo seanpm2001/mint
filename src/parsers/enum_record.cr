@@ -8,6 +8,7 @@ module Mint
             separator: ','
           ) { record_field }
 
+        # TODO: Get rid of this at some point
         if error_position < @errors.size
           @errors.delete_at(error_position...)
           next

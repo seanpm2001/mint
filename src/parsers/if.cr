@@ -45,11 +45,11 @@ module Mint
 
       parse do |start_position|
         next unless word! "if"
-
         whitespace
+
         parens = char! '('
-
         whitespace
+
         next error :if_expected_condition do
           block do
             text "The"
@@ -61,18 +61,10 @@ module Mint
           expected "the condition", word
           snippet self
         end unless condition = statement || expression
-
         whitespace
-        next error :if_expected_closing_parenthesis do
-          block do
-            text "The"
-            bold "condition"
-            text "of an"
-            bold "if expression"
-            text "must be enclosed by parenthesis."
-          end
 
-          expected "the closing parenthesis", word
+        next error :if_expected_closing_parenthesis do
+          expected "the closing parenthesis of the condition of an if expression", word
           snippet self
         end if parens && !char!(')')
         whitespace

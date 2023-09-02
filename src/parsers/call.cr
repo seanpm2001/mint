@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def call(lhs : Ast::Expression) : Ast::Call?
+    def call(expression : Ast::Node) : Ast::Call?
       parse do |start_position|
         next unless char! '('
         whitespace
@@ -27,7 +27,7 @@ module Mint
         Ast::Call.new(
           from: start_position,
           arguments: arguments,
-          expression: lhs,
+          expression: expression,
           to: position,
           file: file)
       end

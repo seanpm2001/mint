@@ -3,7 +3,7 @@ module Mint
     class ArrayLiteral < Node
       getter items, type
 
-      def initialize(@items : Array(Expression),
+      def initialize(@items : Array(Node),
                      @file : Parser::File,
                      @from : Int64,
                      @type : Node?,

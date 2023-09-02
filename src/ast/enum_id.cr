@@ -3,7 +3,7 @@ module Mint
     class EnumId < Node
       getter option, name, expressions
 
-      def initialize(@expressions : Array(Expression),
+      def initialize(@expressions : Array(Node),
                      @option : TypeId,
                      @name : TypeId?,
                      @file : Parser::File,

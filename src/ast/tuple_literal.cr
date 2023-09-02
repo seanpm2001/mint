@@ -3,7 +3,7 @@ module Mint
     class TupleLiteral < Node
       getter items
 
-      def initialize(@items : Array(Expression),
+      def initialize(@items : Array(Node),
                      @file : Parser::File,
                      @from : Int64,
                      @to : Int64)

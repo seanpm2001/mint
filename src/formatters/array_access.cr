@@ -6,7 +6,7 @@ module Mint
         when Int64
           node.index
         else
-          format node.index.as(Ast::Expression)
+          format node.index.as(Ast::Node)
         end
 
       lhs =

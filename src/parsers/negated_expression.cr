@@ -2,8 +2,7 @@ module Mint
   class Parser
     def negated_expression : Ast::NegatedExpression?
       parse do |start_position|
-        negations = gather { chars '!' }
-        next unless negations
+        next unless negations = gather { chars '!' }
 
         negations =
           negations.size % 2 == 0 ? "!!" : "!"

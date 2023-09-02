@@ -5,7 +5,7 @@ module Mint
 
       delegate static?, to: @value
 
-      def initialize(@value : Expression,
+      def initialize(@value : Node,
                      @name : Variable,
                      @file : Parser::File,
                      @from : Int64,

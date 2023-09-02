@@ -3,14 +3,12 @@ module Mint
     def test : Ast::Test?
       parse do |start_position|
         next unless word! "test"
-
         whitespace
 
         next error :test_expected_name do
           expected "the name of a test", word
           snippet self
         end unless name = string_literal with_interpolation: false
-
         whitespace
 
         expression =

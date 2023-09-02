@@ -228,10 +228,9 @@ module Mint
            Ast::BoolLiteral,
            Ast::LocaleKey,
            Ast::Comment,
-           Ast::Void,
            Ast::Env
       when Ast::StringLiteral,
-           Ast::HereDoc,
+           Ast::HereDocument,
            Ast::Js
         build(node.value.select(Ast::Interpolation), node)
       when Ast::ParenthesizedExpression,
@@ -305,7 +304,6 @@ module Mint
         build(node.expressions, node)
       when Ast::HtmlFragment
         build(node.children, node)
-        build(node.key, node)
       when Ast::HtmlAttribute
         build(node.value, node)
       when Ast::ArrayLiteral,

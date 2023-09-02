@@ -8,9 +8,10 @@ module Mint
         # with a quantifier.
         next if char == '*'
 
-        value = many(parse_whitespace: false) do
-          not_interpolation_part('/', stop_on_interpolation: false)
-        end.join
+        value =
+          many(parse_whitespace: false) do
+            raw('/', stop_on_interpolation: false)
+          end.join
 
         next error :regexp_literal_expected_closing_slash do
           expected "the closing slash of a regexp literal", word

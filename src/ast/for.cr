@@ -4,7 +4,7 @@ module Mint
       getter subject, body, arguments, condition
 
       def initialize(@arguments : Array(Variable),
-                     @subject : Expression,
+                     @subject : Node,
                      @condition : Block?,
                      @body : Block,
                      @file : Parser::File,

@@ -1,12 +1,12 @@
 module Mint
   class Parser
-    def expression : Ast::Expression?
-      return unless left = base_expression
+    def expression : Ast::Node?
+      return unless expression = base_expression
 
       if operator = self.operator
-        rollup_pipe operation(left, operator)
+        pipe operation(expression, operator)
       else
-        left
+        expression
       end
     end
   end

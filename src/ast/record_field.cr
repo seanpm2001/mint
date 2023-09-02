@@ -3,7 +3,7 @@ module Mint
     class RecordField < Node
       getter key, value, comment
 
-      def initialize(@value : Expression,
+      def initialize(@value : Node,
                      @comment : Comment?,
                      @key : Variable,
                      @file : Parser::File,

@@ -3,7 +3,7 @@ module Mint
     class CallExpression < Node
       getter name, expression
 
-      def initialize(@expression : Expression,
+      def initialize(@expression : Node,
                      @name : Variable?,
                      @file : Parser::File,
                      @from : Int64,

@@ -1,48 +1,11 @@
 module Mint
   class Parser
-    OPERATORS = {
-      "|>" => 0,
-      "or" => 0,
-      "!=" => 10,
-      "==" => 10,
-
-      "<=" => 11,
-      "<"  => 11,
-      ">=" => 11,
-      ">"  => 11,
-
-      "-" => 13,
-      "+" => 13,
-
-      "*" => 14,
-      "/" => 14,
-      "%" => 14,
-
-      "**" => 15,
-
-      "&&" => 6,
-      "||" => 5,
-      "!"  => 16,
-    }
-
-    def operator : String?
-      parse do
-        whitespace
-        saved_position = position
-        operator = OPERATORS.keys.find { |item| word! item }
-        next unless operator
-
-        unless operator == "|>"
-          next unless whitespace?
-        end
-
-        ast.operators << {saved_position, saved_position + operator.size}
-        whitespace
-        operator
-      end
-    end
-
-    def operation(left : Ast::Expression, operator : String) : Ast::Operation?
+    # Parses an operation, switching the operands if the precedence of the
+    # next operation is higher than the current one. The precedences can be
+    # found in the operators parser file.
+    #
+    # Operations can be chained recursively with this method as seen below.
+    def operation(left : Ast::Node, operator : String) : Ast::Operation?
       parse do
         next error :operation_expected_expression do
           expected "the right side expression of an operation", word

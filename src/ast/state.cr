@@ -3,7 +3,7 @@ module Mint
     class State < Node
       getter default, type, name, comment
 
-      def initialize(@default : Expression,
+      def initialize(@default : Node,
                      @comment : Comment?,
                      @name : Variable,
                      @file : Parser::File,

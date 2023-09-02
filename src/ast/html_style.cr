@@ -4,7 +4,7 @@ module Mint
       getter name, arguments
       property style_node : Ast::Style? = nil
 
-      def initialize(@arguments : Array(Expression),
+      def initialize(@arguments : Array(Node),
                      @name : Variable,
                      @file : Parser::File,
                      @from : Int64,

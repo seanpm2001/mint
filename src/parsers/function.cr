@@ -34,7 +34,7 @@ module Mint
             next error :function_expected_type_or_variable do
               expected "the type of a function", word
               snippet self
-            end unless item = type_or_type_variable
+            end unless item = self.type || type_variable
             whitespace
             item
           end

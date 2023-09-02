@@ -33,7 +33,7 @@ module Mint
                 expected "the body of a CSS at rule", word
                 snippet self
               end if items.empty?
-            }) { css_body.as(Array(Ast::Node)) }
+            }) { many { css_node.as(Ast::Node | Nil) } }
 
         next unless body
 

@@ -1,11 +1,9 @@
 module Mint
   class Parser
     def property : Ast::Property?
-      parse do
+      parse do |start_position|
         comment = self.comment
         whitespace
-
-        start_position = position
 
         next unless word! "property"
         whitespace

@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def access(expression : Ast::Expression) : Ast::Access?
+    def access(expression : Ast::Node) : Ast::Access?
       parse do
         type =
           if word! "::"

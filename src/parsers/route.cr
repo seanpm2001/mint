@@ -13,9 +13,9 @@ module Mint
             gather { chars { |char| !char.in?(' ', '\n', '\r', '\t', '{', '(') } }.to_s
           end
 
-        whitespace
         arguments = [] of Ast::Argument
 
+        whitespace
         if char! '('
           arguments = list(terminator: ')', separator: ',') { argument(false) }
           whitespace

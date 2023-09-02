@@ -18,6 +18,8 @@ module Mint
           snippet self
         end unless char! '"'
 
+        # Lookahead to see if there is a backslash (string separator), if
+        # parsing fails it will track the whitespace back.
         broken =
           parse do
             whitespace
@@ -25,6 +27,7 @@ module Mint
             true
           end || false
 
+        # If it's separated try to parse an other part.
         if broken
           whitespace
 
@@ -39,7 +42,7 @@ module Mint
           value.concat(literal.value)
         end
 
-        # Normalize the value so there are consecutive Strings
+        # Normalize the value so there are consecutive strings.
         value =
           value.reduce([] of Ast::Interpolation | String) do |memo, item|
             if memo.last?.is_a?(String) && item.is_a?(String)

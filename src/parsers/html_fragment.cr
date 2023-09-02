@@ -2,26 +2,12 @@ module Mint
   class Parser
     def html_fragment : Ast::HtmlFragment?
       parse do |start_position|
-        next unless char! '<'
+        next unless word! "<>"
 
-        # Test for closing tag
-        whitespace
-        next if char! '/'
-
-        key = html_attribute false, "key"
-        whitespace
-
-        next error :html_fragment_expected_closing_bracket do
-          expected "the closing bracket of an HTML fragment", word
-          snippet self
-        end unless char! '>'
-
-        children = [] of Ast::Node
         comments = [] of Ast::Comment
+        children = [] of Ast::Node
 
-        items = many do
-          html_content.as(Ast::Node | Ast::Comment?)
-        end
+        items = many { expression || comment }
 
         items.each do |item|
           case item
@@ -43,8 +29,7 @@ module Mint
           children: children,
           comments: comments,
           to: position,
-          file: file,
-          key: key)
+          file: file)
       end
     end
   end

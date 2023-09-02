@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def array_access(lhs : Ast::Expression) : Ast::ArrayAccess?
+    def array_access(lhs : Ast::Node) : Ast::ArrayAccess?
       parse do |start_position|
         next unless char! '['
         whitespace

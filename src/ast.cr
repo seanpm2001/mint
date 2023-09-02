@@ -2,33 +2,6 @@ module Mint
   class Ast
     alias TypeOrVariable = Type | TypeVariable
 
-    alias Expression = ParenthesizedExpression |
-                       NegatedExpression |
-                       InlineFunction |
-                       StringLiteral |
-                       NumberLiteral |
-                       HtmlComponent |
-                       HtmlFragment |
-                       RecordUpdate |
-                       ArrayLiteral |
-                       ArrayAccess |
-                       BoolLiteral |
-                       HtmlElement |
-                       Operation |
-                       NextCall |
-                       Variable |
-                       Routes |
-                       Encode |
-                       EnumId |
-                       Decode |
-                       Record |
-                       Access |
-                       Route |
-                       Void |
-                       Case |
-                       If |
-                       Js
-
     getter components, modules, records, stores, routes, providers, operators
     getter suites, enums, comments, nodes, keywords, locales
 

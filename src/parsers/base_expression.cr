@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def base_expression : Ast::Expression?
+    def base_expression : Ast::Node?
       # Here we parse the nexus of the expression (the part without chains:
       # access, array access or call).
       #
@@ -38,8 +38,8 @@ module Mint
         when '<'
           html_expression ||
             html_component ||
+            here_document ||
             html_element ||
-            here_doc ||
             html_fragment
         when '{'
           record_update ||
@@ -65,7 +65,7 @@ module Mint
           when "encode"
             encode
           else
-            enum_id || variable
+            enum_id || value
           end
         end
 

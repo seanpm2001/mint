@@ -10,8 +10,8 @@ module Mint
           whitespace
 
           fields = list(terminator: '}', separator: ',') { record_field }
-
           whitespace
+
           next unless char! '}'
         end
 

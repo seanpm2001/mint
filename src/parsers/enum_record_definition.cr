@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def enum_record_definition
+    def enum_record_definition : Ast::EnumRecordDefinition?
       parse do |start_position, _, error_position|
         fields =
           list(
@@ -8,6 +8,7 @@ module Mint
             separator: ','
           ) { record_definition_field }
 
+        # TODO: Get rid of this at some point
         if error_position < @errors.size
           @errors.delete_at(error_position...)
           next

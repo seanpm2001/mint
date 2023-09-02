@@ -2,7 +2,7 @@ module Mint
   class Parser
     def html_style : Ast::HtmlStyle?
       parse do |start_position|
-        name = parse do
+        name = parse(track: false) do
           next unless word! "::"
           next unless value = variable track: false, extra_chars: ['-']
           value
@@ -14,7 +14,6 @@ module Mint
 
         if char! '('
           whitespace
-
           arguments = list(terminator: ')', separator: ',') { expression }
 
           whitespace

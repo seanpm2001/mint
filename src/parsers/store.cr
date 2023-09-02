@@ -14,27 +14,24 @@ module Mint
         end unless name = type_id
         whitespace
 
-        next unless body =
-                      brackets(
-                        ->{ error :store_expected_opening_bracket do
-                          expected "the opening bracket of a store", word
-                          snippet self
-                        end },
-                        ->{ error :store_expected_closing_bracket do
-                          expected "the closing bracket of a store", word
-                          snippet self
-                        end }) do
-                        items = many { state || function || get || constant || self.comment }
+        body =
+          brackets(
+            ->{ error :store_expected_opening_bracket do
+              expected "the opening bracket of a store", word
+              snippet self
+            end },
+            ->{ error :store_expected_closing_bracket do
+              expected "the closing bracket of a store", word
+              snippet self
+            end },
+            ->(items : Array(Ast::Node)) {
+              error :store_expected_body do
+                expected "the body of a store", word
+                snippet self
+              end if items.all?(Ast::Comment)
+            }) { many { state || function || get || constant || self.comment } }
 
-                        if items.none?(Ast::Function | Ast::Constant | Ast::State | Ast::Get)
-                          next error :store_expected_body do
-                            expected "the body of a store", word
-                            snippet self
-                          end
-                        end
-
-                        items
-                      end
+        next unless body
 
         functions = [] of Ast::Function
         constants = [] of Ast::Constant

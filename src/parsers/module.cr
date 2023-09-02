@@ -9,18 +9,17 @@ module Mint
         whitespace
 
         next error :module_expected_name do
-          expected "name of the module", word
-
           block do
             text "The name of a module must start with an uppercase letter and only"
             text "contain lowercase, uppercase letters and numbers."
           end
 
+          expected "name of the module", word
           snippet self
         end unless name = type_id
         whitespace
 
-        items = brackets(
+        body = brackets(
           ->{ error :module_expected_opening_bracket do
             expected "the opening bracket of a module", word
             snippet self
@@ -28,21 +27,23 @@ module Mint
           ->{ error :module_expected_closing_bracket do
             expected "the closing bracket of a module", word
             snippet self
-          end }) do
+          end },
+          ->(items : Array(Ast::Node)) {
+            error :module_expected_body do
+              expected "the body of the module", word
+              snippet self
+            end if items.reject(Ast::Comment).empty?
+          }) do
           many { function || constant || self.comment }
         end
 
-        next unless items
-        next error :module_expected_body do
-          expected "the body of the module", word
-          snippet self
-        end if items.reject(Ast::Comment).empty?
+        next unless body
 
         functions = [] of Ast::Function
         constants = [] of Ast::Constant
         comments = [] of Ast::Comment
 
-        items.each do |item|
+        body.each do |item|
           case item
           when Ast::Function
             functions << item

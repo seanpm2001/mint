@@ -4,23 +4,23 @@ module Mint
       parse do |start_position|
         next unless char! '`'
 
-        value = many(parse_whitespace: false) do
-          (not_interpolation_part('`') || interpolation).as(Ast::Interpolation | String?)
-        end
+        value =
+          many(parse_whitespace: false) do
+            raw('`').try(&.gsub("\\`", '`')) || interpolation
+          end
 
         next error :js_expected_closing_tick do
           expected "the closing tick of an inlined JavaScript", word
           snippet self
         end unless char! '`'
-
         whitespace
+
         if word! "as"
           whitespace
-
           next error :js_expected_type_or_variable do
             expected "the type of an inlined JavaScript", word
             snippet self
-          end unless type = type_or_type_variable
+          end unless type = self.type || type_variable
         end
 
         Ast::Js.new(
@@ -29,36 +29,6 @@ module Mint
           type: type,
           to: position,
           file: file)
-      end
-    end
-
-    def not_interpolation_part(terminator : Char, stop_on_interpolation : Bool = true) : String?
-      value =
-        if stop_on_interpolation
-          # Until we find either a terminator or interpolation
-          gather { chars { |char| !char.in?(terminator, '#') } }
-        else
-          # Until we find the terminator
-          gather { chars { |char| char != terminator } }
-        end
-
-      if previous_char == '\\'
-        # if we found backslashthen it means it's an escape so we consume it
-        step
-
-        # if we are in an inline JavaScript
-        if previous_char == '`' && terminator == '`'
-          value.to_s.rchop + previous_char
-        else
-          value.to_s + previous_char
-        end
-      elsif char == '#' && next_char != '{' && stop_on_interpolation
-        # If we found a hashtag then it could be an interpolation, if
-        # not we consume the character and return.
-        step
-        value.to_s + '#'
-      else
-        value
       end
     end
   end

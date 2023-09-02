@@ -1,11 +1,9 @@
 module Mint
   class Parser
-    def html_attribute(with_dashes : Bool = true, fixed_name : String? = nil) : Ast::HtmlAttribute?
+    def html_attribute(with_dashes : Bool = true) : Ast::HtmlAttribute?
       parse do |start_position|
         name = variable track: false, extra_chars: with_dashes ? ['-', ':'] : [] of Char
-
         next unless name
-        next if fixed_name && name.value != fixed_name
 
         next error :html_attribute_expected_equal_sign do
           expected "the equal sign of an HTML attribute", word
@@ -38,7 +36,7 @@ module Mint
         next unless value
 
         Ast::HtmlAttribute.new(
-          value: value.as(Ast::Expression),
+          value: value.as(Ast::Node),
           from: start_position,
           to: position,
           file: file,

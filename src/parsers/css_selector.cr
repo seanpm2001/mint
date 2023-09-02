@@ -21,7 +21,7 @@ module Mint
           if only_definitions
             many { comment || css_definition }
           else
-            css_body
+            many { css_node.as(Ast::Node | Nil) }
           end
         end
 

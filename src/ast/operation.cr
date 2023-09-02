@@ -3,8 +3,8 @@ module Mint
     class Operation < Node
       getter left, right, operator
 
-      def initialize(@right : Expression,
-                     @left : Expression,
+      def initialize(@right : Node,
+                     @left : Node,
                      @operator : String,
                      @file : Parser::File,
                      @from : Int64,

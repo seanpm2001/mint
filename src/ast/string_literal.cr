@@ -7,8 +7,8 @@ module Mint
       def initialize(@value : Array(String | Interpolation),
                      @broken : Bool,
                      @file : Parser::File,
-                     @from : Int32,
-                     @to : Int32)
+                     @from : Int64,
+                     @to : Int64)
       end
 
       def string_value

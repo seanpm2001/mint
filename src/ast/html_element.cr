@@ -7,15 +7,15 @@ module Mint
       property? in_component : Bool = false
 
       def initialize(@attributes : Array(HtmlAttribute),
-                     @closing_tag_position : Int32?,
+                     @closing_tag_position : Int64?,
                      @comments : Array(Comment),
                      @styles : Array(HtmlStyle),
                      @children : Array(Node),
                      @ref : Variable?,
                      @tag : Variable,
                      @file : Parser::File,
-                     @from : Int32,
-                     @to : Int32)
+                     @from : Int64,
+                     @to : Int64)
       end
 
       def static?

@@ -6,9 +6,9 @@ module Mint
       def initialize(@arguments : Array(Argument),
                      @expression : Block,
                      @file : Parser::File,
-                     @from : Int32,
+                     @from : Int64,
                      @url : String,
-                     @to : Int32)
+                     @to : Int64)
       end
     end
   end

@@ -4,7 +4,7 @@ module Mint
 
     # The position of the cursor, which is at the character we are currently
     # parsing.
-    getter position : Int32 = 0
+    getter position : Int64 = 0
 
     # The input which is an array of characters because this way it's faster in
     # cases where the original code contains multi-byte characters.

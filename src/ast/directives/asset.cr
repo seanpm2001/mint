@@ -7,8 +7,8 @@ module Mint
 
         def initialize(@path : String,
                        @file : Parser::File,
-                       @from : Int32,
-                       @to : Int32)
+                       @from : Int64,
+                       @to : Int64)
           @real_path = Path[file.path].sibling(path).expand
         end
 

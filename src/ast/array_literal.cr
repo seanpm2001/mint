@@ -5,9 +5,9 @@ module Mint
 
       def initialize(@items : Array(Expression),
                      @file : Parser::File,
-                     @from : Int32,
+                     @from : Int64,
                      @type : Node?,
-                     @to : Int32)
+                     @to : Int64)
       end
 
       def static?

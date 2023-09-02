@@ -5,9 +5,9 @@ module Mint
 
       def initialize(@value : Array(String | Interpolation),
                      @file : Parser::File,
-                     @from : Int32,
+                     @from : Int64,
                      @type : Node?,
-                     @to : Int32)
+                     @to : Int64)
       end
     end
   end

@@ -34,8 +34,8 @@ module Mint
 
     getter unified_modules, unified_locales
 
-    def initialize(@operators = [] of Tuple(Int32, Int32),
-                   @keywords = [] of Tuple(Int32, Int32),
+    def initialize(@operators = [] of Tuple(Int64, Int64),
+                   @keywords = [] of Tuple(Int64, Int64),
                    @records = [] of RecordDefinition,
                    @unified_modules = [] of Module,
                    @unified_locales = [] of Locale,

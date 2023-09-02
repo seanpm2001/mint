@@ -34,8 +34,8 @@ module Mint
     # of line / column (for the LSP it is converted to line /column).
     record Token,
       type : TokenType,
-      from : Int32,
-      to : Int32
+      from : Int64,
+      to : Int64
 
     # We keep a cache of all tokenized nodes to avoid duplications
     getter cache = Set(Ast::Node).new
@@ -157,7 +157,7 @@ module Mint
       end
     end
 
-    def add(from : Int32, to : Int32, type : TokenType)
+    def add(from : Int64, to : Int64, type : TokenType)
       tokens << Token.new(
         type: type,
         from: from,

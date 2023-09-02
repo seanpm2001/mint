@@ -1,6 +1,6 @@
 module Mint
   module TerminalSnippet
-    record Line, contents : String, index : Int32, offset : Int32 do
+    record Line, contents : String, index : Int64, offset : Int64 do
       def contains?(position)
         position >= offset && position <= (offset + size)
       end
@@ -47,7 +47,7 @@ module Mint
 
     extend self
 
-    def render(input : String, filename : String, from : Int32, to : Int32, padding = 4, width = 80)
+    def render(input : String, filename : String, from : Int64, to : Int64, padding = 4, width = 80)
       lines, _ =
         input.lines.reduce({[] of Line, 0}) do |memo, raw|
           items, index = memo

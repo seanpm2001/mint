@@ -12,9 +12,9 @@ module Mint
       def initialize(@expression : Expression,
                      @field : Variable,
                      @file : Parser::File,
-                     @from : Int32,
+                     @from : Int64,
                      @type : Type,
-                     @to : Int32)
+                     @to : Int64)
       end
     end
   end

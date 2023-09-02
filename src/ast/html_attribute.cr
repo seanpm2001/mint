@@ -8,8 +8,8 @@ module Mint
       def initialize(@value : Expression,
                      @name : Variable,
                      @file : Parser::File,
-                     @from : Int32,
-                     @to : Int32)
+                     @from : Int64,
+                     @to : Int64)
       end
 
       def static_value : String

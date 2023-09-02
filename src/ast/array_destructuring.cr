@@ -5,8 +5,8 @@ module Mint
 
       def initialize(@items : Array(Node),
                      @file : Parser::File,
-                     @from : Int32,
-                     @to : Int32)
+                     @from : Int64,
+                     @to : Int64)
       end
 
       # Returns true if the destructuring covers

@@ -203,8 +203,6 @@ module Mint
           function =
             node.functions.find(&.name.value.==(key))
 
-          function.keep_name = true if function
-
           # If the user defined the same function the code goes after it.
           if function && !value.empty?
             compile function, js.statements(value)

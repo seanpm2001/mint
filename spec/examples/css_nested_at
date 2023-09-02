@@ -6,15 +6,15 @@ component Main {
 component Main {
   style root {
     @media (max-width: 100px)
------------------------------------------css_nested_at_expected_closing_bracket
-component Main {
-  style root {
-    @media (max-width: 100px) {
 ----------------------------------------------------css_nested_at_expected_body
 component Main {
   style root {
     @media (max-width: 100px) {
-    }
+-----------------------------------------css_nested_at_expected_closing_bracket
+component Main {
+  style root {
+    @media (max-width: 100px) {
+      color: red;
 -------------------------------------------------------------------------------
 component Main {
   style root {

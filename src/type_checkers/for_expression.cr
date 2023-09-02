@@ -46,11 +46,11 @@ module Mint
           if (is_map && index == 2) || (is_array_or_set && index == 1)
             cache[argument] = NUMBER
 
-            @scope2.add(node, argument.value, argument)
+            scope.add(node, argument.value, argument)
           else
             cache[argument] = subject.parameters[index]
 
-            @scope2.add(node, argument.value, argument)
+            scope.add(node, argument.value, argument)
           end
         end
 

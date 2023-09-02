@@ -1,9 +1,32 @@
 module Mint
   class Parser
-    # NOTE: The order of the parsing is important!
-    def basic_expression : Ast::Expression?
+    def base_expression : Ast::Expression?
+      # Here we parse the nexus of the expression (the part without chains:
+      # access, array access or call).
+      #
+      # We are doing two big cases as an optimization: each parser can be used
+      # standalone and will return nil if it can't parse, but limiting what can
+      # pe parsed avoid a lot of unneccesary cycles.
       left =
         case char
+        when '('
+          parenthesized_expression || inline_function
+        when '-', .ascii_number?
+          number_literal || unary_minus
+        when '!'
+          negated_expression
+        when '"'
+          string_literal
+        when '/'
+          regexp_literal
+        when '.'
+          member_access
+        when '['
+          array_literal
+        when ':'
+          locale_key
+        when '`'
+          js
         when '@'
           documentation_directive ||
             highlight_directive ||
@@ -12,21 +35,6 @@ module Mint
             asset_directive ||
             svg_directive ||
             env
-        when '-'
-          unary_minus
-        when '('
-          parenthesized_expression ||
-            inline_function
-        when '!'
-          negated_expression
-        when '"'
-          string_literal
-        when '/'
-          regexp_literal
-        when ':'
-          locale_key
-        when '['
-          array_literal
         when '<'
           html_expression ||
             html_component ||
@@ -38,22 +46,16 @@ module Mint
             record ||
             tuple_literal ||
             block
-        when '.'
-          member_access
-        when '`'
-          js
-        when .ascii_number?
-          number_literal
         else
-          case word
+          case ascii_word
+          when "true", "false"
+            bool_literal
           when "case"
             case_expression
           when "for"
             for_expression
           when "if"
             if_expression
-          when "true", "false"
-            bool_literal
           when "return"
             return_call
           when "next"
@@ -71,7 +73,7 @@ module Mint
       when Nil
         nil
       else
-        # We try to chain accesses and calls until we can in this loop.
+        # We try to chain accesses and calls until we can.
         loop do
           node =
             if word? "::"

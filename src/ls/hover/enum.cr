@@ -8,7 +8,7 @@ module Mint
         options =
           node.options.map do |option|
             comment =
-              option.comment.try { |value| " - #{value.value.strip}" }
+              option.comment.try { |item| " - #{item.content.strip}" }
 
             params =
               workspace.formatter.format_parameters(option.parameters)
@@ -18,7 +18,7 @@ module Mint
 
         ([
           "**#{node.name.value}#{parameters}**\n",
-          node.comment.try(&.value.strip.+("\n")),
+          node.comment.try(&.content.strip.+("\n")),
         ] + options).compact
       end
     end

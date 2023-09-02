@@ -2,7 +2,7 @@ module Mint
   class Parser
     def comment : Ast::Comment?
       parse do |start_position|
-        value, type =
+        content, type =
           if word! "/*"
             consumed =
               gather { consume { !word?("*/") && !eof? } }.to_s
@@ -23,13 +23,13 @@ module Mint
           end
 
         whitespace # TODO: Figure out why is this is needed
-        next unless value
+        next unless content
 
         Ast::Comment.new(
           from: start_position,
-          value: value,
-          type: type,
+          content: content,
           to: position,
+          type: type,
           file: file)
       end
     end

@@ -3,8 +3,8 @@ module Mint
     def call(lhs : Ast::Expression) : Ast::Call?
       parse do |start_position|
         next unless char! '('
-
         whitespace
+
         arguments = list(
           terminator: ')',
           separator: ','

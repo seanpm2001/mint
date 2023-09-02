@@ -29,7 +29,7 @@ module Mint
 
       if truthy_item.is_a?(Ast::Node)
         variables.each do |var|
-          @scope2.add(truthy_item, var[0], var[2])
+          scope.add(truthy_item, var[0], var[2])
         end
 
         truthy =

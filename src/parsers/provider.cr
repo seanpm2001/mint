@@ -55,8 +55,6 @@ module Mint
           case item
           when Ast::Function
             functions << item
-
-            item.keep_name = true if item.name.value == "update"
           when Ast::State
             states << item
           when Ast::Constant
@@ -65,6 +63,13 @@ module Mint
             comments << item
           when Ast::Get
             gets << item
+          end
+        end
+
+        ast.nodes[start_nodes_position...].each do |node|
+          case node
+          when Ast::Function
+            node.keep_name = true if node.name.value == "update"
           end
         end
 

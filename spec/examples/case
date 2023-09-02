@@ -10,15 +10,15 @@ component Main {
 component Main {
   fun render : String {
     case ("a")
---------------------------------------------------case_expected_closing_bracket
-component Main {
-  fun render : String {
-    case ("a") {
 ---------------------------------------------------------case_expected_branches
 component Main {
   fun render : String {
     case ("a") {
-    }
+--------------------------------------------------case_expected_closing_bracket
+component Main {
+  fun render : String {
+    case ("a") {
+      => "a"
 ------------------------------------------------case_branch_expected_expression
 component Main {
   fun render : String {

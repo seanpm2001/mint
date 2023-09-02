@@ -6,17 +6,17 @@ component Main {
 component Main {
   style root {
     @keyframes name
------------------------------------------css_keyframes_expected_closing_bracket
-component Main {
-  style root {
-    @keyframes name {
 -----------------------------------------------css_keyframes_expected_selectors
 component Main {
   style root {
     @keyframes name {
-    }
-  }
-}
+-----------------------------------------css_keyframes_expected_closing_bracket
+component Main {
+  style root {
+    @keyframes name {
+      0% {
+        color: red;
+      }
 -------------------------------------------------------------------------------
 component Main {
   style root {

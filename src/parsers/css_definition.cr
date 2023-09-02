@@ -11,9 +11,9 @@ module Mint
         whitespace
 
         value =
-          many(parse_whitespace: false) do
+          many(parse_whitespace: false) {
             string_literal || interpolation || raw { char.in_set?("^;{\0\"") }
-          end.map do |item|
+          }.map do |item|
             if item.is_a?(Ast::StringLiteral) && item.static?
               %("#{item.static_value}")
             else
@@ -28,9 +28,9 @@ module Mint
 
         Ast::CssDefinition.new(
           from: start_position,
-          name: name,
-          value: value,
           to: position,
+          value: value,
+          name: name,
           file: file)
       end
     end

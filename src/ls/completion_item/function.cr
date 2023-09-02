@@ -22,7 +22,7 @@ module Mint
           MINT
 
         LSP::CompletionItem.new(
-          documentation: node.comment.try(&.value).to_s,
+          documentation: node.comment.try(&.content).to_s,
           kind: LSP::CompletionItemKind::Function,
           insert_text: snippet,
           detail: "Function",

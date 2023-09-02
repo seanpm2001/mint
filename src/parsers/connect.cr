@@ -17,25 +17,23 @@ module Mint
         end unless word! "exposing"
         whitespace
 
-        keys = brackets(
-          ->{ error :connect_expected_opening_bracket do
-            expected "the opening bracket of a connect", word
-            snippet self
-          end },
-          ->{ error :connect_expected_closing_bracket do
-            expected "the closing bracket of a connect", word
-            snippet self
-          end }
-        ) do
-          list(terminator: '{', separator: ',') do
-            connect_variable
-          end.tap do |items|
-            next error :connect_expected_keys do
-              expected "the exposed entities of a connect", word
+        keys =
+          brackets(
+            ->{ error :connect_expected_opening_bracket do
+              expected "the opening bracket of a connect", word
               snippet self
-            end if items.empty?
-          end
-        end
+            end },
+            ->{ error :connect_expected_closing_bracket do
+              expected "the closing bracket of a connect", word
+              snippet self
+            end },
+            ->(items : Array(Ast::ConnectVariable)) {
+              error :connect_expected_keys do
+                expected "the exposed entities of a connect", word
+                snippet self
+              end if items.empty?
+            }
+          ) { list(terminator: '{', separator: ',') { connect_variable } }
 
         next unless keys
 

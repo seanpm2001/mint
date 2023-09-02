@@ -30,23 +30,26 @@ module Mint
           ->{ error :component_expected_closing_bracket do
             expected "the closing bracket of the component", word
             snippet self
-          end }
+          end },
+          ->(items : Array(Ast::Node)) {
+            error :component_expected_body do
+              expected "the body of a component", word
+              snippet self
+            end if items.reject(Ast::Comment).empty?
+          }
         ) do
           many do
             property ||
-              connect ||
               constant ||
               function ||
+              connect ||
               style ||
               state ||
               use ||
               get ||
               self.comment
-          end.tap do |items|
-            next error :component_expected_body do
-              expected "the body of a component", word
-              snippet self
-            end if items.reject(Ast::Comment).empty?
+            # ^^ This needs to be last because it can eat the documentation
+            # comment of the sub entities.
           end
         end
 
@@ -68,8 +71,6 @@ module Mint
             properties << item
           when Ast::Function
             functions << item
-
-            item.keep_name = true if item.name.value == "render"
           when Ast::Constant
             constants << item
           when Ast::Connect
@@ -88,9 +89,19 @@ module Mint
         end
 
         refs = [] of Tuple(Ast::Variable, Ast::Node)
+        locales = false
 
         ast.nodes[start_nodes_position...].each do |node|
           case node
+          when Ast::LocaleKey
+            locales = true
+          when Ast::Function
+            node.keep_name = true if node.name.value.in?([
+                                       "componentWillUnmount",
+                                       "componentDidUpdate",
+                                       "componentDidMount",
+                                       "render",
+                                     ])
           when Ast::HtmlElement
             node.styles.each do |style|
               style.style_node =
@@ -101,15 +112,15 @@ module Mint
           case node
           when Ast::HtmlComponent,
                Ast::HtmlElement
+            node.in_component = true
+
             if ref = node.ref
               refs << {ref, node.as(Ast::Node)}
             end
-            node.in_component = true
           end
         end
 
         Ast::Component.new(
-          locales: ast.nodes[start_nodes_position...].any?(Ast::LocaleKey),
           global: global || false,
           properties: properties,
           functions: functions,
@@ -118,6 +129,7 @@ module Mint
           connects: connects,
           comments: comments,
           comment: comment,
+          locales: locales,
           styles: styles,
           states: states,
           to: position,

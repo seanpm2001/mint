@@ -7,7 +7,7 @@ module Mint
           if entity = lookup(variable)
             variables[variable] = {entity, entity}
             check!(entity)
-            if target_node = @scope2.resolve(node.field.value, entity).try(&.node)
+            if target_node = scope.resolve(node.field.value, entity).try(&.node)
               variables[node] = {target_node, entity}
               variables[node.field] = {target_node, entity}
               return resolve target_node

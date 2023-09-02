@@ -86,6 +86,19 @@ module Mint
       input[position - 1]? || '\0'
     end
 
+    # Returns the current word (sequence of ascii lowercase letters).
+    def ascii_word
+      index = position
+      word = ""
+
+      while (input[index]? || '\0').ascii_letter?
+        word += input[index]
+        index += 1
+      end
+
+      word
+    end
+
     # Parses any number of ascii latters or numbers.
     def ascii_letters_or_numbers(*, extra_char : Char?)
       chars { |char| char.ascii_letter? || char.ascii_number? || char == extra_char }
@@ -131,12 +144,12 @@ module Mint
       end
     end
 
-    # Returns the word a the cursor.
+    # Returns the word (non whitespace sequence) a the cursor.
     def word : String?
       start_position = position
       word = ""
 
-      while !(eof? || whitespace?) && char.ascii_letter?
+      while !(eof? || whitespace?)
         word += char
         step
       end

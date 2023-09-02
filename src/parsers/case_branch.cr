@@ -5,6 +5,7 @@ module Mint
         unless word! "=>"
           match = destructuring
           whitespace
+
           next unless word! "=>"
         end
 
@@ -15,10 +16,7 @@ module Mint
             many { css_definition }
           else
             next error :case_branch_expected_expression do
-              block do
-                text "A case branch must have an expression."
-              end
-
+              block "A case branch must have an expression."
               expected "the body of a case expression", word
               snippet self
             end unless item = self.expression
@@ -27,7 +25,7 @@ module Mint
           end
 
         Ast::CaseBranch.new(
-          match: match.as(Ast::EnumDestructuring | Ast::TupleDestructuring | Ast::Expression?),
+          match: match.as(Ast::EnumDestructuring | Ast::TupleDestructuring | Ast::Node?),
           expression: expression,
           from: start_position,
           to: position,

@@ -7,7 +7,7 @@ module Mint
             destructure(item, condition)
 
           variables.each do |var|
-            @scope2.add(node, var[0], var[2])
+            scope.add(node, var[0], var[2])
           end
 
           resolve(node.expression)

@@ -28,7 +28,7 @@ module Mint
             end
 
           LSP::CompletionItem.new(
-            documentation: option.comment.try(&.value).to_s,
+            documentation: option.comment.try(&.content).to_s,
             kind: LSP::CompletionItemKind::EnumMember,
             detail: "Enum Option",
             insert_text: snippet,

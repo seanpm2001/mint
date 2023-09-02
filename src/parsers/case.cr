@@ -5,7 +5,7 @@ module Mint
         next unless word! "case"
         whitespace
 
-        parens = char! '('
+        parenthesis = char! '('
         whitespace
 
         await = word! "await"
@@ -20,7 +20,7 @@ module Mint
         next error :case_expected_closing_parenthesis do
           expected "the closing parenthesis of a case expression", word
           snippet self
-        end if parens && !char!(')')
+        end if parenthesis && !char!(')')
         whitespace
 
         body = brackets(
@@ -31,14 +31,15 @@ module Mint
           ->{ error :case_expected_closing_bracket do
             expected "the closing bracket of a case expression", word
             snippet self
-          end }
-        ) { many { case_branch(for_css) || comment } }
+          end },
+          ->(items : Array(Ast::CaseBranch | Ast::Comment)) {
+            error :case_expected_branches do
+              expected "the branches of a case expression", word
+              snippet self
+            end if items.none?(Ast::CaseBranch)
+          }) { many { case_branch(for_css) || comment } }
 
         next unless body
-        next error :case_expected_branches do
-          expected "a branch of a case expression", word
-          snippet self
-        end if body.empty?
 
         branches = [] of Ast::CaseBranch
         comments = [] of Ast::Comment

@@ -6,17 +6,17 @@ module Mint
         Block
       end
 
-      getter value, type
+      getter content, type
 
-      def initialize(@value : String,
-                     @type : Type,
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
+                     @content : String,
                      @from : Int64,
+                     @type : Type,
                      @to : Int64)
       end
 
       def to_html
-        Markd.to_html(value)
+        Markd.to_html(content)
       end
     end
   end

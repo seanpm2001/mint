@@ -44,7 +44,7 @@ module Mint
     property? checking = true
 
     delegate checked, record_field_lookup, component_records, to: artifacts
-    delegate types, variables, ast, lookups, cache, to: artifacts
+    delegate types, variables, ast, lookups, cache, scope, to: artifacts
     delegate assets, resolve_order, locales, argument_order, to: artifacts
 
     delegate format, to: formatter
@@ -84,8 +84,6 @@ module Mint
 
       @languages = ast.unified_locales.map(&.language)
       @artifacts = Artifacts.new(ast)
-
-      @scope2 = Mint::Scope.new(ast)
 
       resolve_records
 
@@ -212,21 +210,21 @@ module Mint
     # ----------------------------------------------------------------------------
 
     def lookup(node : Ast::Variable)
-      @scope2.resolve(node).try(&.node)
+      scope.resolve(node).try(&.node)
     end
 
     def lookup_with_level(node : Ast::Variable)
       # puts "----------------------"
-      # puts @scope2.debug_name(node)
+      # puts scope.debug_name(node)
 
-      # @scope2.scopes[node].each_with_index do |item, index|
-      #   puts @scope2.debug_name(item.node).indent(index * 2)
+      # scope.scopes[node].each_with_index do |item, index|
+      #   puts scope.debug_name(item.node).indent(index * 2)
       #   item.items.each do |key, value|
       #     puts "#{" " * (index * 2)}#{key} -> #{value.class.name}"
       #   end
       # end
 
-      @scope2.resolve(node).try do |item|
+      scope.resolve(node).try do |item|
         {item.node, item.parent}
       end
     end
@@ -449,7 +447,7 @@ module Mint
     end
 
     def with_restricted_top_level_entity(@referee, &)
-      @top_level_entity = @scope2.scopes[@referee][1]?.try(&.node)
+      @top_level_entity = scope.scopes[@referee][1]?.try(&.node)
       yield
     ensure
       @top_level_entity = nil

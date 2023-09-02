@@ -10,7 +10,7 @@ module Mint
 
           while item = items.shift?
             variables.each do |var|
-              @scope2.add(node, var[0], var[2])
+              scope.add(node, var[0], var[2])
             end
 
             # This is to allow recursion
@@ -21,7 +21,7 @@ module Mint
                 cache[target] =
                   static_type_signature(value)
 
-                @scope2.add(item, target.value, target)
+                scope.add(item, target.value, target)
               end
             end
 

@@ -4,7 +4,8 @@ module Mint
       parse do |start_position|
         next unless char! '@'
 
-        name = gather { word!("media") || word!("supports") }
+        name =
+          gather { word!("media") || word!("supports") }
 
         next unless name
         next unless whitespace?
@@ -26,14 +27,15 @@ module Mint
             ->{ error :css_nested_at_expected_closing_bracket do
               expected "the closing bracket of a CSS at rule", word
               snippet self
-            end }) { css_body.as(Array(Ast::Node)) }
+            end },
+            ->(items : Array(Ast::Node)) {
+              error :css_nested_at_expected_body do
+                expected "the body of a CSS at rule", word
+                snippet self
+              end if items.empty?
+            }) { css_body.as(Array(Ast::Node)) }
 
         next unless body
-
-        next error :css_nested_at_expected_body do
-          expected "the body of a CSS at rule", word
-          snippet self
-        end if body.empty?
 
         Ast::CssNestedAt.new(
           from: start_position,

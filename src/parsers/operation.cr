@@ -47,7 +47,7 @@ module Mint
         next error :operation_expected_expression do
           expected "the right side expression of an operation", word
           snippet self
-        end unless right = basic_expression
+        end unless right = base_expression
 
         if next_operator = self.operator
           if OPERATORS[next_operator] > OPERATORS[operator]

@@ -3,7 +3,6 @@ module Mint
     def css_keyframes : Ast::CssKeyframes?
       parse do |start_position|
         next unless word! "@keyframes"
-
         whitespace
 
         name =
@@ -22,16 +21,17 @@ module Mint
           ->{ error :css_keyframes_expected_closing_bracket do
             expected "the closing bracket of a CSS keyframes rule", word
             snippet self
-          end }) do
+          end },
+          ->(items : Array(Ast::Node)) {
+            error :css_keyframes_expected_selectors do
+              expected "the selectors of a CSS keyframes rule", word
+              snippet self
+            end if items.all?(Ast::Comment)
+          }) {
           many { comment || css_selector(only_definitions: true) }
-        end
+        }
 
         next unless selectors
-
-        next error :css_keyframes_expected_selectors do
-          expected "the selectors of a CSS keyframes rule", word
-          snippet self
-        end if selectors.empty?
 
         Ast::CssKeyframes.new(
           from: start_position,

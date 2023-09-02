@@ -14,16 +14,13 @@ module Mint
             ->{ error :css_font_face_expected_closing_bracket do
               expected "the closing bracket of a CSS font-face rule", word
               snippet self
-            end }) do
-            items = many { comment || css_definition }
-
-            next error :css_font_face_expected_definitions do
-              expected "the definitions of a CSS font-face rule", word
-              snippet self
-            end if items.empty?
-
-            items
-          end
+            end },
+            ->(items : Array(Ast::Node)) {
+              error :css_font_face_expected_definitions do
+                expected "the definitions of a CSS font-face rule", word
+                snippet self
+              end if items.none?(Ast::CssDefinition)
+            }) { many { comment || css_definition } }
 
         next unless definitions
 

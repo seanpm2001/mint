@@ -8,8 +8,8 @@ module Mint
           list(terminator: ']', separator: ',') { spread || destructuring }
 
         next if items.empty?
-
         whitespace
+
         next error :array_destructuring_expected_closing_bracket do
           expected "the closing bracket of the array destructuring", word
           snippet self

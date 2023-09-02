@@ -15,12 +15,13 @@ module Mint
           expected "the closing bracket of an array", word
           snippet self
         end unless char! ']'
-        whitespace
 
         type =
-          if word! "of"
+          parse(track: false) do
             whitespace
+            next unless word! "of"
 
+            whitespace
             next error :array_literal_expected_type_or_variable do
               block do
                 text "The type of an"

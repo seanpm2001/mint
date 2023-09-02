@@ -22,9 +22,9 @@ module Mint
     end
 
     # Parses a thing (an ast node). Yielding the start position so the thing
-    # getting parsed can use it. If the block returns nil or if there is an
-    # error we rollback to the start position since it means the parsing
-    # has failed.
+    # getting parsed can use it. If the block returns nil or we rollback to
+    # the start position since it means the parsing has failed.
+    #   track - if true we save the resulting node
     def parse(*, track : Bool = true, &)
       operators_size = ast.operators.size
       keywords_size = ast.keywords.size
@@ -87,32 +87,14 @@ module Mint
     end
 
     # Parses any number of ascii latters or numbers.
-    def ascii_letters_or_numbers
-      chars { |char| char.ascii_letter? || char.ascii_number? }
-    end
-
-    # Parses any number of ascii latters, numbers or dashs.
-    def ascii_letters_numbers_or_dash
-      chars { |char| char.ascii_letter? || char.ascii_number? || char == '-' }
-    end
-
-    # Parses any number of ascii latters, numbers or underscores.
-    def ascii_letters_numbers_or_underscore
-      chars { |char| char.ascii_letter? || char.ascii_number? || char == '_' }
-    end
-
-    # Parses any number of ascii latters, numbers or dot.
-    def ascii_letters_numbers_or_dot
-      chars { |char| char.ascii_letter? || char.ascii_number? || char == '.' }
+    def ascii_letters_or_numbers(*, extra_char : Char?)
+      chars { |char| char.ascii_letter? || char.ascii_number? || char == extra_char }
     end
 
     # Parses any number of ascii uppercase latters, numbers or underscore and
     # must start with an uppercase letter.
     def ascii_uppercase_and_underscore
-      gather do
-        next unless char.ascii_uppercase?
-        chars { |char| char.ascii_uppercase? || char.ascii_number? || char == '_' }
-      end
+      chars { |char| char.ascii_uppercase? || char.ascii_number? || char == '_' }
     end
 
     # Consumes characters while the yielded value is true or we reach the end
@@ -137,7 +119,7 @@ module Mint
       yield
 
       if position > start_position
-        result = substring(start_position, position - start_position)
+        result = file.contents[start_position, position - start_position]
         result unless result.empty?
       end
     end
@@ -184,14 +166,14 @@ module Mint
       end
     end
 
-    # Returns whether the current character is a whitespace.
-    def whitespace?
-      char.ascii_whitespace?
-    end
-
     # Consumes all available whitespace.
     def whitespace : Nil
       chars &.ascii_whitespace?
+    end
+
+    # Returns whether the current character is a whitespace.
+    def whitespace?
+      char.ascii_whitespace?
     end
 
     # Consumes all available whitespace and returns true / false whether
@@ -204,13 +186,6 @@ module Mint
       end
     end
 
-    # Consuming variables
-    # ----------------------------------------------------------------------------
-
-    def type_or_type_variable
-      type || type_variable
-    end
-
     # Parse many things separated by whitespace.
     def many(parse_whitespace : Bool = true, & : -> T?) : Array(T) forall T
       result = [] of T
@@ -218,8 +193,8 @@ module Mint
       loop do
         # Using parse here will not consume the whitespace if
         # the parsing is not successfull.
-        # Consume whitespace
         item = parse(track: false) do
+          # Consume whitespace
           whitespace if parse_whitespace
           yield
         end
@@ -234,49 +209,50 @@ module Mint
       result
     end
 
+    # Parses a list of things, which ends in the terminator character and are
+    # separated by the separator character.
     def list(terminator : Char?, separator : Char, & : -> T?) : Array(T) forall T
       result = [] of T
 
       loop do
-        # Break if we reached the end
-        break if char == terminator
+        item = parse do
+          # Consume whitespace before the next thing
+          whitespace
+
+          # Return nil if we reached the end
+          next if char == terminator
+          yield
+        end
 
         # Break if the block didn't yield anything
-        break unless item = yield
+        break unless item
 
         # Add item to results
         result << item
 
-        # Consume whitespace before the separator
-        whitespace
+        # Using parse here will not consume whitespace if there is no separator.
+        parsed_separator = parse do
+          # Consume whitespace before the separator
+          whitespace
 
-        # Break if there is no separator, consume it otherwise
-        break unless char! separator
+          # Break if there is no separator, consume it otherwise
+          next unless char! separator
 
-        # Consume whitespace
-        whitespace
+          # This is needed to actually finish the consuming.
+          true
+        end
+
+        break unless parsed_separator
       end
 
       result
     end
 
-    # Gets substring out of the original string
-    def substring(from, to)
-      file.contents[from, to]
-    end
+    # Consuming variables
+    # ----------------------------------------------------------------------------
 
-    # Returns the word a the cursor
-    def word : String?
-      start_position = position
-      word = ""
-
-      while !(eof? || whitespace?)
-        word += char
-        step
-      end
-
-      @position = start_position
-      word
+    def type_or_type_variable
+      type || type_variable
     end
 
     # Parses a raw part of the input until we reach the terminator or an

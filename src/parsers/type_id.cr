@@ -5,7 +5,7 @@ module Mint
         value = gather do
           return unless char.ascii_uppercase?
           step
-          ascii_letters_numbers_or_underscore
+          ascii_letters_or_numbers(extra_char: '_')
         end
 
         return unless value

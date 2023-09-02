@@ -4,10 +4,8 @@ module Mint
       parse do |start_position|
         next unless char.ascii_lowercase? || char == '-'
 
-        name = gather do
-          step
-          ascii_letters_numbers_or_dash
-        end.to_s
+        name =
+          gather { ascii_letters_or_numbers(extra_char: '-') }.to_s
 
         next unless char! ':'
         whitespace

@@ -2,45 +2,72 @@ module Mint
   class Parser
     # NOTE: The order of the parsing is important!
     def basic_expression : Ast::Expression?
-      case left =
-        format_directive ||
-          highlight_directive ||
+      left =
+        case char
+        when '@'
           documentation_directive ||
-          svg_directive ||
-          asset_directive ||
-          inline_directive ||
-          env ||
-          locale_key ||
-          here_doc ||
-          string_literal ||
-          regexp_literal ||
-          bool_literal ||
-          number_literal ||
-          unary_minus ||
-          array ||
-          record_update ||
-          record ||
-          tuple_literal ||
-          code_block ||
-          html_element ||
-          html_expression ||
-          html_component ||
-          html_fragment ||
-          member_access ||
-          decode ||
-          encode ||
-          if_expression ||
-          for_expression ||
-          next_call ||
-          return_call ||
-          case_expression ||
+            highlight_directive ||
+            format_directive ||
+            inline_directive ||
+            asset_directive ||
+            svg_directive ||
+            env
+        when '-'
+          unary_minus
+        when '('
           parenthesized_expression ||
-          inline_function ||
-          enum_id ||
-          negated_expression ||
-          js ||
-          void ||
-          variable
+            inline_function
+        when '!'
+          negated_expression
+        when '"'
+          string_literal
+        when '/'
+          regexp_literal
+        when ':'
+          locale_key
+        when '['
+          array_literal
+        when '<'
+          html_expression ||
+            html_component ||
+            html_element ||
+            here_doc ||
+            html_fragment
+        when '{'
+          record_update ||
+            record ||
+            tuple_literal ||
+            block
+        when '.'
+          member_access
+        when '`'
+          js
+        when .ascii_number?
+          number_literal
+        else
+          case word
+          when "case"
+            case_expression
+          when "for"
+            for_expression
+          when "if"
+            if_expression
+          when "true", "false"
+            bool_literal
+          when "return"
+            return_call
+          when "next"
+            next_call
+          when "decode"
+            decode
+          when "encode"
+            encode
+          else
+            enum_id || variable
+          end
+        end
+
+      case left
       when Nil
         nil
       else

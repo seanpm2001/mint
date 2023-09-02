@@ -2,23 +2,12 @@ module Mint
   class Parser
     def array_destructuring : Ast::ArrayDestructuring?
       parse do |start_position|
-        head = parse do
-          next unless char! '['
-          value = spread || destructuring
-          whitespace
-
-          char! ','
-          whitespace
-
-          value
-        end
-
-        next unless head
+        next unless char! '['
 
         items =
-          [head.as(Ast::Node)] &+ list(terminator: ']', separator: ',') do
-            spread || destructuring
-          end
+          list(terminator: ']', separator: ',') { spread || destructuring }
+
+        next if items.empty?
 
         whitespace
         next error :array_destructuring_expected_closing_bracket do

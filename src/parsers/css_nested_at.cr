@@ -26,7 +26,7 @@ module Mint
             ->{ error :css_nested_at_expected_closing_bracket do
               expected "the closing bracket of a CSS at rule", word
               snippet self
-            end }) { css_body }
+            end }) { css_body.as(Array(Ast::Node)) }
 
         next unless body
 

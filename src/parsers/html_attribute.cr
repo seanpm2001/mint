@@ -17,10 +17,10 @@ module Mint
           value
         when char == '"' && (value = string_literal)
           value
-        when char == '[' && (value = array)
+        when char == '[' && (value = array_literal)
           value
         else
-          value = code_block2(
+          value = block(
             ->{ error :html_attribute_expected_opening_bracket do
               expected "the opening bracket of an HTML attribute", word
               snippet self

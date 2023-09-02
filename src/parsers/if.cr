@@ -83,7 +83,7 @@ module Mint
               many { css_definition }
             end
           else
-            code_block2(
+            block(
               opening_bracket_error: thruthy_opening_error,
               closing_bracket_error: thruthy_closing_error,
               statement_error: thruthy_error)
@@ -104,7 +104,7 @@ module Mint
                   many { css_definition }
                 end
               else
-                code_block2(
+                block(
                   opening_bracket_error: else_opening_error,
                   closing_bracket_error: else_closing_error,
                   statement_error: else_error)

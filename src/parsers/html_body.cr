@@ -8,7 +8,7 @@ module Mint
         html_expression ||
         html_fragment ||
         string_literal ||
-        array ||
+        array_literal ||
         if_expression ||
         for_expression ||
         case_expression ||

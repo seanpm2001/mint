@@ -1,16 +1,40 @@
 module Mint
   class Parser
-    def block(&)
-      parse(track: false) do
-        whitespace
-        next unless char! '{'
-        whitespace
+    def block : Ast::Block?
+      parse do |start_position|
+        statements =
+          brackets do
+            many { comment || statement }
+          end
 
-        result = yield
-        whitespace
+        Ast::Block.new(
+          statements: statements,
+          from: start_position,
+          to: position,
+          file: file) if statements
+      end
+    end
 
-        next unless char! '}'
-        result
+    def block(opening_bracket_error : Proc(Nil)? = nil,
+              closing_bracket_error : Proc(Nil)? = nil,
+              statement_error : Proc(Nil)? = nil) : Ast::Block?
+      parse do |start_position|
+        statements =
+          brackets(
+            opening_bracket_error: opening_bracket_error,
+            closing_bracket_error: closing_bracket_error) do
+            many { comment || statement }.tap do |items|
+              next statement_error.call if statement_error && items.none?
+            end
+          end
+
+        next unless statements
+
+        Ast::Block.new(
+          statements: statements,
+          from: start_position,
+          to: position,
+          file: file)
       end
     end
   end

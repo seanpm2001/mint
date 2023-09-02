@@ -33,7 +33,7 @@ module Mint
         whitespace
 
         body =
-          code_block2(
+          block(
             ->{ error :for_expected_opening_bracket do
               expected "the opening bracket of a for expression", word
               snippet self
@@ -55,7 +55,7 @@ module Mint
             whitespace
 
             item =
-              code_block2(
+              block(
                 ->{ error :for_condition_expected_opening_bracket do
                   expected "the opening bracket of a for condition", word
                   snippet self

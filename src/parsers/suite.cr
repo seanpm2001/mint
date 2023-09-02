@@ -20,17 +20,14 @@ module Mint
             ->{ error :suite_expected_closing_bracket do
               expected "the closing bracket of a suite", word
               snippet self
-            end }
-          ) do
-            items = many { test || constant || comment }
-
-            next error :suite_expected_body do
-              expected "the body of a suite", word
-              snippet self
-            end if items.none?(Ast::Test | Ast::Constant)
-
-            items
-          end
+            end },
+            ->(items : Array(Ast::Node)) {
+              error :suite_expected_body do
+                expected "the body of a suite", word
+                snippet self
+              end if items.none?(Ast::Test | Ast::Constant)
+            }
+          ) { many { test || constant || comment } }
 
         next unless body
 

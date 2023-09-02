@@ -14,8 +14,8 @@ module Mint
           expected "the path of an svg directive", word
           snippet self
         end unless path = gather { chars { char != ')' } }.presence.try(&.strip)
-
         whitespace
+
         next error :svg_directive_expected_closing_parenthesis do
           expected "the closing parenthesis of an svg directive", word
           snippet self

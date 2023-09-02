@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def string_literal(with_interpolation : Bool = true) : Ast::StringLiteral?
+    def string_literal(*, with_interpolation : Bool = true) : Ast::StringLiteral?
       parse do |start_position|
         next unless char! '"'
 
@@ -29,7 +29,7 @@ module Mint
           whitespace
 
           literal =
-            string_literal(with_interpolation)
+            string_literal(with_interpolation: with_interpolation)
 
           next error :string_expected_other_string do
             expected "another string literal after a string separator", word

@@ -215,6 +215,7 @@ module Mint
 
       case node
       when Ast::Directives::Documentation,
+           Ast::Directives::Highlight,
            Ast::Directives::Inline,
            Ast::Directives::Asset,
            Ast::Directives::Svg,
@@ -229,7 +230,6 @@ module Mint
            Ast::Comment,
            Ast::Void,
            Ast::Env
-        # These we can safely ignore.
       when Ast::StringLiteral,
            Ast::HereDoc,
            Ast::Js

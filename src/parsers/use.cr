@@ -17,8 +17,9 @@ module Mint
         end unless item = record
         whitespace
 
-        if word! "when", include_whitespace: true
+        if word! "when"
           whitespace
+
           condition = brackets(
             ->{ error :use_expected_condition_opening_bracket do
               expected "the opening bracket of a use condition", word

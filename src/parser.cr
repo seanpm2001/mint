@@ -136,7 +136,7 @@ module Mint
       start_position = position
       word = ""
 
-      while !(eof? || whitespace?)
+      while !(eof? || whitespace?) && char.ascii_letter?
         word += char
         step
       end
@@ -153,15 +153,14 @@ module Mint
     end
 
     # Consumes a word and steps the cursor forward if successful.
-    def word!(expected : String, *, include_whitespace : Bool = false) : Bool
+    def word!(expected : String) : Bool
       if word?(expected)
-        whitespace! if include_whitespace
+        @position += expected.size
 
         if word.chars.all?(&.ascii_lowercase?) && !word.blank? && word != "or"
           @ast.keywords << {position, position + word.size}
         end
 
-        @position += expected.size
         true
       else
         false
@@ -253,7 +252,8 @@ module Mint
     # Parses a block surrounded by brackets.
     def brackets(opening_bracket_error : Proc(Nil)? = nil,
                  closing_bracket_error : Proc(Nil)? = nil,
-                 &)
+                 empty_check : Proc(T, Nil)? = nil,
+                 & : -> T?) forall T
       parse(track: false) do
         unless char! '{'
           case item = opening_bracket_error
@@ -265,7 +265,7 @@ module Mint
         end
 
         whitespace
-        result = yield
+        result = yield.tap { |value| empty_check.try(&.call(value)) }
         whitespace
 
         unless char! '}'

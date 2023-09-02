@@ -6,7 +6,7 @@ module Mint
         whitespace
 
         content =
-          code_block2(
+          block(
             ->{ error :highlight_directive_expected_opening_bracket do
               expected "the opening bracket of a highlight directive", word
               snippet self

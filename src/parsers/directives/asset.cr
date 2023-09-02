@@ -14,8 +14,8 @@ module Mint
           expected "the path of an asset directive", word
           snippet self
         end unless path = gather { chars { char != ')' } }.presence.try(&.strip)
-
         whitespace
+
         next error :asset_directive_expected_closing_parenthesis do
           expected "the closing parenthesis of an asset directive", word
           snippet self

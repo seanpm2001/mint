@@ -25,7 +25,7 @@ module Mint
           end
 
         body =
-          code_block2(->{ error :get_expected_opening_bracket do
+          block(->{ error :get_expected_opening_bracket do
             expected "the opening bracket of a get", word
             snippet self
           end },

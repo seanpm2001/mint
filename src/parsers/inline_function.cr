@@ -30,7 +30,7 @@ module Mint
           end
 
         body =
-          code_block2(
+          block(
             ->{ error :inline_function_expected_opening_bracket do
               expected "the opening bracket of an inline function", word
               snippet self

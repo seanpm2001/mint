@@ -40,7 +40,7 @@ module Mint
           end
 
         body =
-          code_block2(
+          block(
             ->{ error :function_expected_opening_bracket do
               expected "the opening bracket of a function", word
               snippet self

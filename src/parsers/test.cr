@@ -14,7 +14,7 @@ module Mint
         whitespace
 
         expression =
-          code_block2(
+          block(
             ->{ error :test_expected_opening_bracket do
               expected "the opening bracket of a test", word
               snippet self

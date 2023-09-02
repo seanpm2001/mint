@@ -26,32 +26,21 @@ module Mint
     # error we rollback to the start position since it means the parsing
     # has failed.
     def parse(*, track : Bool = true, &)
-      rollback = begin
-        operators_size = ast.operators.size
-        keywords_size = ast.keywords.size
-        nodes_size = ast.nodes.size
-        start_position = position
+      operators_size = ast.operators.size
+      keywords_size = ast.keywords.size
+      nodes_size = ast.nodes.size
+      start_position = position
 
-        ->{
+      (yield position, nodes_size, @errors.size).tap do |node|
+        case node
+        when Ast::Node
+          ast.nodes << node if track
+        when Nil
           ast.operators.delete_at(operators_size...)
           ast.keywords.delete_at(keywords_size...)
           ast.nodes.delete_at(nodes_size...)
           @position = start_position
-        }
-      end
-
-      begin
-        (yield position, nodes_size).tap do |node|
-          case node
-          when Ast::Node
-            ast.nodes << node if track
-          when Nil
-            rollback.call
-          end
         end
-      rescue error : Error
-        rollback.call
-        raise error
       end
     end
 

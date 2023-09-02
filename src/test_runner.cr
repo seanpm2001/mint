@@ -110,7 +110,7 @@ module Mint
       when "dot"
         DotReporter.new
       else
-        error :invalid_reporter do
+        error! :invalid_reporter do
           block do
             text "There is no reporter with the name:"
             bold @flags.reporter
@@ -129,7 +129,7 @@ module Mint
         .compact_map { |item| Process.find_executable(item) }
         .first?
 
-      error :browser_not_found do
+      error! :browser_not_found do
         block do
           text "I cannot find the executable of browser:"
           bold @flags.browser
@@ -165,7 +165,7 @@ module Mint
           url,
         ])
       else
-        error :invalid_browser do
+        error! :invalid_browser do
           block do
             text "I cannot run the tests in the given browser:"
             bold @flags.browser

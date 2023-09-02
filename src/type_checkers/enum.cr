@@ -13,7 +13,7 @@ module Mint
       end
 
       node.parameters.each do |parameter|
-        error :enum_unused_parameter do
+        error! :enum_unused_parameter do
           block do
             text "The parameter"
             bold parameter.value
@@ -40,7 +40,7 @@ module Mint
           param =
             names.find(&.value.==(parameter.value))
 
-          error :enum_not_defined_parameter do
+          error! :enum_not_defined_parameter do
             block do
               text "The parameter"
               bold parameter.value

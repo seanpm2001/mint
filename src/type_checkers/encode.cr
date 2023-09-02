@@ -11,7 +11,7 @@ module Mint
           end
         end
 
-      error :encode_complex_type do
+      error! :encode_complex_type do
         snippet "This type cannot be automatically encoded:", expression
 
         block do

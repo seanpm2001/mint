@@ -6,7 +6,7 @@ module Mint
 
       raise "" unless type
 
-      error :decode_complex_type do
+      error! :decode_complex_type do
         block "This type cannot be automatically decoded:"
 
         snippet "Only these types and records containing them cantext be automatically decoded:", type
@@ -34,7 +34,7 @@ module Mint
         expression =
           resolve item
 
-        error :decode_expected_object do
+        error! :decode_expected_object do
           block do
             text "Only"
             code "Object"

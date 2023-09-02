@@ -24,25 +24,25 @@ module Mint
           snippet self
         end unless subscription = type_id
 
-        body = block2(
-          ->{ error :provider_expected_opening_bracket do
-            expected "the opening bracket of a provider", word
-            snippet self
-          end },
-          ->{ error :provider_expected_closing_bracket do
-            expected "the closing bracket of a provider", word
-            snippet self
-          end }
-        ) do
-          items = many { function || state || get || constant || self.comment }
+        next unless body = block2(
+                      ->{ error :provider_expected_opening_bracket do
+                        expected "the opening bracket of a provider", word
+                        snippet self
+                      end },
+                      ->{ error :provider_expected_closing_bracket do
+                        expected "the closing bracket of a provider", word
+                        snippet self
+                      end }
+                    ) do
+                      items = many { function || state || get || constant || self.comment }
 
-          next error :provider_expected_body do
-            expected "the body of a provider", word
-            snippet self
-          end if items.reject(Ast::Comment).empty?
+                      next error :provider_expected_body do
+                        expected "the body of a provider", word
+                        snippet self
+                      end if items.reject(Ast::Comment).empty?
 
-          items
-        end
+                      items
+                    end
 
         functions = [] of Ast::Function
         constants = [] of Ast::Constant

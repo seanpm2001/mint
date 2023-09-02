@@ -12,7 +12,7 @@ module Mint
           end
         end || [] of VariableScope
 
-      error :if_condition_type_mismatch do
+      error! :if_condition_type_mismatch do
         block do
           text "The"
           bold "condition of an if expression"
@@ -39,7 +39,7 @@ module Mint
           falsy =
             resolve falsy_item.as(Ast::Node)
 
-          error :if_else_type_mismatch do
+          error! :if_else_type_mismatch do
             block do
               text "The"
               bold "falsy (else) branch of an if expression"
@@ -50,7 +50,7 @@ module Mint
             snippet falsy_item.as(Ast::Node)
           end unless Comparer.compare(truthy, falsy)
         else
-          error :if_expected_else do
+          error! :if_expected_else do
             block do
               text "This"
               bold "if expression"

@@ -185,14 +185,14 @@ module Mint
     end
 
     def add_record(record : Record, node)
-      error :record_with_holes do
+      error! :record_with_holes do
         block "Records with type variables are not allow at this time."
         snippet "The record in question is defined here:", node
       end if record.have_holes?
 
       other = @record_names[record.name]?
 
-      error :record_name_conflict do
+      error! :record_name_conflict do
         block do
           text "There is already a"
           bold "record"
@@ -239,7 +239,7 @@ module Mint
     end
 
     def invalid_self_reference(referee : Ast::Node, node : Ast::Node)
-      error :invalid_self_reference do
+      error! :invalid_self_reference do
         block "You are trying to reference an other entity in a top level entity before it is initialized."
 
         snippet "Then entity you are referencing:", referee
@@ -267,7 +267,7 @@ module Mint
             when Ast::Function, Ast::InlineFunction
               static_type_signature(node)
             else
-              error :recursion do
+              error! :recursion do
                 snippet "I found a recursion in the following snippet:", node
                 block "Recursion is not supported at this time by the language."
                 snippet "The last step in the recursion was here:", @stack.last
@@ -313,7 +313,7 @@ module Mint
       what : String,
       name : String
     )
-      error :global_name_conflict do
+      error! :global_name_conflict do
         block do
           text "There is already a"
           bold what
@@ -393,7 +393,7 @@ module Mint
               ""
             end
 
-          error :entity_name_conflict do
+          error! :entity_name_conflict do
             block do
               text "There is already a"
               bold what

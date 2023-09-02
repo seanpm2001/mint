@@ -5,7 +5,7 @@ module Mint
         argument_type =
           resolve argument
 
-        error :route_param_invalid do
+        error! :route_param_invalid do
           block do
             text "The type of parameter "
             bold argument.name.value

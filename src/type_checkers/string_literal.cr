@@ -7,7 +7,7 @@ module Mint
           item_type =
             resolve item
 
-          error :string_literal_interpolation_type_mismatch do
+          error! :string_literal_interpolation_type_mismatch do
             block "An interpolation in string is causing a mismatch."
 
             snippet "The expected type is:", STRING

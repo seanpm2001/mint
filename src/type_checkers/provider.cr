@@ -16,7 +16,7 @@ module Mint
       subscription =
         records.find(&.name.==(node.subscription.value))
 
-      error :provider_not_found_subscription do
+      error! :provider_not_found_subscription do
         block do
           text "I was looking for the record type of the subscription"
           bold node.subscription.value

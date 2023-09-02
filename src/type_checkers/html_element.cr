@@ -6,7 +6,7 @@ module Mint
 
     def check(node : Ast::HtmlElement) : Checkable
       unless node.styles.empty?
-        error :html_element_style_outside_of_component do
+        error! :html_element_style_outside_of_component do
           block "Referencing elements are not allowed outside of components."
 
           snippet node
@@ -16,7 +16,7 @@ module Mint
       end
 
       node.ref.try do |ref|
-        error :html_element_reference_outside_of_component do
+        error! :html_element_reference_outside_of_component do
           block "Styling of elements are not allowed outside of components."
 
           snippet ref

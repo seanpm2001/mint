@@ -13,27 +13,27 @@ module Mint
           snippet self
         end unless name = type_id
 
-        body =
-          block2(
-            ->{ error :store_expected_opening_bracket do
-              expected "the opening bracket of a store", word
-              snippet self
-            end },
-            ->{ error :store_expected_closing_bracket do
-              expected "the closing bracket of a store", word
-              snippet self
-            end }) do
-            items = many { state || function || get || constant || self.comment }
+        next unless body =
+                      block2(
+                        ->{ error :store_expected_opening_bracket do
+                          expected "the opening bracket of a store", word
+                          snippet self
+                        end },
+                        ->{ error :store_expected_closing_bracket do
+                          expected "the closing bracket of a store", word
+                          snippet self
+                        end }) do
+                        items = many { state || function || get || constant || self.comment }
 
-            if items.none?(Ast::Function | Ast::Constant | Ast::State | Ast::Get)
-              next error :store_expected_body do
-                expected "the body of a store", word
-                snippet self
-              end
-            end
+                        if items.none?(Ast::Function | Ast::Constant | Ast::State | Ast::Get)
+                          next error :store_expected_body do
+                            expected "the body of a store", word
+                            snippet self
+                          end
+                        end
 
-            items
-          end
+                        items
+                      end
 
         functions = [] of Ast::Function
         constants = [] of Ast::Constant

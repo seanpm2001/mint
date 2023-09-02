@@ -28,7 +28,7 @@ module Mint
             unified_branch =
               Comparer.compare(type, resolved)
 
-            error :case_branch_not_matches do
+            error! :case_branch_not_matches do
               block do
                 text "The return type of the"
                 bold "#{(index + 2)}. branch"
@@ -46,12 +46,12 @@ module Mint
       catch_all =
         node.branches.find(&.match.nil?)
 
-      case_unnecessary_all = ->(catch_node : Ast::Node) { error :case_unnecessary_all do
+      case_unnecessary_all = ->(catch_node : Ast::Node) { error! :case_unnecessary_all do
         block "All possibilities of the case expression are covered."
         snippet "This branch is not needed and can be safely removed.", catch_node
       end }
 
-      case_not_covered = ->{ error :case_not_covered do
+      case_not_covered = ->{ error! :case_not_covered do
         block "Not all possibilities of a case expression are covered."
         block "To cover all remaining possibilities add an empty case branch:"
 
@@ -94,7 +94,7 @@ module Mint
               "#{format parent.name}::#{formatter.replace_skipped(format(option.value))}"
             end.join('\n')
 
-          error :case_enum_not_covered do
+          error! :case_enum_not_covered do
             block "Not all possibilities of a case expression are covered."
             block "To cover all remaining possibilities create branches for the following options:"
 

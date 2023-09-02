@@ -6,7 +6,7 @@ module Mint
         switch this throw typeof var void while yield state)
 
     def check(node : Ast::Variable) : Checkable
-      error :variable_reserved do
+      error! :variable_reserved do
         block do
           text "The"
           bold node.value
@@ -18,7 +18,7 @@ module Mint
 
       item = lookup_with_level(node)
 
-      error :variable_missing do
+      error! :variable_missing do
         block do
           text "I could not find a variable, function or property with the name:"
           bold node.value

@@ -4,7 +4,7 @@ module Mint
       component =
         node.component_node
 
-      error :html_component_not_found_component do
+      error! :html_component_not_found_component do
         block do
           text "I was looking for a component named"
           bold node.component.value
@@ -14,7 +14,7 @@ module Mint
         snippet node
       end unless component
 
-      error :html_component_global_component do
+      error! :html_component_global_component do
         block do
           text "The component named"
           bold node.component.value
@@ -39,7 +39,7 @@ module Mint
       component.properties.each do |property|
         next if property.default
 
-        error :html_component_attribute_required do
+        error! :html_component_attribute_required do
           block "One of the required properties were not specified for a component."
 
           snippet "The property in question is:", property
@@ -48,7 +48,7 @@ module Mint
       end
 
       node.ref.try do |ref|
-        error :html_component_reference_outside_of_component do
+        error! :html_component_reference_outside_of_component do
           block "Referencing components are not allowed outside of components."
           snippet ref
         end unless node.in_component?

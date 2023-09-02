@@ -9,7 +9,7 @@ module Mint
            Comparer.compare(HTML_CHILDREN, type) ||
            Comparer.compare(TEXT_CHILDREN, type)
         else
-          error :html_content_type_mismatch do
+          error! :html_content_type_mismatch do
             block "A child node of an element or component has an invalid type."
             block "I was expecting one of the following types:"
 

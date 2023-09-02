@@ -33,7 +33,7 @@ module Mint
         last =
           cache[statements.last]
 
-        error :statement_last_target do
+        error! :statement_last_target do
           block do
             text "The"
             bold "last statement"
@@ -50,7 +50,7 @@ module Mint
             type =
               cache[item]
 
-            error :statement_return_type_mismatch do
+            error! :statement_return_type_mismatch do
               block "The type of a return call does not match the return type of the block."
 
               expected last, type

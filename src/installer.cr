@@ -156,7 +156,7 @@ module Mint
                 "#{item[0][:version]} by #{item[2]} from #{item[1][:name]}:#{item[1][:version]}"
               end
 
-          error :installer_failed_to_install do
+          error! :installer_failed_to_install do
             block "Failed to satisfy the following constraint:"
 
             block do

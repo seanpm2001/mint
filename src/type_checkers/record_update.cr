@@ -12,7 +12,7 @@ module Mint
           item
         end
 
-      error :record_update_not_updating_record do
+      error! :record_update_not_updating_record do
         block do
           text "The"
           bold "target of a record update"
@@ -34,7 +34,7 @@ module Mint
         value_type =
           target.fields[field.key.value]?
 
-        error :record_update_not_found_key do
+        error! :record_update_not_found_key do
           block do
             text "The field"
             bold field.key.value
@@ -45,7 +45,7 @@ module Mint
           snippet field
         end unless value_type
 
-        error :record_update_type_mismatch do
+        error! :record_update_type_mismatch do
           block do
             text "One of the updated fields do not match its type."
           end

@@ -22,7 +22,7 @@ module Mint
         rest.each_with_index do |item, index|
           type = resolve item
 
-          return error :array_not_matches do
+          return error! :array_not_matches do
             block do
               text "The"
               bold "#{ordinal(index + 2)} item"
@@ -42,7 +42,7 @@ module Mint
           final_type =
             Comparer.compare(inferred_type, defined_type)
 
-          error :array_not_matches_defined_type do
+          error! :array_not_matches_defined_type do
             block do
               text "The"
               bold "defined type"

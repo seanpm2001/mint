@@ -1,7 +1,7 @@
 module Mint
   class TypeChecker
     def check(node : Ast::ReturnCall) : Checkable
-      error :return_call_invalid do
+      error! :return_call_invalid do
         block do
           text "A"
           bold "return call "

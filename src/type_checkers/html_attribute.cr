@@ -4,7 +4,7 @@ module Mint
       got =
         resolve node.value
 
-      error :html_attribute_fragment_key_type_mismatch do
+      error! :html_attribute_fragment_key_type_mismatch do
         block do
           text "The"
           bold "key"
@@ -27,7 +27,7 @@ module Mint
       expected =
         case node.name.value.downcase
         when "ref"
-          error :html_element_ref_forbidden do
+          error! :html_element_ref_forbidden do
             block "The use of ref attribute is forbidden."
             block "If you want to save a reference to an element, use the as keyword."
             snippet node
@@ -37,7 +37,7 @@ module Mint
         when "readonly", "disabled", "checked"
           [BOOL]
         when "className"
-          error :html_element_class_name_forbidden do
+          error! :html_element_class_name_forbidden do
             block "The className attribute on elements are forbidden."
 
             block do
@@ -54,7 +54,7 @@ module Mint
           [STRING]
         end
 
-      error :html_attribute_element_attribute_type_mismatch do
+      error! :html_attribute_element_attribute_type_mismatch do
         block do
           text "The type of the value for the property"
           bold node.name.value
@@ -77,7 +77,7 @@ module Mint
 
       case node.name.value
       when "key"
-        error :html_attribute_component_key_type_mismatch do
+        error! :html_attribute_component_key_type_mismatch do
           block do
             text "The"
             bold "key"
@@ -95,7 +95,7 @@ module Mint
             .properties
             .find(&.name.value.==(node.name.value))
 
-        error :html_attribute_not_found_component_property do
+        error! :html_attribute_not_found_component_property do
           block do
             text "I was looking for the property"
             bold node.name.value
@@ -115,7 +115,7 @@ module Mint
         prop_type =
           resolve prop
 
-        error :html_attribute_component_property_type_mismatch do
+        error! :html_attribute_component_property_type_mismatch do
           block do
             text "The type of the value for the property"
             bold prop.name.value

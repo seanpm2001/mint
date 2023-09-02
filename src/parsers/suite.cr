@@ -13,26 +13,26 @@ module Mint
 
         whitespace
 
-        body =
-          block2(
-            ->{ error :suite_expected_opening_bracket do
-              expected "the opening bracket of a suite", word
-              snippet self
-            end },
-            ->{ error :suite_expected_closing_bracket do
-              expected "the closing bracket of a suite", word
-              snippet self
-            end }
-          ) do
-            items = many { test || constant || comment }
+        next unless body =
+                      block2(
+                        ->{ error :suite_expected_opening_bracket do
+                          expected "the opening bracket of a suite", word
+                          snippet self
+                        end },
+                        ->{ error :suite_expected_closing_bracket do
+                          expected "the closing bracket of a suite", word
+                          snippet self
+                        end }
+                      ) do
+                        items = many { test || constant || comment }
 
-            next error :suite_expected_body do
-              expected "the body of a suite", word
-              snippet self
-            end if items.none?(Ast::Test | Ast::Constant)
+                        next error :suite_expected_body do
+                          expected "the body of a suite", word
+                          snippet self
+                        end if items.none?(Ast::Test | Ast::Constant)
 
-            items
-          end
+                        items
+                      end
 
         comments = [] of Ast::Comment
         constants = [] of Ast::Constant

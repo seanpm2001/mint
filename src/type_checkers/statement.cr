@@ -14,7 +14,7 @@ module Mint
           end
         end
 
-      error :statement_return_required do
+      error! :statement_return_required do
         block do
           text "This"
           bold "statement"

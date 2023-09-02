@@ -1,7 +1,7 @@
 module Mint
   class TypeChecker
     def check(node : Ast::Directives::Asset) : Checkable
-      error :asset_directive_expected_file do
+      error! :asset_directive_expected_file do
         block "The path specified for an asset directive does not exists."
 
         block do

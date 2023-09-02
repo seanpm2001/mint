@@ -19,14 +19,14 @@ module Mint
       target =
         resolve node.expression
 
-      error :access_not_record do
+      error! :access_not_record do
         snippet "You are trying to access a field on an object which is not a record:", target
         snippet node
       end unless target.is_a?(Record)
 
       new_target = target.fields[node.field.value]?
 
-      error :access_field_not_found do
+      error! :access_field_not_found do
         block do
           text "The accessed field"
           code node.field.value

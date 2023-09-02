@@ -42,35 +42,39 @@ module Mint
       end
     end
 
-    def operation(left : Ast::Expression, operator : String) : Ast::Operation
-      error :operation_expected_expression do
-        expected "the right side expression of an operation", word
-        snippet self
-      end unless right = basic_expression
+    def operation(left : Ast::Expression, operator : String) : Ast::Operation?
+      parse do
+        next error :operation_expected_expression do
+          expected "the right side expression of an operation", word
+          snippet self
+        end unless right = basic_expression
 
-      if next_operator = self.operator
-        if OPERATORS[next_operator] > OPERATORS[operator]
-          right = operation(right, next_operator)
-        else
-          return operation(
-            Ast::Operation.new(
-              right: right,
-              left: left,
-              operator: operator,
-              from: left.from,
-              to: right.to,
-              input: data),
-            next_operator)
+        if next_operator = self.operator
+          if OPERATORS[next_operator] > OPERATORS[operator]
+            right = operation(right, next_operator)
+          else
+            return operation(
+              Ast::Operation.new(
+                operator: operator,
+                from: left.from,
+                to: right.to,
+                right: right,
+                input: data,
+                left: left),
+              next_operator)
+          end
         end
-      end
 
-      Ast::Operation.new(
-        operator: operator,
-        from: left.from,
-        to: right.to,
-        right: right,
-        input: data,
-        left: left)
+        next unless right
+
+        Ast::Operation.new(
+          operator: operator,
+          from: left.from,
+          to: right.to,
+          right: right,
+          input: data,
+          left: left)
+      end
     end
   end
 end

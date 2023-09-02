@@ -4,7 +4,7 @@ module Mint
       expression =
         resolve node.expression
 
-      error :unary_minus_not_number do
+      error! :unary_minus_not_number do
         block "An unary minuses expression must evaluate to number."
         expected NUMBER, expression
         snippet node

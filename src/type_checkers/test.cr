@@ -9,7 +9,7 @@ module Mint
       if Comparer.compare(type, BOOL) ||
          Comparer.compare(type, TEST_CONTEXT)
       else
-        error :test_type_mismatch do
+        error! :test_type_mismatch do
           block "The type of a test does not match any of the allowed types."
           block "I was expecting one of:"
 

@@ -58,7 +58,7 @@ module Mint
 
       # Checking for properties in Main
       if node.name.value == "Main" && (property = node.properties.first?)
-        error :component_main_properties do
+        error! :component_main_properties do
           block do
             text "The"
             bold "Main"
@@ -75,7 +75,7 @@ module Mint
         name = variable.value
         other = memo[name]?
 
-        error :component_reference_name_conflict do
+        error! :component_reference_name_conflict do
           block do
             text "There are multiple references with the name:"
             bold "#{name}."
@@ -94,7 +94,7 @@ module Mint
         name = style.name.value
         other = memo[name]?
 
-        error :component_style_name_conflict do
+        error! :component_style_name_conflict do
           block do
             text "There are multiple style definitions with the name:"
             bold "#{name}."
@@ -112,7 +112,7 @@ module Mint
       node.connects.each do |connect|
         other = (node.connects - [connect]).find(&.store.value.==(connect.store.value))
 
-        return error :component_multiple_stores do
+        return error! :component_multiple_stores do
           block do
             text "The component is connected to the store"
             bold connect.store.value
@@ -130,7 +130,7 @@ module Mint
           variable = key.name || key.variable
           other = checked[variable.value]?
 
-          error :component_exposed_name_conflict do
+          error! :component_exposed_name_conflict do
             block do
               text "You cannot expose"
               bold variable.value
@@ -149,7 +149,7 @@ module Mint
           variable = key.name || key.variable
           other = memo[variable.value]?
 
-          error :component_multiple_exposed do
+          error! :component_multiple_exposed do
             block do
               text "The function or property"
               bold variable.value
@@ -169,7 +169,7 @@ module Mint
       node.uses.each do |use|
         other = (node.uses - [use]).find(&.provider.value.==(use.provider.value))
 
-        error :component_multiple_providers do
+        error! :component_multiple_providers do
           block do
             text "You are subcribing to the provider"
             bold other.provider.value
@@ -187,7 +187,7 @@ module Mint
       resolve node.states
       resolve node.uses
 
-      error :component_no_render_function do
+      error! :component_no_render_function do
         block do
           text "A component must have a"
           bold "render"
@@ -208,7 +208,7 @@ module Mint
               Comparer.compare(type, Type.new("Function", [item] of Checkable))
             end
 
-          error :component_render_function_mismatch do
+          error! :component_render_function_mismatch do
             block do
               text "I was expecting the type of the"
               bold "render"
@@ -225,7 +225,7 @@ module Mint
           type =
             resolve function
 
-          error :component_lifecycle_function_mismatch do
+          error! :component_lifecycle_function_mismatch do
             block do
               text "The type of the function"
               bold function.name.value

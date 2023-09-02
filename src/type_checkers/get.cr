@@ -15,7 +15,7 @@ module Mint
         resolved =
           Comparer.compare(body_type, return_type)
 
-        error :get_type_mismatch do
+        error! :get_type_mismatch do
           block "The return type of a get does not match its type definition."
 
           expected return_type, body_type

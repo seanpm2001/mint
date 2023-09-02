@@ -23,7 +23,7 @@ module Mint
           resolved =
             Comparer.compare type, default
 
-          error :property_type_mismatch do
+          error! :property_type_mismatch do
             block do
               text "The type of the default value of the"
               bold node.name.value
@@ -40,7 +40,7 @@ module Mint
         when {Nil, Checkable}
           type
         else
-          error :property_type_or_default_needed do
+          error! :property_type_or_default_needed do
             block do
               text "The"
               bold "type"
@@ -53,7 +53,7 @@ module Mint
           end
         end
 
-      error :property_with_type_variables do
+      error! :property_with_type_variables do
         block "A properties type contains type variables."
         block "Type variables in properties are not allow at this time."
 

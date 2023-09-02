@@ -16,7 +16,7 @@ module Mint
           end
 
         unless node.name.starts_with?('-')
-          error :css_definition_no_property do
+          error! :css_definition_no_property do
             block do
               text "There is no CSS property with the name:"
               code node.name
@@ -26,7 +26,7 @@ module Mint
           end unless CSS_PROPERTY_NAMES.includes?(node.name)
         end
 
-        error :css_definition_type_mismatch do
+        error! :css_definition_type_mismatch do
           block do
             text "The type of the value for the CSS property"
             bold node.name

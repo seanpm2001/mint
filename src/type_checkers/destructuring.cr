@@ -11,7 +11,7 @@ module Mint
     alias VariableScope = Tuple(String, Checkable, Ast::Node)
 
     def destructuring_type_mismatch(expected : Checkable, got : Checkable, node : Ast::Node)
-      error :destructuring_type_mismatch do
+      error! :destructuring_type_mismatch do
         block "A value does not match its supposed type."
 
         snippet "I was expecting:", expected
@@ -69,7 +69,7 @@ module Mint
       spreads =
         node.items.select(Ast::Spread).size
 
-      error :destructuring_multiple_spreads do
+      error! :destructuring_multiple_spreads do
         block do
           text "This array destructuring contains"
           code spreads.to_s
@@ -105,7 +105,7 @@ module Mint
         node: node,
       ) unless condition.name == "Tuple"
 
-      error :destructuring_tuple_mismatch do
+      error! :destructuring_tuple_mismatch do
         block "This destructuring of a tuple does not match the given tuple."
         block do
           text "I was expecting a tuple with"
@@ -133,7 +133,7 @@ module Mint
       parent =
         ast.enums.find(&.name.value.==(node.name.try &.value))
 
-      error :destructuring_enum_missing do
+      error! :destructuring_enum_missing do
         block do
           text "I could not find the enum for a destructuring:"
           bold node.name.try(&.value).to_s
@@ -145,7 +145,7 @@ module Mint
       option =
         parent.options.find(&.value.value.==(node.option.value))
 
-      error :destructuring_enum_option_missing do
+      error! :destructuring_enum_option_missing do
         block do
           text "I could not find the option"
           bold node.option.value
@@ -186,7 +186,7 @@ module Mint
               end
             end
 
-            error :destructuring_record_field_missing do
+            error! :destructuring_record_field_missing do
               block do
                 text "I could not find the field"
                 bold param.value
@@ -210,7 +210,7 @@ module Mint
         node.parameters.each_with_index do |param, index|
           case param
           when Ast::Variable
-            error :destructuring_no_parameter do
+            error! :destructuring_no_parameter do
               block do
                 text "You are trying to destructure the"
                 bold index.to_s

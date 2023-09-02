@@ -14,7 +14,7 @@ module Mint
     end
 
     def check_call(node, function_type) : Checkable
-      return error :call_not_a_function do
+      return error! :call_not_a_function do
         snippet "The entity you called is not a function, instead it is:", function_type
         snippet "The call is here:", node
       end unless function_type.name == "Function"
@@ -33,7 +33,7 @@ module Mint
       parameters =
         [] of Checkable
 
-      error :call_argument_size_mismatch do
+      error! :call_argument_size_mismatch do
         block do
           text "The function you called takes"
           bold argument_size.to_s
@@ -56,7 +56,7 @@ module Mint
                 .parameters
                 .index { |param| param.label == argument.name.try(&.value) }
 
-            error :call_not_found_argument do
+            error! :call_not_found_argument do
               block do
                 text "I was looking for the argument:"
                 bold argument.name.try(&.value).to_s
@@ -70,7 +70,7 @@ module Mint
             index
           end
         else
-          error :call_with_mixed_arguments do
+          error! :call_with_mixed_arguments do
             block "A call cannot have named and unamed arguments at the same time."
 
             snippet "It is here:", node
@@ -86,7 +86,7 @@ module Mint
         function_argument_type =
           function_type.parameters[index]
 
-        error :call_argument_type_mismatch do
+        error! :call_argument_type_mismatch do
           ordinal =
             ordinal(index + 1)
 
@@ -114,7 +114,7 @@ module Mint
       result =
         Comparer.compare(function_type, call_type)
 
-      error :call_type_mismatch do
+      error! :call_type_mismatch do
         block do
           text "The type signature of the call does not match the signature"
           text "of the function."

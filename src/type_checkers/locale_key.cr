@@ -1,7 +1,7 @@
 module Mint
   class TypeChecker
     def check(node : Ast::LocaleKey) : Checkable
-      error :translation_missing do
+      error! :translation_missing do
         block do
           text "Translations are not specified for the key:"
           bold node.value
@@ -13,7 +13,7 @@ module Mint
       result = nil
 
       @languages.each do |language|
-        error :translation_not_translated do
+        error! :translation_not_translated do
           block do
             text "There is no translation for the key:"
             bold node.value
@@ -31,7 +31,7 @@ module Mint
           if result
             resolved = Comparer.compare(result, type)
 
-            error :translation_mismatch do
+            error! :translation_mismatch do
               block do
                 text "The type of the key"
                 bold node.value

@@ -5,7 +5,7 @@ module Mint
       left : TypeChecker::Checkable,
       node : Ast::Node
     )
-      error :operation_type_mismatch do
+      error! :operation_type_mismatch do
         block do
           text "The type of the right operand does not match the type of the"
           text "left operand."
@@ -21,7 +21,7 @@ module Mint
       node : Ast::Node,
       side : String
     )
-      error :operation_plus_type_mismatch do
+      error! :operation_plus_type_mismatch do
         block do
           text "The type of the"
           bold side
@@ -43,7 +43,7 @@ module Mint
       node : Ast::Node,
       side : String
     )
-      error :operation_numeric_type_mismatch do
+      error! :operation_numeric_type_mismatch do
         block do
           text "The type of the"
           bold side
@@ -120,7 +120,7 @@ module Mint
 
         NUMBER
       when "|>"
-        error :operation_pipe_ambiguous do
+        error! :operation_pipe_ambiguous do
           block "We cannot determine the order of the operands because the pipe makes it ambiguous."
           block "Wrap operands in parentheses to avoid ambiguity."
 
@@ -134,7 +134,7 @@ module Mint
         when Ast::ReturnCall
           left
         else
-          error :operation_or_not_maybe_or_result do
+          error! :operation_or_not_maybe_or_result do
             block do
               text "For the"
               bold "or"
@@ -156,7 +156,7 @@ module Mint
               left.parameters[0]
             end
 
-          error :operation_or_type_mismatch do
+          error! :operation_or_type_mismatch do
             block do
               text "The type of the default value does not match the type of the"
               text "parameter of the maybe."

@@ -7,7 +7,7 @@ module Mint
       provider =
         ast.providers.find(&.name.value.==(node.provider.value))
 
-      error :use_not_found_provider do
+      error! :use_not_found_provider do
         block do
           text "I could not find the provider with the name:"
           bold node.provider.value
@@ -27,7 +27,7 @@ module Mint
       record =
         resolve node.data
 
-      error :use_subscription_mismatch do
+      error! :use_subscription_mismatch do
         block "The subsctipion of a provider does not match its definition."
         expected subscription, record
         snippet node
@@ -36,7 +36,7 @@ module Mint
       if condition
         condition_type = resolve condition
 
-        error :use_condition_mismatch do
+        error! :use_condition_mismatch do
           block do
             text "The expression of the"
             bold "where condition"

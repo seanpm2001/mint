@@ -36,7 +36,7 @@ module Mint
       begin
         @parser = JSON::PullParser.new(@json)
       rescue exception : JSON::ParseException
-        error :mint_json_invalid_json do
+        error! :mint_json_invalid_json do
           block do
             text "I could not parse the following"
             bold "mint.json"
@@ -46,7 +46,7 @@ module Mint
           snippet node(exception)
         end
       rescue error
-        error :mint_json_invalid_file do
+        error! :mint_json_invalid_file do
           block do
             text "There was a problem when I was trying to open a"
             bold "mint.json"
@@ -55,7 +55,7 @@ module Mint
           end
 
           block do
-            text "The error I got is this:"
+            text "The error! I got is this:"
           end
 
           block do
@@ -145,7 +145,7 @@ module Mint
         when "web-components"
           parse_web_components
         else
-          error :mint_json_root_invalid_key do
+          error! :mint_json_root_invalid_key do
             block do
               text "The root object of a"
               bold "mint.json"
@@ -158,7 +158,7 @@ module Mint
         end
       end
     rescue exception : JSON::ParseException
-      error :mint_json_root_not_an_object do
+      error! :mint_json_root_not_an_object do
         block do
           text "There was a problem when parsing"
           bold "mint.json"
@@ -179,7 +179,7 @@ module Mint
       @name =
         @parser.read_string
 
-      error :mint_json_name_empty do
+      error! :mint_json_name_empty do
         block do
           text "The"
           bold "name"
@@ -191,7 +191,7 @@ module Mint
         snippet node(location)
       end if @name.empty?
     rescue exception : JSON::ParseException
-      error :mint_json_name_not_string do
+      error! :mint_json_name_not_string do
         block do
           text "The"
           bold "name"
@@ -214,7 +214,7 @@ module Mint
       raw =
         @parser.read_string
 
-      error :mint_json_mint_version_empty do
+      error! :mint_json_mint_version_empty do
         block do
           text "The"
           bold "mint-version"
@@ -240,7 +240,7 @@ module Mint
           Installer::SimpleConstraint.new(lower, upper) if upper && lower
         end
 
-      error :mint_json_mint_version_invalid do
+      error! :mint_json_mint_version_invalid do
         block do
           text "There was a problem when parsing the"
           bold "Mint version constraint."
@@ -258,7 +258,7 @@ module Mint
       resolved =
         Installer::Semver.parse(VERSION.rchop("-devel"))
 
-      error :mint_json_mint_version_mismatch do
+      error! :mint_json_mint_version_mismatch do
         block do
           text "The"
           bold "mint-version"
@@ -279,7 +279,7 @@ module Mint
         snippet node(location)
       end unless resolved < constraint.upper && resolved >= constraint.lower
     rescue exception : JSON::ParseException
-      error :mint_json_mint_version_not_string do
+      error! :mint_json_mint_version_not_string do
         block do
           text "The"
           bold "mint-version"
@@ -305,7 +305,7 @@ module Mint
       path =
         Path[@root, head].to_s
 
-      error :mint_json_head_not_exists do
+      error! :mint_json_head_not_exists do
         block do
           text "The"
           bold "head"
@@ -331,7 +331,7 @@ module Mint
 
       File.read(path)
     rescue exception : JSON::ParseException
-      error :mint_json_head_not_string do
+      error! :mint_json_head_not_string do
         block do
           text "The"
           bold "head"
@@ -354,7 +354,7 @@ module Mint
       icon =
         @parser.read_string
 
-      error :mint_json_icon_not_exists do
+      error! :mint_json_icon_not_exists do
         block do
           text "The"
           bold "icon"
@@ -376,7 +376,7 @@ module Mint
 
       icon
     rescue exception : JSON::ParseException
-      error :mint_json_icon_not_string do
+      error! :mint_json_icon_not_string do
         block do
           text "The"
           bold "icon"
@@ -400,7 +400,7 @@ module Mint
         when "stylesheets"
           parse_external_style_sheets
         else
-          error :mint_json_external_invalid do
+          error! :mint_json_external_invalid do
             block do
               text "The"
               bold "external"
@@ -430,7 +430,7 @@ module Mint
     def parse_external_javascripts
       @parser.read_array { parse_external_javascript }
     rescue exception : JSON::ParseException
-      error :mint_json_external_javascripts_invalid do
+      error! :mint_json_external_javascripts_invalid do
         block do
           text "The"
           bold "javascripts"
@@ -458,7 +458,7 @@ module Mint
       path =
         Path[@root, file].to_s
 
-      error :mint_json_external_javascript_not_exists do
+      error! :mint_json_external_javascript_not_exists do
         block do
           text "The external JavaScript file"
           bold path
@@ -470,7 +470,7 @@ module Mint
 
       @external_files["javascripts"] << path
     rescue exception : JSON::ParseException
-      error :mint_json_external_javascript_invalid do
+      error! :mint_json_external_javascript_invalid do
         block do
           text "All entries in the"
           bold "javascripts"
@@ -484,7 +484,7 @@ module Mint
     def parse_external_style_sheets
       @parser.read_array { parse_external_style_sheet }
     rescue exception : JSON::ParseException
-      error :mint_json_external_stylesheets_invalid do
+      error! :mint_json_external_stylesheets_invalid do
         block do
           text "The"
           bold "stylesheets"
@@ -512,7 +512,7 @@ module Mint
       path =
         Path[@root, file].to_s
 
-      error :mint_json_external_stylesheet_not_exists do
+      error! :mint_json_external_stylesheet_not_exists do
         block do
           text "The external stylesheet file"
           bold path
@@ -524,7 +524,7 @@ module Mint
 
       @external_files["stylesheets"] << file
     rescue exception : JSON::ParseException
-      error :mint_json_external_stylesheet_invalid do
+      error! :mint_json_external_stylesheet_invalid do
         block do
           text "All entries in the"
           bold "stylesheets"
@@ -544,7 +544,7 @@ module Mint
 
       @parser.read_array { parse_source_directory }
 
-      error :mint_json_source_directories_empty do
+      error! :mint_json_source_directories_empty do
         block do
           text "The"
           bold "source-directories"
@@ -561,7 +561,7 @@ module Mint
         snippet node(location)
       end if @source_directories.empty?
     rescue exception : JSON::ParseException
-      error :mint_json_source_directories_invalid do
+      error! :mint_json_source_directories_invalid do
         block do
           text "The"
           bold "source-directories"
@@ -589,7 +589,7 @@ module Mint
       path =
         Path[@root, directory]
 
-      error :mint_json_source_directory_not_exists do
+      error! :mint_json_source_directory_not_exists do
         block do
           text "The source directory"
           bold directory
@@ -601,7 +601,7 @@ module Mint
 
       @source_directories << directory
     rescue exception : JSON::ParseException
-      error :mint_json_source_directory_invalid do
+      error! :mint_json_source_directory_invalid do
         block do
           text "All entries in the"
           bold "source-directories"
@@ -618,7 +618,7 @@ module Mint
     def parse_test_directories
       @parser.read_array { parse_test_directory }
     rescue exception : JSON::ParseException
-      error :mint_json_test_directories_invalid do
+      error! :mint_json_test_directories_invalid do
         block do
           text "The"
           bold "test-directories"
@@ -646,7 +646,7 @@ module Mint
       path =
         Path[@root, directory]
 
-      error :mint_json_test_directory_not_exists do
+      error! :mint_json_test_directory_not_exists do
         block do
           text "The test directory"
           bold directory
@@ -658,7 +658,7 @@ module Mint
 
       @test_directories << directory
     rescue exception : JSON::ParseException
-      error :mint_json_test_directory_invalid do
+      error! :mint_json_test_directory_invalid do
         block do
           text "All entries in the"
           bold "test-directories"
@@ -680,7 +680,7 @@ module Mint
         when "indent-size"
           indent_size = parse_indent_size
         else
-          error :mint_json_formatter_config_invalid_key do
+          error! :mint_json_formatter_config_invalid_key do
             block do
               text "The"
               bold "formatter-config"
@@ -697,7 +697,7 @@ module Mint
 
       @formatter_config = Formatter::Config.new(indent_size: indent_size)
     rescue exception : JSON::ParseException
-      error :mint_json_formatter_config_invalid do
+      error! :mint_json_formatter_config_invalid do
         block do
           text "There was a problem when parsing the"
           bold "formatter-config"
@@ -716,7 +716,7 @@ module Mint
     def parse_indent_size
       @parser.read_int.clamp(0, 100).to_i
     rescue exception : JSON::ParseException
-      error :mint_json_indent_size_invalid do
+      error! :mint_json_indent_size_invalid do
         block do
           text "There was a problem when parsing the"
           bold "indent-size field"
@@ -736,7 +736,7 @@ module Mint
         web_components[key] = @parser.read_string
       end
     rescue exception : JSON::ParseException
-      error :mint_json_web_components_invalid do
+      error! :mint_json_web_components_invalid do
         block do
           text "There was a problem when parsing the"
           bold "web-components object:"
@@ -783,7 +783,7 @@ module Mint
         when "css-prefix"
           css_prefix = parse_application_css_prefix
         else
-          error :mint_json_application_invalid_key do
+          error! :mint_json_application_invalid_key do
             block do
               text "The"
               bold "application object"
@@ -810,7 +810,7 @@ module Mint
           display: display,
           css_prefix: css_prefix)
     rescue exception : JSON::ParseException
-      error :mint_json_application_invalid do
+      error! :mint_json_application_invalid do
         block do
           text "There was a problem when parsing the"
           bold "application object"
@@ -843,7 +843,7 @@ module Mint
 
       meta
     rescue exception : JSON::ParseException
-      error :mint_json_meta_invalid do
+      error! :mint_json_meta_invalid do
         block do
           text "There was a problem when parsing the"
           bold "meta object"
@@ -859,7 +859,7 @@ module Mint
     def parse_meta_value
       @parser.read_string
     rescue exception : JSON::ParseException
-      error :mint_json_meta_value_not_string do
+      error! :mint_json_meta_value_not_string do
         block do
           text "The"
           bold "value"
@@ -881,7 +881,7 @@ module Mint
 
       keywords.join(',')
     rescue exception : JSON::ParseException
-      error :mint_json_keywords_invalid do
+      error! :mint_json_keywords_invalid do
         block do
           text "There was a problem when parsing the"
           bold "keywords array"
@@ -895,7 +895,7 @@ module Mint
     def parse_keyword
       @parser.read_string
     rescue exception : JSON::ParseException
-      error :mint_json_keyword_not_string do
+      error! :mint_json_keyword_not_string do
         block do
           text "A provided"
           bold "keyword"
@@ -916,7 +916,7 @@ module Mint
       title =
         @parser.read_string
 
-      error :mint_json_title_empty do
+      error! :mint_json_title_empty do
         block do
           text "The"
           bold "title"
@@ -930,7 +930,7 @@ module Mint
 
       title
     rescue exception : JSON::ParseException
-      error :mint_json_title_invalid do
+      error! :mint_json_title_invalid do
         block do
           text "There was a problem when parsing the"
           bold "title field"
@@ -949,7 +949,7 @@ module Mint
     def parse_application_name
       @parser.read_string
     rescue exception : JSON::ParseException
-      error :mint_json_application_name_invalid do
+      error! :mint_json_application_name_invalid do
         block do
           text "There was a problem when parsing the"
           bold "name field"
@@ -968,7 +968,7 @@ module Mint
     def parse_theme
       @parser.read_string
     rescue exception : JSON::ParseException
-      error :mint_json_theme_invalid do
+      error! :mint_json_theme_invalid do
         block do
           text "There was a problem when parsing the"
           bold "theme field"
@@ -987,7 +987,7 @@ module Mint
     def parse_orientation
       @parser.read_string
     rescue exception : JSON::ParseException
-      error :mint_json_orientation_invalid do
+      error! :mint_json_orientation_invalid do
         block do
           text "There was a problem when parsing the"
           bold "orientation field"
@@ -1006,7 +1006,7 @@ module Mint
     def parse_display
       @parser.read_string
     rescue exception : JSON::ParseException
-      error :mint_json_display_invalid do
+      error! :mint_json_display_invalid do
         block do
           text "There was a problem when parsing the"
           bold "display field"
@@ -1025,7 +1025,7 @@ module Mint
     def parse_application_css_prefix
       @parser.read_string_or_null
     rescue exception : JSON::ParseException
-      error :mint_json_css_prefix_invalid do
+      error! :mint_json_css_prefix_invalid do
         block do
           text "There was a problem when parsing the"
           bold "css-prefix field"
@@ -1046,7 +1046,7 @@ module Mint
         @dependencies << parse_dependency key
       end
     rescue exception : JSON::ParseException
-      error :mint_json_dependencies_invalid do
+      error! :mint_json_dependencies_invalid do
         block do
           text "There was a problem when parsing the"
           bold "dependencies"
@@ -1083,7 +1083,7 @@ module Mint
 
       Installer::Dependency.new key, repository, constraint
     rescue exception : JSON::ParseException
-      error :mint_json_dependency_invalid do
+      error! :mint_json_dependency_invalid do
         block do
           text "There was a problem when parsing a"
           bold "dependency"
@@ -1128,7 +1128,7 @@ module Mint
           end
         end
 
-      error :mint_json_dependency_invalid_constraint do
+      error! :mint_json_dependency_invalid_constraint do
         block do
           text "There was a problem when parsing the"
           bold "constraint"
@@ -1159,7 +1159,7 @@ module Mint
 
       constraint
     rescue exception : JSON::ParseException
-      error :mint_json_dependency_constraint_invalid do
+      error! :mint_json_dependency_constraint_invalid do
         block do
           text "There was a problem when parsing the"
           bold "constraint"
@@ -1173,7 +1173,7 @@ module Mint
     def check_dependencies!
       dependencies.each do |dependency|
         next if dependency_exists?(dependency.name)
-        error :mint_json_dependency_not_installed do
+        error! :mint_json_dependency_not_installed do
           block do
             text "Not all"
             bold "dependencies"

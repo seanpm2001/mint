@@ -8,13 +8,12 @@ module Mint
       parser = new(contents, file)
       parser.top_levels
       parser.eof!
-      parser.ast
-    end
 
-    def eof! : Nil
-      whitespace
-      error :expected_eof { expected "the end of the file", word } unless char == '\0'
-      true
+      if error = parser.errors.first?
+        raise error
+      end
+
+      parser.ast
     end
 
     def top_levels : Nil

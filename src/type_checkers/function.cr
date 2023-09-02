@@ -23,7 +23,7 @@ module Mint
         other =
           (arguments - [argument]).find(&.name.value.==(name))
 
-        error :function_argument_must_have_a_default_value do
+        error! :function_argument_must_have_a_default_value do
           block do
             text "The argument"
             bold name
@@ -37,7 +37,7 @@ module Mint
 
         was_default = true if argument.default
 
-        error :function_argument_conflict do
+        error! :function_argument_conflict do
           block do
             text "The argument"
             bold name
@@ -73,7 +73,7 @@ module Mint
           resolved =
             Comparer.compare(defined_type, final_type)
 
-          error :function_type_mismatch do
+          error! :function_type_mismatch do
             block "The return type of a function does not match its type definition."
 
             expected return_type, body_type

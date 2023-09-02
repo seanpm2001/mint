@@ -50,7 +50,7 @@ module Mint
 
         status, output, error = run "git tag --list"
 
-        error :repository_could_not_get_versions do
+        error! :repository_could_not_get_versions do
           block do
             text "I could not get the tags of the repository:"
             bold url
@@ -93,7 +93,7 @@ module Mint
         MintJson.new(File.read(path), directory, path)
       rescue error : Error
         if error.name.to_s.starts_with?("mint_json")
-          error :repository_invalid_mint_json do
+          error! :repository_invalid_mint_json do
             block do
               text "I could not parse the mint.json for the package:"
               bold id.uncolorize
@@ -106,7 +106,7 @@ module Mint
           raise error
         end
       rescue error
-        error :repository_no_mint_json do
+        error! :repository_no_mint_json do
           block do
             text "I could not find the mint.json for the package:"
             bold id.uncolorize
@@ -125,7 +125,7 @@ module Mint
       def update
         status, _, error = run "git fetch --tags --force"
 
-        error :repository_could_not_update do
+        error! :repository_could_not_update do
           block do
             text "I could not update the repository:"
             bold url
@@ -145,7 +145,7 @@ module Mint
       def clone
         status, _, error = run "git clone #{url} #{directory}", Dir.current
 
-        error :repository_could_not_clone do
+        error! :repository_could_not_clone do
           block do
             text "I could not clone the repository:"
             bold url
@@ -168,7 +168,7 @@ module Mint
 
         status, _, error = run "git checkout #{target} -f"
 
-        error :repository_could_not_checkout do
+        error! :repository_could_not_checkout do
           block do
             text "I could not checkout the version or tag:"
             bold target.to_s

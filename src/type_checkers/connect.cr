@@ -3,7 +3,7 @@ module Mint
     def check(node : Ast::Connect) : Checkable
       store = ast.stores.find(&.name.value.==(node.store.value))
 
-      error :connect_not_found_store do
+      error! :connect_not_found_store do
         block do
           text "I was looking for the store"
           bold node.store.value
@@ -24,7 +24,7 @@ module Mint
             store.gets.find(&.name.value.==(key_value)) ||
             store.constants.find(&.name.value.==(key_value))
 
-        error :connect_not_found_member do
+        error! :connect_not_found_member do
           block do
             text "The"
             bold key_value

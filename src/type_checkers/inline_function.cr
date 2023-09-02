@@ -36,7 +36,7 @@ module Mint
           resolved =
             Comparer.compare(defined_type, final_type)
 
-          error :inline_function_type_mismatch do
+          error! :inline_function_type_mismatch do
             block "The return type of an anonymous function does not match its type definition."
 
             expected return_type, body_type

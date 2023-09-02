@@ -20,7 +20,7 @@ module Mint
 
         record = create_record(fields) if should_create_record && !record
 
-        error :record_not_found_matching_record_definition do
+        error! :record_not_found_matching_record_definition do
           block "I could not find a record that matches this structure:"
 
           snippet Record.new("", fields)

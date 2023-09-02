@@ -17,7 +17,7 @@ module Mint
         resolved =
           Comparer.compare(type, default)
 
-        error :state_type_mismatch do
+        error! :state_type_mismatch do
           block do
             text "The type of the default value of the"
             bold node.name.value

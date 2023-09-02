@@ -3,7 +3,7 @@ module Mint
     def check(node : Ast::NextCall) : Checkable
       entity = node.entity
 
-      error :next_call_invalid_invocation do
+      error! :next_call_invalid_invocation do
         block do
           text "A"
           bold "next call"
@@ -28,7 +28,7 @@ module Mint
               .find(&.name.value.==(name))
           end
 
-        error :next_call_state_not_found do
+        error! :next_call_state_not_found do
           block do
             text "I was looking for a state named"
             bold name
@@ -44,7 +44,7 @@ module Mint
         state_type =
           resolve state
 
-        error :next_call_state_type_mismatch do
+        error! :next_call_state_type_mismatch do
           block "You were trying to assign an incompatible value to the status state."
           snippet "The type of the state is:", state_type
           snippet "But the type you are trying to assign to it:", type

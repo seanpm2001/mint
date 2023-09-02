@@ -4,7 +4,7 @@ module Mint
       component =
         ast.components.find(&.name.value.==(node.entity.value))
 
-      error :documentation_directive_entity_not_found do
+      error! :documentation_directive_entity_not_found do
         block do
           text "The entity for the documentation directive:"
           code node.entity.value

@@ -10,7 +10,7 @@ module Mint
           interpolation =
             definition.value.find(&.is_a?(Ast::Interpolation))
 
-          error :css_font_face_interpolation do
+          error! :css_font_face_interpolation do
             block "Interpolations are not allowed inside a font-face rule."
 
             snippet interpolation

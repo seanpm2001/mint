@@ -4,7 +4,7 @@ module Mint
       style =
         node.style_node
 
-      error :html_style_not_found do
+      error! :html_style_not_found do
         block do
           text "I was looking for the style"
           bold node.name.value
@@ -19,7 +19,7 @@ module Mint
       required_count =
         style.arguments.count { |arg| !arg.default }
 
-      error :html_style_argument_size_mismatch do
+      error! :html_style_argument_size_mismatch do
         block do
           text "The style takes"
           bold required_count.to_s
@@ -40,7 +40,7 @@ module Mint
           call_arg_type =
             resolve(call_arg)
 
-          error :html_style_argument_type_mismatch do
+          error! :html_style_argument_type_mismatch do
             block do
               text "The"
               bold "#{ordinal(index + 1)} argument"

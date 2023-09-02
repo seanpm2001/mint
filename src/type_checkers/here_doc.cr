@@ -5,7 +5,7 @@ module Mint
       got : Checkable,
       node : Ast::Node
     )
-      error :here_doc_interpolation_type_mismatch do
+      error! :here_doc_interpolation_type_mismatch do
         block do
           text "An interpolation in here document is causing a mismatch."
         end

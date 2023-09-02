@@ -4,25 +4,25 @@ module Mint
       parse do |start_position|
         next unless word! "routes"
 
-        body =
-          block2(
-            ->{ error :routes_expected_opening_bracket do
-              expected "the opening bracket of a routes block", word
-              snippet self
-            end },
-            ->{ error :routes_expected_closing_bracket do
-              expected "the closing bracket of a routes block", word
-              snippet self
-            end }) do
-            items = many { comment || route }
+        next unless body =
+                      block2(
+                        ->{ error :routes_expected_opening_bracket do
+                          expected "the opening bracket of a routes block", word
+                          snippet self
+                        end },
+                        ->{ error :routes_expected_closing_bracket do
+                          expected "the closing bracket of a routes block", word
+                          snippet self
+                        end }) do
+                        items = many { comment || route }
 
-            next error :routes_expected_body do
-              expected "the body of a routes block", word
-              snippet self
-            end if items.none?(Ast::Route)
+                        next error :routes_expected_body do
+                          expected "the body of a routes block", word
+                          snippet self
+                        end if items.none?(Ast::Route)
 
-            items
-          end
+                        items
+                      end
 
         comments = [] of Ast::Comment
         routes = [] of Ast::Route

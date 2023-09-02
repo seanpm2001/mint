@@ -15,7 +15,7 @@ module Mint
         index_type =
           resolve index
 
-        error :array_access_index_not_number do
+        error! :array_access_index_not_number do
           block "The index of an array access is not a number."
           expected NUMBER, index_type
           snippet index
@@ -27,7 +27,7 @@ module Mint
           parameter =
             type.parameters[index]?
 
-          error :array_access_invalid_tuple do
+          error! :array_access_invalid_tuple do
             block do
               text "The tuple only has"
               bold type.parameters.size.to_s
@@ -47,7 +47,7 @@ module Mint
     end
 
     def check_array_access(lhs, type)
-      error :array_access_not_an_array do
+      error! :array_access_not_an_array do
         block "The object you are trying to access an item of is not an array."
         expected ARRAY, type
         snippet "The array is here:", lhs

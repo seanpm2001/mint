@@ -1,12 +1,17 @@
 module Mint
   class Parser
     def enum_record_definition
-      parse do |start_position|
+      parse do |start_position, _, error_position|
         fields =
           list(
             terminator: ')',
             separator: ','
           ) { record_definition_field }
+
+        if error_position < @errors.size
+          @errors.delete_at(error_position...)
+          next
+        end
 
         next if fields.empty?
 
@@ -16,8 +21,6 @@ module Mint
           to: position,
           input: data)
       end
-    rescue error : Error
-      nil
     end
   end
 end

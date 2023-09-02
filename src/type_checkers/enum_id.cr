@@ -11,7 +11,7 @@ module Mint
       if parent
         check(node, parent)
       elsif name = node.name
-        error :enum_id_type_missing do
+        error! :enum_id_type_missing do
           block do
             text "I could not find the enum:"
             bold name.value
@@ -38,7 +38,7 @@ module Mint
       option =
         parent.options.find(&.value.value.==(node.option.value))
 
-      error :enum_id_enum_missing do
+      error! :enum_id_enum_missing do
         block do
           text "I could not find the option"
           bold node.option.value
@@ -62,7 +62,7 @@ module Mint
       unified =
         Comparer.compare_raw(option_type, resolved_type)
 
-      error :enum_id_type_mismatch do
+      error! :enum_id_type_mismatch do
         block do
           text "The"
           bold "type of an enum"

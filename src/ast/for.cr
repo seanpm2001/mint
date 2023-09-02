@@ -7,7 +7,7 @@ module Mint
                      @subject : Expression,
                      @condition : Block?,
                      @body : Block,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

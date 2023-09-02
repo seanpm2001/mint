@@ -55,7 +55,7 @@ module Mint
           comments: comments,
           styles: styles,
           to: position,
-          input: data,
+          file: file,
           tag: tag,
           ref: ref)
       end

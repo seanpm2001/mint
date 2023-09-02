@@ -4,7 +4,7 @@ module Mint
       getter expression
 
       def initialize(@expression : Expression,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

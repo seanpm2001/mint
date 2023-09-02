@@ -6,7 +6,7 @@ module Mint
       def initialize(@fields : Array(RecordField),
                      @comment : Comment?,
                      @language : String,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

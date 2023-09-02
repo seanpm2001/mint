@@ -12,8 +12,8 @@ module Mint
           Workspace[uri.path.to_s][uri.path.to_s]
 
         # This is used later on to convert the line/column of each token
-        input =
-          ast.nodes.first.input
+        file =
+          ast.nodes.first.file
 
         tokenizer = SemanticTokenizer.new
         tokenizer.tokenize(ast)
@@ -21,7 +21,7 @@ module Mint
         data =
           tokenizer.tokens.sort_by(&.from).compact_map do |token|
             location =
-              Ast::Node.compute_location(input, token.from, token.to)
+              Ast::Node.compute_location(file, token.from, token.to)
 
             type =
               token.type.to_s.underscore

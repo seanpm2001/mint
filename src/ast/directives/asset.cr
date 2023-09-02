@@ -6,10 +6,10 @@ module Mint
         getter path
 
         def initialize(@path : String,
-                       @input : Data,
+                       @file : Parser::File,
                        @from : Int32,
                        @to : Int32)
-          @real_path = Path[input.file].sibling(path).expand
+          @real_path = Path[file.path].sibling(path).expand
         end
 
         def filename(build) : String?

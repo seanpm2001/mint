@@ -4,7 +4,7 @@ module Mint
       getter items, type
 
       def initialize(@items : Array(Expression),
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @type : Node?,
                      @to : Int32)

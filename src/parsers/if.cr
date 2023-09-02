@@ -119,7 +119,7 @@ module Mint
           condition: condition,
           from: start_position,
           to: position,
-          input: data).tap do |node|
+          file: file).tap do |node|
           case condition
           when Ast::Statement
             condition.if_node = node

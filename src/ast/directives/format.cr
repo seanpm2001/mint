@@ -5,7 +5,7 @@ module Mint
         getter content
 
         def initialize(@content : Block,
-                       @input : Data,
+                       @file : Parser::File,
                        @from : Int32,
                        @to : Int32)
         end

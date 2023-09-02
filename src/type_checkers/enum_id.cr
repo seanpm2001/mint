@@ -22,7 +22,7 @@ module Mint
       else
         variable = Ast::Variable.new(
           value: node.option.value,
-          input: node.input,
+          file: node.file,
           from: node.from,
           to: node.to)
 

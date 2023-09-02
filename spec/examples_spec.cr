@@ -39,18 +39,12 @@ Dir
         # Parse source
         if error
           begin
-            parser = Mint::Parser.new(source, file)
-            parser.top_levels
+            ast = Mint::Parser.parse(source, file)
 
-            if parser.errors.empty?
-              type_checker = Mint::TypeChecker.new(parser.ast)
-              type_checker.check
+            type_checker = Mint::TypeChecker.new(ast)
+            type_checker.check
 
-              type_checker.cache.size.should_not eq(0)
-            else
-              parser.errors.first.try(&.name.to_s).should eq(error)
-              next
-            end
+            type_checker.cache.size.should_not eq(0)
           rescue item : Mint::Error
             item.name.to_s.should eq(error)
           end

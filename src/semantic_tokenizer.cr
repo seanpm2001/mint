@@ -48,7 +48,7 @@ module Mint
       tokenizer.tokenize(ast)
 
       parts = [] of String | Tuple(SemanticTokenizer::TokenType, String)
-      contents = ast.nodes.first.input.input
+      contents = ast.nodes.first.file.contents
       position = 0
 
       tokenizer.tokens.sort_by(&.from).each do |token|

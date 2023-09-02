@@ -48,7 +48,7 @@ module Mint
           from: start_position,
           arguments: arguments,
           to: position,
-          input: data,
+          file: file,
           body: body,
           name: name)
       end
@@ -67,18 +67,18 @@ module Mint
     end
 
     def css_definition_or_selector
-      css_definition || css_selector
-    rescue ex : Error
-      if ex.name == :css_definition_expected_semicolon
-        begin
-          css_selector.tap do |item|
-            raise ex unless item
+      parse(track: false) do |_, _, error_position|
+        node = css_definition || css_selector
+
+        if error_position < @errors.size
+          if (error = @errors[error_position]) && node
+            if error.name == :css_definition_expected_semicolon
+              @errors.delete(error)
+            end
           end
-        rescue
-          raise ex
         end
-      else
-        raise ex
+
+        node
       end
     end
   end

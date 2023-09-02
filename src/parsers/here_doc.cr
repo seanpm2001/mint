@@ -45,7 +45,7 @@ module Mint
           modifier: modifier,
           value: value,
           to: position,
-          input: data,
+          file: file,
           token: token)
       end
     end

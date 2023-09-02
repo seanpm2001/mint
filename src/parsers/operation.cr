@@ -59,7 +59,7 @@ module Mint
                 from: left.from,
                 to: right.to,
                 right: right,
-                input: data,
+                file: file,
                 left: left),
               next_operator)
           end
@@ -72,7 +72,7 @@ module Mint
           from: left.from,
           to: right.to,
           right: right,
-          input: data,
+          file: file,
           left: left)
       end
     end

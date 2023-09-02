@@ -66,7 +66,7 @@ module Mint
           comment: comment,
           options: options,
           to: position,
-          input: data,
+          file: file,
           name: name)
       end
     end

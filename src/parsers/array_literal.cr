@@ -43,7 +43,7 @@ module Mint
           items: items,
           type: type,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

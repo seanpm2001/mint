@@ -56,11 +56,11 @@ module Mint
     end
 
     def self.space_separated?(node1, node2)
-      node1.input.input[node1.from, node2.from - node1.from].includes?("\n\n")
+      node1.file.contents[node1.from, node2.from - node1.from].includes?("\n\n")
     end
 
     def self.new_line?(node1, node2)
-      node1.input.input[node1.from, node2.from - node1.from].includes?('\n')
+      node1.file.contents[node1.from, node2.from - node1.from].includes?('\n')
     end
 
     def new_line?(node1, node2)
@@ -70,7 +70,7 @@ module Mint
       count =
         node2.to - node1.from
 
-      node1.input.input[start_position, count].includes?('\n')
+      node1.file.contents[start_position, count].includes?('\n')
     end
 
     def merge(ast) : self
@@ -113,7 +113,7 @@ module Mint
             Module.new(
               functions: modules.flat_map(&.functions),
               constants: modules.flat_map(&.constants),
-              input: Data.new(input: "", file: ""),
+              file: Parser::File.new(contents: "", path: ""),
               # TODO: We may need to store each modules name node for
               # future features, but for now we just store the first
               name: modules.first.name,
@@ -129,7 +129,7 @@ module Mint
           .group_by(&.language)
           .map do |_, locales|
             Locale.new(
-              input: Data.new(input: "", file: ""),
+              file: Parser::File.new(contents: "", path: ""),
               fields: locales.flat_map(&.fields),
               language: locales.first.language,
               comment: nil,

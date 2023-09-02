@@ -10,7 +10,7 @@ module Mint
 
       def initialize(@branches : Branches,
                      @condition : Node,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

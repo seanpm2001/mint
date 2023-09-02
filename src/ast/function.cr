@@ -11,7 +11,7 @@ module Mint
                      @comment : Comment?,
                      @name : Variable,
                      @body : Block,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

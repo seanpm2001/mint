@@ -41,7 +41,7 @@ module Mint
           comments: comments,
           routes: routes,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

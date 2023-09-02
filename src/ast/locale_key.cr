@@ -4,7 +4,7 @@ module Mint
       getter value
 
       def initialize(@value : String,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

@@ -4,7 +4,7 @@ module Mint
       getter fields
 
       def initialize(@fields : Array(RecordDefinitionField),
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

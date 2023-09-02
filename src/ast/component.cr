@@ -20,7 +20,7 @@ module Mint
                      @locales : Bool,
                      @global : Bool,
                      @name : TypeId,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

@@ -6,7 +6,7 @@ module Mint
       Ast::TypeVariable.new(
         value: var.value,
         from: var.from,
-        input: data,
+        file: file,
         to: var.to)
     end
   end

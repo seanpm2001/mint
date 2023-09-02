@@ -118,7 +118,7 @@ module Mint
           styles: styles,
           states: states,
           to: position,
-          input: data,
+          file: file,
           refs: refs,
           name: name,
           uses: uses,

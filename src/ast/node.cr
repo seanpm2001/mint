@@ -40,15 +40,16 @@ module Mint
         end
       end
 
+      getter file : Parser::File
+
       property from : Int32
-      getter input : Data
       getter to : Int32
 
-      def initialize(@input, @from, @to)
+      def initialize(@file, @from, @to)
       end
 
       def to_tuple
-        {input: input, from: from, to: to}
+        {file: file, from: from, to: to}
       end
 
       def owns?(node)
@@ -64,7 +65,7 @@ module Mint
       end
 
       def source
-        input.input[from, to - from]
+        file.contents[from, to - from]
       end
 
       def new_line?
@@ -107,22 +108,22 @@ module Mint
         {line, column}
       end
 
-      def self.compute_location(input : Data, from, to)
+      def self.compute_location(file : Parser::File, from, to)
         # TODO: avoid creating this array for every (initial) call to `Node#location`
         lines = [0]
-        input.input.each_char_with_index do |ch, i|
+        file.contents.each_char_with_index do |ch, i|
           lines << i + 1 if ch == '\n'
         end
 
         Location.new(
-          filename: input.file,
+          filename: file.path,
           start: compute_position(lines, from),
           end: compute_position(lines, to),
         )
       end
 
       getter location : Location do
-        Node.compute_location(input, from, to)
+        Node.compute_location(file, from, to)
       end
     end
   end

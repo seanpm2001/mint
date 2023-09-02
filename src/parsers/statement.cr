@@ -32,7 +32,7 @@ module Mint
           target: target,
           await: await,
           to: position,
-          input: data
+          file: file
         ).tap do |node|
           case body
           when Ast::Operation

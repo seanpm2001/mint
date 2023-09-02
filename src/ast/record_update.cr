@@ -5,7 +5,7 @@ module Mint
 
       def initialize(@fields : Array(RecordField),
                      @expression : Ast::Node,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

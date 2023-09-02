@@ -12,7 +12,7 @@ module Mint
                      @children : Array(Node),
                      @component : TypeId,
                      @ref : Variable?,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

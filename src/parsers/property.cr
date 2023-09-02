@@ -42,7 +42,7 @@ module Mint
           default: default,
           comment: comment,
           to: position,
-          input: data,
+          file: file,
           type: type,
           name: name)
       end

@@ -42,7 +42,7 @@ module Mint
           comment: comment,
           fields: fields,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

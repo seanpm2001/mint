@@ -37,7 +37,7 @@ module Mint
           comment: comment,
           mapping: mapping,
           to: position,
-          input: data,
+          file: file,
           type: type,
           key: key)
       end

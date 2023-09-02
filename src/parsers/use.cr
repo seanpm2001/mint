@@ -41,7 +41,7 @@ module Mint
           condition: condition,
           provider: provider,
           to: position,
-          input: data,
+          file: file,
           data: item)
       end
     end

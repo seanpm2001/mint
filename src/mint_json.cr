@@ -92,13 +92,13 @@ module Mint
         position +
           @json[position..-1].lines.first.size
 
-      data =
-        Ast::Data.new(@json, @file)
+      file =
+        Parser::File.new(@json, @file)
 
       Ast::Node.new(
         to: to,
         from: position,
-        input: data)
+        file: file)
     end
 
     def node(exception : JSON::ParseException)

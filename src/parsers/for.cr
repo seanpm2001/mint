@@ -77,7 +77,7 @@ module Mint
           from: start_position,
           subject: subject,
           to: position,
-          input: data,
+          file: file,
           body: body)
       end
     end

@@ -55,7 +55,7 @@ module Mint
           constants: constants,
           tests: tests,
           to: position,
-          input: data,
+          file: file,
           name: name)
       end
     end

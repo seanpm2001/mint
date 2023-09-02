@@ -5,7 +5,7 @@ module Mint
       property entity : Ast::Node? = nil
 
       def initialize(@data : Record,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

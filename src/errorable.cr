@@ -78,7 +78,7 @@ module Mint
       to =
         value.position + value.word.to_s.size
 
-      snippet(Ast::Node.new(input: value.data, from: from, to: to))
+      snippet(Ast::Node.new(file: value.file, from: from, to: to))
     end
 
     def snippet(value : String | Ast::Node | TypeChecker::Checkable)

@@ -21,7 +21,7 @@ module Mint
         argument: argument,
         from: argument.from,
         to: expression.to,
-        input: data)
+        file: file)
     end
 
     def rollup_pipe(operation : Nil) : Ast::Pipe | Ast::Operation?

@@ -5,7 +5,7 @@ module Mint
 
       def initialize(@comments : Array(Comment),
                      @routes : Array(Route),
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

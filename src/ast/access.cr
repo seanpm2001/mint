@@ -11,7 +11,7 @@ module Mint
 
       def initialize(@expression : Expression,
                      @field : Variable,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @type : Type,
                      @to : Int32)

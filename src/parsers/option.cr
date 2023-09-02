@@ -7,7 +7,7 @@ module Mint
         Ast::Option.new(
           from: start_position,
           to: position,
-          input: data,
+          file: file,
           name: name)
       end
     end

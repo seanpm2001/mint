@@ -23,7 +23,7 @@ module Mint
           from: start_position,
           content: content,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

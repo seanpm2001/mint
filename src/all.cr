@@ -47,6 +47,7 @@ require "./installer/**"
 require "./installer"
 
 require "./parsers/**"
+require "./parser/*"
 require "./parser"
 
 require "./documentation_generator/**"

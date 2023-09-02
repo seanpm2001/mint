@@ -1,7 +1,7 @@
 module Mint
   class Parser
     def self.parse(file) : Ast
-      parse File.read(file), file
+      parse ::File.read(file), file
     end
 
     def self.parse(contents, file) : Ast

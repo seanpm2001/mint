@@ -6,7 +6,7 @@ module Mint
       def initialize(@default : Expression,
                      @comment : Comment?,
                      @name : Variable,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @type : Type?,
                      @to : Int32)

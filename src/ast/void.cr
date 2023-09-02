@@ -1,7 +1,7 @@
 module Mint
   class Ast
     class Void < Node
-      def initialize(@input : Data,
+      def initialize(@file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

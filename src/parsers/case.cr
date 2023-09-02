@@ -57,7 +57,7 @@ module Mint
           comments: comments,
           await: await,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

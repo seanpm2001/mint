@@ -166,7 +166,7 @@ module Mint
       end
 
       def snippet(node)
-        print TerminalSnippet.render(node.input.input, node.input.file, node.from, node.to, width: @width)
+        print TerminalSnippet.render(node.file.contents, node.file.path, node.from, node.to, width: @width)
         print "\n\n"
       end
 

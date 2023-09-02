@@ -10,14 +10,14 @@ module Mint
     # cases where the original code contains multi-byte characters.
     getter input : Array(Char)
 
-    # The parsed file, we save it so we can show parse errors.
-    getter data : Ast::Data
-
-    # The AST.
+    # The abstract syntax tree.
     getter ast = Ast.new
 
-    def initialize(input : String, @file : String)
-      @data = Ast::Data.new(input, @file)
+    # The parsed file, we save it so we can show parse errors.
+    getter file : File
+
+    def initialize(input : String, path : String)
+      @file = File.new(input, path)
       @input = input.chars
     end
 
@@ -262,7 +262,7 @@ module Mint
 
     # Gets substring out of the original string
     def substring(from, to)
-      @data.input[from, to]
+      file.contents[from, to]
     end
 
     # Returns the word a the cursor

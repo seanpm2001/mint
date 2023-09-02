@@ -17,7 +17,7 @@ module Mint
           from: start_position,
           comment: comment,
           to: position,
-          input: data,
+          file: file,
           key: key)
       end
     end

@@ -7,7 +7,7 @@ module Mint
                      @block_comment : Comment?,
                      @comment : Comment?,
                      @name : TypeId,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

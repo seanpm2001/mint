@@ -7,7 +7,7 @@ module Mint
         Ast::Void.new(
           from: start_position,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

@@ -5,7 +5,7 @@ module Mint
 
       def initialize(@expression : Expression,
                      @argument : Expression,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end
@@ -14,7 +14,7 @@ module Mint
         arg =
           Ast::CallExpression.new(
             expression: argument,
-            input: argument.input,
+            file: argument.file,
             from: argument.from,
             to: argument.to,
             name: nil)
@@ -25,14 +25,14 @@ module Mint
             Ast::Call.new(
               arguments: [arg] + item.arguments,
               expression: item.expression,
-              input: item.input,
+              file: item.file,
               from: item.from,
               to: item.to)
           else
             Ast::Call.new(
               expression: expression,
               arguments: [arg],
-              input: input,
+              file: file,
               from: from,
               to: to)
           end

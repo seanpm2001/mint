@@ -64,7 +64,7 @@ module Mint
           comment: comment,
           states: states,
           to: position,
-          input: data,
+          file: file,
           gets: gets,
           name: name).tap do |node|
           ast.nodes[start_nodes_position...]

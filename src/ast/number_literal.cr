@@ -5,7 +5,7 @@ module Mint
       getter? float
 
       def initialize(@value : String,
-                     @input : Data,
+                     @file : Parser::File,
                      @float : Bool,
                      @from : Int32,
                      @to : Int32)

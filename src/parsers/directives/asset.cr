@@ -24,7 +24,7 @@ module Mint
         Ast::Directives::Asset.new(
           from: start_position,
           to: position,
-          input: data,
+          file: file,
           path: path)
       end
     end

@@ -24,7 +24,7 @@ module Mint
           value: value,
           flags: flags,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

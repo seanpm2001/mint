@@ -42,7 +42,7 @@ module Mint
             from: start_position,
             option: option,
             to: position,
-            input: data,
+            file: file,
             name: name)
         else
           ast.nodes.delete(option)
@@ -50,7 +50,7 @@ module Mint
             from: start_position,
             value: option.value,
             to: position,
-            input: data)
+            file: file)
         end
       end
     end

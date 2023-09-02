@@ -13,7 +13,7 @@ module Mint
         Ast::NextCall.new(
           from: start_position,
           to: position,
-          input: data,
+          file: file,
           data: item)
       end
     end

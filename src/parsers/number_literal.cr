@@ -31,7 +31,7 @@ module Mint
           value: value,
           float: float,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

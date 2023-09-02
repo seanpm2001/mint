@@ -7,7 +7,7 @@ module Mint
                      @constants : Array(Constant),
                      @name : StringLiteral,
                      @tests : Array(Test),
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

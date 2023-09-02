@@ -40,7 +40,7 @@ module Mint
           from: start_position,
           store: store,
           to: position,
-          input: data,
+          file: file,
           keys: keys)
       end
     end

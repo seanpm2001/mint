@@ -10,7 +10,7 @@ module Mint
                      @comment : Comment?,
                      @gets : Array(Get),
                      @name : TypeId,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

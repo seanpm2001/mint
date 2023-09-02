@@ -15,7 +15,7 @@ module Mint
             links = workspace.ast.modules
               .select(&.name.value.==(node.value))
               .reject(&.in?(Core.ast.nodes))
-              .sort_by!(&.input.file)
+              .sort_by!(&.file.path)
               .map do |mod|
                 location_link node, mod.name, mod
               end
@@ -69,7 +69,7 @@ module Mint
                         .ast
                         .nodes
                         .select { |other| other.is_a?(Ast::EnumDestructuring) || other.is_a?(Ast::Statement) || other.is_a?(Ast::For) }
-                        .select(&.input.file.==(variable.input.file))
+                        .select(&.file.path.==(variable.file.path))
                         .find { |other| other.from < variable.from && other.to > variable.to }
 
         location_link server, node, variable, parent

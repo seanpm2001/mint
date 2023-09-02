@@ -19,7 +19,7 @@ module Mint
           from: start_position,
           fields: fields,
           to: position,
-          input: data)
+          file: file)
       end
     end
   end

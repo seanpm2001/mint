@@ -4,7 +4,7 @@ module Mint
       getter value, type
 
       def initialize(@value : Array(String | Interpolation),
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @type : Node?,
                      @to : Int32)

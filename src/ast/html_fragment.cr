@@ -6,7 +6,7 @@ module Mint
       def initialize(@comments : Array(Comment),
                      @children : Array(Node),
                      @key : HtmlAttribute?,
-                     @input : Data,
+                     @file : Parser::File,
                      @from : Int32,
                      @to : Int32)
       end

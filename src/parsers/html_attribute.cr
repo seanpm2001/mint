@@ -35,6 +35,8 @@ module Mint
             end })
         end
 
+        next unless value
+
         Ast::HtmlAttribute.new(
           value: value.as(Ast::Expression),
           from: start_position,

@@ -19,7 +19,7 @@ module Mint
         whitespace
 
         fields =
-          block2(
+          brackets(
             ->{
               error :locale_expected_opening_bracket do
                 expected "the opening bracket of a locale", word
@@ -35,6 +35,8 @@ module Mint
           ) do
             list(terminator: '}', separator: ',') { record_field }
           end
+
+        next unless fields
 
         Ast::Locale.new(
           from: start_position,

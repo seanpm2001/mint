@@ -14,7 +14,7 @@ module Mint
           snippet self
         end unless name
 
-        selectors = block2(
+        selectors = brackets(
           ->{ error :css_keyframes_expected_opening_bracket do
             expected "the opening bracket of a CSS keyframes rule", word
             snippet self
@@ -25,6 +25,8 @@ module Mint
           end }) do
           many { comment || css_selector(only_definitions: true) }
         end
+
+        next unless selectors
 
         next error :css_keyframes_expected_selectors do
           expected "the selectors of a CSS keyframes rule", word

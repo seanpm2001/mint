@@ -3,22 +3,23 @@ module Mint
     def use : Ast::Use?
       parse do |start_position|
         next unless word! "use"
-
         whitespace
+
         next error :use_expected_provider do
           expected "the provider of a use", word
           snippet self
         end unless provider = type_id
-
         whitespace
+
         next error :use_expected_record do
           expected "the record of a use", word
           snippet self
         end unless item = record
         whitespace
 
-        if word! "when"
-          condition = block2(
+        if word! "when", include_whitespace: true
+          whitespace
+          condition = brackets(
             ->{ error :use_expected_condition_opening_bracket do
               expected "the opening bracket of a use condition", word
               snippet self

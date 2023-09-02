@@ -3,8 +3,8 @@ module Mint
     def style : Ast::Style?
       parse do |start_position|
         next unless word! "style"
-
         whitespace
+
         next error :style_expected_name do
           expected "the name of a style", word
           snippet self
@@ -22,9 +22,10 @@ module Mint
             expected "the closing parenthesis of a style", word
             snippet self
           end unless char! ')'
+          whitespace
         end
 
-        body = block2(
+        body = brackets(
           ->{ error :style_expected_opening_bracket do
             expected "the opening bracket of a style", word
             snippet self
@@ -43,6 +44,8 @@ module Mint
 
           items
         end
+
+        next unless body
 
         Ast::Style.new(
           from: start_position,

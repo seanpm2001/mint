@@ -15,8 +15,9 @@ module Mint
           expected "the exposing word! for a connect", word
           snippet self
         end unless word! "exposing"
+        whitespace
 
-        keys = block2(
+        keys = brackets(
           ->{ error :connect_expected_opening_bracket do
             expected "the opening bracket of a connect", word
             snippet self
@@ -35,6 +36,8 @@ module Mint
             end if items.empty?
           end
         end
+
+        next unless keys
 
         Ast::Connect.new(
           from: start_position,

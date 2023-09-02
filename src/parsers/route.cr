@@ -14,7 +14,6 @@ module Mint
           end
 
         whitespace
-
         arguments = [] of Ast::Argument
 
         if char! '('
@@ -42,6 +41,8 @@ module Mint
               expected "the body of a route", word
               snippet self
             end })
+
+        next unless body
 
         Ast::Route.new(
           arguments: arguments,

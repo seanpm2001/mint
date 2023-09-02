@@ -33,13 +33,15 @@ module Mint
                     statement_error : Proc(Nil)? = nil) : Ast::Block?
       parse do |start_position|
         statements =
-          block2(
+          brackets(
             opening_bracket_error: opening_bracket_error,
             closing_bracket_error: closing_bracket_error) do
             many { comment || statement }.tap do |items|
               next statement_error.call if statement_error && items.none?
             end
           end
+
+        next unless statements
 
         Ast::Block.new(
           statements: statements,

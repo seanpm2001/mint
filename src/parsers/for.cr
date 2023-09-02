@@ -47,6 +47,8 @@ module Mint
               snippet self
             end })
 
+        next unless body
+
         whitespace
         condition =
           if word! "when"

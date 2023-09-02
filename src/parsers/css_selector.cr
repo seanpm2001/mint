@@ -9,7 +9,7 @@ module Mint
         next if selectors.empty?
         next unless char == '{'
 
-        body = block2(
+        body = brackets(
           ->{ error :css_selector_expected_opening_bracket do
             expected "the opening bracket of a CSS selector", word
             snippet self
@@ -24,6 +24,8 @@ module Mint
             css_body
           end
         end
+
+        next unless body
 
         next error :css_selector_expected_body do
           expected "the body of a CSS selector", word

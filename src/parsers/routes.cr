@@ -3,9 +3,10 @@ module Mint
     def routes : Ast::Routes?
       parse do |start_position|
         next unless word! "routes"
+        whitespace
 
         next unless body =
-                      block2(
+                      brackets(
                         ->{ error :routes_expected_opening_bracket do
                           expected "the opening bracket of a routes block", word
                           snippet self

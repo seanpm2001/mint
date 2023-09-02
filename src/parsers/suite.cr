@@ -3,47 +3,47 @@ module Mint
     def suite : Ast::Suite?
       parse do |start_position|
         next unless word! "suite"
-
         whitespace
 
         next error :suite_expected_name do
           expected "the name of a suite", word
           snippet self
         end unless name = string_literal with_interpolation: false
-
         whitespace
 
-        next unless body =
-                      block2(
-                        ->{ error :suite_expected_opening_bracket do
-                          expected "the opening bracket of a suite", word
-                          snippet self
-                        end },
-                        ->{ error :suite_expected_closing_bracket do
-                          expected "the closing bracket of a suite", word
-                          snippet self
-                        end }
-                      ) do
-                        items = many { test || constant || comment }
+        body =
+          brackets(
+            ->{ error :suite_expected_opening_bracket do
+              expected "the opening bracket of a suite", word
+              snippet self
+            end },
+            ->{ error :suite_expected_closing_bracket do
+              expected "the closing bracket of a suite", word
+              snippet self
+            end }
+          ) do
+            items = many { test || constant || comment }
 
-                        next error :suite_expected_body do
-                          expected "the body of a suite", word
-                          snippet self
-                        end if items.none?(Ast::Test | Ast::Constant)
+            next error :suite_expected_body do
+              expected "the body of a suite", word
+              snippet self
+            end if items.none?(Ast::Test | Ast::Constant)
 
-                        items
-                      end
+            items
+          end
 
-        comments = [] of Ast::Comment
+        next unless body
+
         constants = [] of Ast::Constant
+        comments = [] of Ast::Comment
         tests = [] of Ast::Test
 
         body.each do |item|
           case item
-          when Ast::Comment
-            comments << item
           when Ast::Constant
             constants << item
+          when Ast::Comment
+            comments << item
           when Ast::Test
             tests << item
           end
@@ -51,8 +51,8 @@ module Mint
 
         Ast::Suite.new(
           from: start_position,
-          comments: comments,
           constants: constants,
+          comments: comments,
           tests: tests,
           to: position,
           file: file,

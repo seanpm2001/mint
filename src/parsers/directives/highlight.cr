@@ -3,6 +3,7 @@ module Mint
     def highlight_directive : Ast::Directives::Highlight?
       parse do |start_position|
         next unless word! "@highlight"
+        whitespace
 
         content =
           code_block2(
@@ -18,6 +19,8 @@ module Mint
               expected "body of a format directive", word
               snippet self
             end })
+
+        next unless content
 
         Ast::Directives::Highlight.new(
           from: start_position,

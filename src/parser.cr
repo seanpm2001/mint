@@ -153,8 +153,10 @@ module Mint
     end
 
     # Consumes a word and steps the cursor forward if successful.
-    def word!(expected : String) : Bool
+    def word!(expected : String, *, include_whitespace : Bool = false) : Bool
       if word?(expected)
+        whitespace! if include_whitespace
+
         if word.chars.all?(&.ascii_lowercase?) && !word.blank? && word != "or"
           @ast.keywords << {position, position + word.size}
         end
@@ -248,11 +250,35 @@ module Mint
       result
     end
 
-    # Consuming variables
-    # ----------------------------------------------------------------------------
+    # Parses a block surrounded by brackets.
+    def brackets(opening_bracket_error : Proc(Nil)? = nil,
+                 closing_bracket_error : Proc(Nil)? = nil,
+                 &)
+      parse(track: false) do
+        unless char! '{'
+          case item = opening_bracket_error
+          when Proc(Nil)
+            next item.call
+          else
+            next
+          end
+        end
 
-    def type_or_type_variable
-      type || type_variable
+        whitespace
+        result = yield
+        whitespace
+
+        unless char! '}'
+          case item = closing_bracket_error
+          when Proc(Nil)
+            next item.call
+          else
+            next
+          end
+        end
+
+        result
+      end
     end
 
     # Parses a raw part of the input until we reach the terminator or an
@@ -291,6 +317,13 @@ module Mint
           step
         end
       end
+    end
+
+    # Consuming variables
+    # ----------------------------------------------------------------------------
+
+    def type_or_type_variable
+      type || type_variable
     end
   end
 end

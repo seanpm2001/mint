@@ -3,26 +3,27 @@ module Mint
     def case_expression(for_css : Bool = false) : Ast::Case?
       parse do |start_position|
         next unless word! "case"
-
         whitespace
+
         parens = char! '('
-
         whitespace
+
         await = word! "await"
-
         whitespace
+
         next error :case_expected_condition do
           expected "the condition of a case expression", word
           snippet self
         end unless condition = expression
-
         whitespace
+
         next error :case_expected_closing_parenthesis do
           expected "the closing parenthesis of a case expression", word
           snippet self
         end if parens && !char!(')')
+        whitespace
 
-        body = block2(
+        body = brackets(
           ->{ error :case_expected_opening_bracket do
             expected "the opening bracket of a case expression", word
             snippet self
@@ -33,7 +34,8 @@ module Mint
           end }
         ) { many { case_branch(for_css) || comment } }
 
-        error :case_expected_branches do
+        next unless body
+        next error :case_expected_branches do
           expected "a branch of a case expression", word
           snippet self
         end if body.empty?

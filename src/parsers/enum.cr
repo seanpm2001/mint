@@ -22,16 +22,17 @@ module Mint
             terminator: ')',
             separator: ','
           ) { type_variable }
-
           whitespace
+
           next error :enum_expected_closing_parenthesis do
             expected "the closing parenthesis of an enum", word
             snippet self
           end unless char! ')'
+          whitespace
         end
 
         body =
-          block2(
+          brackets(
             ->{
               error :enum_expected_opening_bracket do
                 expected "the opening bracket of an enum", word
@@ -46,6 +47,8 @@ module Mint
             }) do
             many { enum_option || self.comment }
           end
+
+        next unless body
 
         options = [] of Ast::EnumOption
         comments = [] of Ast::Comment

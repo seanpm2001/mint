@@ -11,8 +11,9 @@ module Mint
           expected "the name of a record definition", word
           snippet self
         end unless name = type_id
+        whitespace
 
-        fields, block_comment = block2(
+        body = brackets(
           ->{ error :record_definition_expected_opening_bracket do
             expected "the opening bracket of a record definition", word
             snippet self
@@ -30,6 +31,9 @@ module Mint
             self.comment,
           }
         end
+
+        next unless body
+        fields, block_comment = body
 
         Ast::RecordDefinition.new(
           block_comment: block_comment,

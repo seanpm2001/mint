@@ -17,14 +17,15 @@ module Mint
           expected "the colon of a provider", word
           snippet self
         end unless char! ':'
-
         whitespace
+
         next error :provider_expected_subscription do
           expected "the subscription type of a provider", word
           snippet self
         end unless subscription = type_id
+        whitespace
 
-        next unless body = block2(
+        next unless body = brackets(
                       ->{ error :provider_expected_opening_bracket do
                         expected "the opening bracket of a provider", word
                         snippet self

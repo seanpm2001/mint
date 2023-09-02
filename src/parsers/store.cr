@@ -12,9 +12,10 @@ module Mint
           expected "the name of a store", word
           snippet self
         end unless name = type_id
+        whitespace
 
         next unless body =
-                      block2(
+                      brackets(
                         ->{ error :store_expected_opening_bracket do
                           expected "the opening bracket of a store", word
                           snippet self

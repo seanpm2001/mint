@@ -28,6 +28,8 @@ module Mint
               snippet self
             end })
 
+        next unless expression
+
         Ast::Test.new(
           expression: expression,
           from: start_position,

@@ -38,6 +38,8 @@ module Mint
               snippet self
             end })
 
+        next unless body
+
         Ast::Get.new(
           from: start_position,
           comment: comment,

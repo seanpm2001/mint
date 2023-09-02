@@ -79,7 +79,7 @@ module Mint
 
         truthy =
           if for_css
-            block2(thruthy_opening_error, thruthy_closing_error) do
+            brackets(thruthy_opening_error, thruthy_closing_error) do
               many { css_definition }
             end
           else
@@ -89,7 +89,7 @@ module Mint
               statement_error: thruthy_error)
           end
 
-        thruthy_error.call unless truthy
+        next thruthy_error.call unless truthy
 
         falsy = nil
         whitespace
@@ -100,7 +100,7 @@ module Mint
           unless falsy = if_expression(for_css: for_css)
             falsy =
               if for_css
-                block2(else_opening_error, else_closing_error) do
+                brackets(else_opening_error, else_closing_error) do
                   many { css_definition }
                 end
               else
@@ -110,7 +110,7 @@ module Mint
                   statement_error: else_error)
               end
 
-            else_error.call unless falsy
+            next else_error.call unless falsy
           end
         end
 

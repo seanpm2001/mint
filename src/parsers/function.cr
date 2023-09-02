@@ -54,6 +54,8 @@ module Mint
               snippet self
             end })
 
+        next unless body
+
         Ast::Function.new(
           arguments: arguments,
           from: start_position,

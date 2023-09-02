@@ -20,8 +20,9 @@ module Mint
 
           snippet self
         end unless name = type_id
+        whitespace
 
-        body = block2(
+        body = brackets(
           ->{ error :component_expected_opening_bracket do
             expected "the opening bracket of the component", word
             snippet self
@@ -48,6 +49,8 @@ module Mint
             end if items.reject(Ast::Comment).empty?
           end
         end
+
+        next unless body
 
         properties = [] of Ast::Property
         functions = [] of Ast::Function

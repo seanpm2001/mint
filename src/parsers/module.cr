@@ -18,8 +18,9 @@ module Mint
 
           snippet self
         end unless name = type_id
+        whitespace
 
-        items = block2(
+        items = brackets(
           ->{ error :module_expected_opening_bracket do
             expected "the opening bracket of a module", word
             snippet self
@@ -29,12 +30,13 @@ module Mint
             snippet self
           end }) do
           many { function || constant || self.comment }
-        end.tap do |entities|
-          next error :module_expected_body do
-            expected "the body of the module", word
-            snippet self
-          end if entities.reject(Ast::Comment).empty?
         end
+
+        next unless items
+        next error :module_expected_body do
+          expected "the body of the module", word
+          snippet self
+        end if items.reject(Ast::Comment).empty?
 
         functions = [] of Ast::Function
         constants = [] of Ast::Constant

@@ -18,7 +18,7 @@ module Mint
         end unless content
 
         body =
-          block2(
+          brackets(
             ->{ error :css_nested_at_expected_opening_bracket do
               expected "the opening bracket of a CSS at rule", word
               snippet self
@@ -27,6 +27,8 @@ module Mint
               expected "the closing bracket of a CSS at rule", word
               snippet self
             end }) { css_body }
+
+        next unless body
 
         next error :css_nested_at_expected_body do
           expected "the body of a CSS at rule", word

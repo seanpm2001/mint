@@ -1,48 +1,6 @@
 module Mint
   class Parser
     def if_expression(for_css = false) : Ast::If?
-      thruthy_opening_error = ->{ error :if_expected_truthy_opening_bracket do
-        expected "the opening bracket of the truthy expression", word
-        snippet self
-      end }
-
-      thruthy_closing_error = ->{ error :if_expected_truthy_closing_bracket do
-        expected "the closing bracket of the truthy expression", word
-        snippet self
-      end }
-
-      thruthy_error = ->{ error :if_expected_truthy_expression do
-        block do
-          text "The"
-          bold "body of an if expression"
-          text "must be a single expression."
-        end
-
-        expected "an expression", word
-        snippet self
-      end }
-
-      else_opening_error = ->{ error :if_expected_else_opening_bracket do
-        expected "the opening bracket of the else expression", word
-        snippet self
-      end }
-
-      else_closing_error = ->{ error :if_expected_else_closing_bracket do
-        expected "the closing bracket of the else expression", word
-        snippet self
-      end }
-
-      else_error = ->{ error :if_expected_else_expression do
-        block do
-          text "The"
-          bold "body of an if expression"
-          text "must be a single expression."
-        end
-
-        expected "an expression", word
-        snippet self
-      end }
-
       parse do |start_position|
         next unless word! "if"
         whitespace
@@ -70,18 +28,28 @@ module Mint
         whitespace
 
         truthy =
-          if for_css
-            brackets(thruthy_opening_error, thruthy_closing_error) do
-              many { css_definition }
-            end
-          else
-            block(
-              opening_bracket_error: thruthy_opening_error,
-              closing_bracket_error: thruthy_closing_error,
-              statement_error: thruthy_error)
-          end
+          block(
+            ->{ error :if_expected_truthy_opening_bracket do
+              expected "the opening bracket of the truthy expression", word
+              snippet self
+            end },
+            ->{ error :if_expected_truthy_closing_bracket do
+              expected "the closing bracket of the truthy expression", word
+              snippet self
+            end },
 
-        next thruthy_error.call unless truthy
+            ->{ error :if_expected_truthy_expression do
+              block do
+                text "The"
+                bold "body of an if expression"
+                text "must be a single expression."
+              end
+
+              expected "an expression", word
+              snippet self
+            end }) { for_css ? css_definition : comment || statement }
+
+        next unless truthy
 
         falsy = nil
         whitespace
@@ -91,18 +59,27 @@ module Mint
 
           unless falsy = if_expression(for_css: for_css)
             falsy =
-              if for_css
-                brackets(else_opening_error, else_closing_error) do
-                  many { css_definition }
-                end
-              else
-                block(
-                  opening_bracket_error: else_opening_error,
-                  closing_bracket_error: else_closing_error,
-                  statement_error: else_error)
-              end
+              block(
+                ->{ error :if_expected_else_opening_bracket do
+                  expected "the opening bracket of the else expression", word
+                  snippet self
+                end },
+                ->{ error :if_expected_else_closing_bracket do
+                  expected "the closing bracket of the else expression", word
+                  snippet self
+                end },
+                ->{ error :if_expected_else_expression do
+                  block do
+                    text "The"
+                    bold "body of an if expression"
+                    text "must be a single expression."
+                  end
 
-            next else_error.call unless falsy
+                  expected "an expression", word
+                  snippet self
+                end }) { for_css ? css_definition : comment || statement }
+
+            next unless falsy
           end
         end
 
@@ -111,7 +88,8 @@ module Mint
           condition: condition,
           from: start_position,
           to: position,
-          file: file).tap do |node|
+          file: file
+        ).tap do |node|
           case condition
           when Ast::Statement
             condition.if_node = node

@@ -27,56 +27,46 @@ module Mint
       truthy_item, falsy_item =
         node.branches
 
-      if truthy_item.is_a?(Ast::Node)
-        variables.each do |var|
-          scope.add(truthy_item, var[0], var[2])
-        end
-
-        truthy =
-          resolve truthy_item.as(Ast::Node)
-
-        if falsy_item
-          falsy =
-            resolve falsy_item.as(Ast::Node)
-
-          error! :if_else_type_mismatch do
-            block do
-              text "The"
-              bold "falsy (else) branch of an if expression"
-              text "does not match the type of the truthy branch."
-            end
-
-            expected truthy, falsy
-            snippet falsy_item.as(Ast::Node)
-          end unless Comparer.compare(truthy, falsy)
-        else
-          error! :if_expected_else do
-            block do
-              text "This"
-              bold "if expression"
-              text "must have an"
-              bold "else branch."
-            end
-
-            block "The elese branch can be omitted if the truthy branch returns one of:"
-            snippet VALID_IF_TYPES.map(&.to_pretty).join("\n")
-            block "but it returns"
-            snippet truthy
-
-            snippet node
-          end unless Comparer.matches_any?(truthy, VALID_IF_TYPES)
-        end
-
-        truthy
-      else
-        # scope(variables) do
-        resolve truthy_item
-        # end
-
-        falsy_item.try { |data| resolve data }
-
-        VOID
+      variables.each do |var|
+        scope.add(truthy_item, var[0], var[2])
       end
+
+      truthy =
+        resolve truthy_item
+
+      if falsy_item
+        falsy =
+          resolve falsy_item
+
+        error! :if_else_type_mismatch do
+          block do
+            text "The"
+            bold "falsy (else) branch of an if expression"
+            text "does not match the type of the truthy branch."
+          end
+
+          expected truthy, falsy
+          snippet falsy_item.as(Ast::Node)
+        end unless Comparer.compare(truthy, falsy)
+      else
+        error! :if_expected_else do
+          block do
+            text "This"
+            bold "if expression"
+            text "must have an"
+            bold "else branch."
+          end
+
+          block "The elese branch can be omitted if the truthy branch returns one of:"
+          snippet VALID_IF_TYPES.map(&.to_pretty).join("\n")
+          block "but it returns"
+          snippet truthy
+
+          snippet node
+        end unless Comparer.matches_any?(truthy, VALID_IF_TYPES)
+      end
+
+      truthy
     end
   end
 end

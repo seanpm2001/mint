@@ -1,6 +1,8 @@
 module Mint
   class TypeChecker
     def check(node : Ast::Block) : Checkable
+      return VOID if node.statements.all?(Ast::CssDefinition)
+
       statements =
         node.statements.select(Ast::Statement)
 

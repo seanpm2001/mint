@@ -17,13 +17,23 @@ module Mint
 
     def block(opening_bracket_error : Proc(Nil)? = nil,
               closing_bracket_error : Proc(Nil)? = nil,
-              statement_error : Proc(Nil)? = nil) : Ast::Block?
+              statement_error : Proc(Nil)? = nil)
+      block(
+        opening_bracket_error,
+        closing_bracket_error,
+        statement_error) { comment || statement }
+    end
+
+    def block(opening_bracket_error : Proc(Nil)? = nil,
+              closing_bracket_error : Proc(Nil)? = nil,
+              statement_error : Proc(Nil)? = nil,
+              & : -> Ast::Node?) : Ast::Block?
       parse do |start_position|
         statements =
           brackets(
             opening_bracket_error: opening_bracket_error,
             closing_bracket_error: closing_bracket_error) do
-            many { comment || statement }.tap do |items|
+            many { yield }.tap do |items|
               next statement_error.call if statement_error && items.none?
             end
           end

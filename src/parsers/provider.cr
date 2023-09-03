@@ -82,7 +82,8 @@ module Mint
           to: position,
           file: file,
           gets: gets,
-          name: name).tap do |node|
+          name: name
+        ).tap do |node|
           ast.nodes[start_nodes_position...]
             .select(Ast::NextCall)
             .each(&.entity=(node))

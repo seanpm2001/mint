@@ -137,7 +137,8 @@ module Mint
           refs: refs,
           name: name,
           uses: uses,
-          gets: gets).tap do |node|
+          gets: gets
+        ).tap do |node|
           ast.nodes[start_nodes_position...]
             .select(Ast::NextCall)
             .each(&.entity=(node))

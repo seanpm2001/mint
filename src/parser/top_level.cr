@@ -15,7 +15,7 @@ module Mint
     def parse : Nil
       items = many do
         module_definition ||
-          record_definition ||
+          type_definition ||
           self.enum ||
           component ||
           provider ||
@@ -28,26 +28,26 @@ module Mint
 
       items.each do |item|
         case item
+        when Ast::TypeDefinition
+          ast.type_definitions << item
         when Ast::Component
-          @ast.components << item
+          ast.components << item
         when Ast::Provider
-          @ast.providers << item
+          ast.providers << item
         when Ast::Comment
-          @ast.comments << item
-        when Ast::RecordDefinition
-          @ast.records << item
+          ast.comments << item
         when Ast::Locale
-          @ast.locales << item
+          ast.locales << item
         when Ast::Module
-          @ast.modules << item
+          ast.modules << item
         when Ast::Routes
-          @ast.routes << item
+          ast.routes << item
         when Ast::Store
-          @ast.stores << item
+          ast.stores << item
         when Ast::Suite
-          @ast.suites << item
+          ast.suites << item
         when Ast::Enum
-          @ast.enums << item
+          ast.enums << item
         end
       end
     end

@@ -1,13 +1,13 @@
 module Mint
   class Ast
-    getter components, modules, records, stores, routes, providers, operators
-    getter suites, enums, comments, nodes, keywords, locales
+    getter components, modules, stores, routes, providers, operators
+    getter suites, enums, comments, nodes, keywords, locales, type_definitions
 
     getter unified_modules, unified_locales
 
-    def initialize(@operators = [] of Tuple(Int64, Int64),
+    def initialize(@type_definitions = [] of TypeDefinition,
+                   @operators = [] of Tuple(Int64, Int64),
                    @keywords = [] of Tuple(Int64, Int64),
-                   @records = [] of RecordDefinition,
                    @unified_modules = [] of Module,
                    @unified_locales = [] of Locale,
                    @components = [] of Component,
@@ -45,11 +45,11 @@ module Mint
     end
 
     def merge(ast) : self
+      @type_definitions.concat ast.type_definitions
       @components.concat ast.components
       @providers.concat ast.providers
       @comments.concat ast.comments
       @modules.concat ast.modules
-      @records.concat ast.records
       @locales.concat ast.locales
       @stores.concat ast.stores
       @routes.concat ast.routes

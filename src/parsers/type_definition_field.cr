@@ -1,22 +1,22 @@
 module Mint
   class Parser
-    def record_definition_field : Ast::RecordDefinitionField?
+    def type_definition_field : Ast::TypeDefinitionField?
       parse do |start_position|
         comment = self.comment
 
         next unless key = variable
         whitespace
 
-        next error :record_definition_field_expected_colon do
-          expected "the colon separating a record field from the type", word
+        next error :type_definition_field_expected_colon do
+          expected "the colon separating a type field from the type", word
           snippet self
         end unless char! ':'
         whitespace
 
-        next error :record_definition_field_expected_type do
-          expected "the type of a record field", word
+        next error :type_definition_field_expected_type do
+          expected "the type of a type field", word
           snippet self
-        end unless type = self.type
+        end unless type = self.type || type_variable
 
         mapping =
           parse(track: false) do
@@ -24,7 +24,7 @@ module Mint
             next unless word! "using"
             whitespace
 
-            next error :record_definition_field_expected_mapping do
+            next error :type_definition_field_expected_mapping do
               expected "the mapping of a record field", word
               snippet self
             end unless item = string_literal with_interpolation: false
@@ -32,13 +32,13 @@ module Mint
             item
           end
 
-        Ast::RecordDefinitionField.new(
+        Ast::TypeDefinitionField.new(
           from: start_position,
           comment: comment,
           mapping: mapping,
           to: position,
-          file: file,
           type: type,
+          file: file,
           key: key)
       end
     end

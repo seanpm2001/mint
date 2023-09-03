@@ -1,0 +1,21 @@
+--------------------------------------------------type_definition_expected_name
+type
+-------------------------------------------------------------------------------
+type A
+---------------------------------------type_definition_expected_closing_bracket
+type A {
+-----------------------------------type_definition_expected_closing_parenthesis
+type Maybe(a
+---------------------------------------type_definition_expected_closing_bracket
+type Maybe(a) {
+  Nothing
+-------------------------------------------------------------------------------
+type Maybe(a) {
+  Nothing
+  Just(a)
+}
+-------------------------------------------------------------------------------
+type User {
+  name: String using "name",
+  id: String
+}

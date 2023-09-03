@@ -1,6 +1,6 @@
 module Mint
   class DocumentationGenerator
-    def generate(node : Ast::RecordDefinition, json : JSON::Builder)
+    def generate(node : Ast::TypeDefinition, json : JSON::Builder)
       json.object do
         json.field "description", node.comment.try(&.to_html)
         json.field "name" do

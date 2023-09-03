@@ -13,9 +13,9 @@ module Mint
           location_link node.name, enum_node.name, enum_node
         else
           return unless record =
-                          workspace.ast.records.find(&.name.value.==(node.name.value))
+                          workspace.ast.type_definitions.find(&.name.value.==(node.name.value))
 
-          return if Core.ast.records.includes?(record)
+          return if Core.ast.type_definitions.includes?(record)
 
           location_link node.name, record.name, record
         end

@@ -6,7 +6,7 @@ module Mint
           list(
             terminator: ')',
             separator: ','
-          ) { record_definition_field }
+          ) { type_definition_field }
 
         # TODO: Get rid of this at some point
         if error_position < @errors.size

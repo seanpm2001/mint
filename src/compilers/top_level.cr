@@ -98,8 +98,8 @@ module Mint
 
     # Compiles the application
     def compile(include_tests : Bool = false) : String
-      records =
-        compile ast.records
+      type_definitions =
+        compile ast.type_definitions
 
       providers =
         compile ast.providers
@@ -138,7 +138,7 @@ module Mint
         end
 
       elements =
-        (%w[] &+ enums &+ records &+ modules &+ providers &+ routes &+ components &+ static &+ stores &+ footer &+ suites &+ compiled_web_components)
+        (%w[] &+ enums &+ type_definitions &+ modules &+ providers &+ routes &+ components &+ static &+ stores &+ footer &+ suites &+ compiled_web_components)
           .reject!(&.empty?)
 
       replace_skipped(js.statements(elements))

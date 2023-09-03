@@ -1,6 +1,6 @@
 module Mint
   class Ast
-    class RecordDefinitionField < Node
+    class TypeDefinitionField < Node
       getter key, type, mapping, comment
 
       def initialize(@mapping : StringLiteral?,
@@ -8,7 +8,7 @@ module Mint
                      @comment : Comment?,
                      @key : Variable,
                      @from : Int64,
-                     @type : Type,
+                     @type : Node,
                      @to : Int64)
       end
     end

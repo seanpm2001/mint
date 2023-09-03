@@ -1,10 +1,10 @@
 module Mint
   class Ast
-    class RecordDefinition < Node
-      getter fields, name, comment, block_comment
+    class TypeDefinition < Node
+      getter name, fields, parameters, comment
 
-      def initialize(@fields : Array(RecordDefinitionField),
-                     @block_comment : Comment?,
+      def initialize(@fields : Array(TypeDefinitionField) | Array(Ast::Node),
+                     @parameters : Array(TypeVariable),
                      @file : Parser::File,
                      @comment : Comment?,
                      @name : TypeId,

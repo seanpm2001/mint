@@ -101,9 +101,14 @@ module Mint
 
           return unless record_definition_field = workspace
                           .ast
-                          .records
+                          .type_definitions
                           .find(&.name.value.==(record_name))
-                          .try(&.fields.find(&.key.value.==(node.value)))
+                          .try do |item|
+                            case fields = item.fields
+                            when Array(Ast::TypeDefinitionField)
+                              fields.find(&.key.value.==(node.value))
+                            end
+                          end
 
           location_link node, record_definition_field.key, record_definition_field
         end

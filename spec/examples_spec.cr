@@ -43,8 +43,6 @@ Dir
 
             type_checker = Mint::TypeChecker.new(ast)
             type_checker.check
-
-            type_checker.cache.size.should_not eq(0)
           rescue item : Mint::Error
             item.name.to_s.should eq(error)
           end

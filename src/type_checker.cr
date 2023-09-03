@@ -114,9 +114,9 @@ module Mint
     def resolve_records
       add_record Record.new("Unit"), Ast::Record.empty
 
-      ast.records.each do |record|
-        check! record
-        add_record check(record), record
+      ast.type_definitions.each do |definition|
+        check! definition
+        add_record check(definition), definition
       end
 
       ast.components.each do |component|
@@ -140,10 +140,10 @@ module Mint
         }
         MINT
 
-      node = Parser.parse(contents, "").records[0]
+      node = Parser.parse(contents, "").type_definitions[0]
 
       record = resolve(node)
-      ast.records.push(node)
+      ast.type_definitions.push(node)
       add_record record, node
       record
     end
@@ -169,7 +169,7 @@ module Mint
 
     def resolve_record_definition(name)
       records.find(&.name.==(name)) || begin
-        node = ast.records.find(&.name.value.==(name))
+        node = ast.type_definitions.find(&.name.value.==(name))
 
         if node
           record = check(node)
@@ -330,8 +330,8 @@ module Mint
       if other && other != node
         what =
           case other
-          when Ast::Enum             then "enum"
-          when Ast::RecordDefinition then "record"
+          when Ast::Enum           then "enum"
+          when Ast::TypeDefinition then "record"
           else
             ""
           end

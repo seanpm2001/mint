@@ -59,7 +59,7 @@ module Mint
       js.array(node.parameters.map { |item| destructuring(item, variables) })
     end
 
-    def destructuring(node : Ast::EnumDestructuring, variables : Array(String))
+    def destructuring(node : Ast::TypeDestructuring, variables : Array(String))
       items =
         case lookups[node].as(Ast::EnumOption).parameters.first?
         when Ast::EnumRecordDefinition

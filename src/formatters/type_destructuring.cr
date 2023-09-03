@@ -1,6 +1,6 @@
 module Mint
   class Formatter
-    def format(node : Ast::EnumDestructuring)
+    def format(node : Ast::TypeDestructuring)
       parameters =
         format node.parameters, ", "
 

@@ -1,7 +1,7 @@
 module Mint
   module LS
     class Definition < LSP::RequestMessage
-      def definition(node : Ast::EnumDestructuring, workspace : Workspace, stack : Array(Ast::Node))
+      def definition(node : Ast::TypeDestructuring, workspace : Workspace, stack : Array(Ast::Node))
         return unless name = node.name
         return unless enum_node =
                         workspace.ast.enums.find(&.name.value.==(name.value))

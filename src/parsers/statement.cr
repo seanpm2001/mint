@@ -9,7 +9,7 @@ module Mint
           value = variable(track: false) ||
                   array_destructuring ||
                   tuple_destructuring ||
-                  enum_destructuring
+                  type_destructuring
 
           whitespace
           next unless char! '='
@@ -37,7 +37,7 @@ module Mint
             case target
             when Ast::ArrayDestructuring,
                  Ast::TupleDestructuring,
-                 Ast::EnumDestructuring
+                 Ast::TypeDestructuring
               case item = body.right
               when Ast::ReturnCall
                 item.statement = node

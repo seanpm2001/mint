@@ -25,7 +25,7 @@ module Mint
           end
 
         Ast::CaseBranch.new(
-          match: match.as(Ast::EnumDestructuring | Ast::TupleDestructuring | Ast::Node?),
+          match: match.as(Ast::TypeDestructuring | Ast::TupleDestructuring | Ast::Node?),
           expression: expression,
           from: start_position,
           to: position,

@@ -3,7 +3,7 @@ module Mint
     def destructuring : Ast::Node?
       array_destructuring ||
         tuple_destructuring ||
-        enum_destructuring ||
+        type_destructuring ||
         expression
     end
   end

@@ -1,6 +1,6 @@
 module Mint
   class Ast
-    class EnumDestructuring < Node
+    class TypeDestructuring < Node
       getter name, option, parameters
 
       def initialize(@parameters : Array(Node),

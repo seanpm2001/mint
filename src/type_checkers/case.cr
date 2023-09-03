@@ -74,11 +74,11 @@ module Mint
                 .branches
                 .any? do |branch|
                   case match = branch.match
-                  when Ast::EnumDestructuring
+                  when Ast::TypeDestructuring
                     match.option.value == option.value.value &&
                       !match.parameters.any? do |item|
                         item.is_a?(Ast::TupleDestructuring) ||
-                          item.is_a?(Ast::EnumDestructuring) ||
+                          item.is_a?(Ast::TypeDestructuring) ||
                           item.is_a?(Ast::ArrayDestructuring)
                       end
                   else

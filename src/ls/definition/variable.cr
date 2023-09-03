@@ -68,7 +68,7 @@ module Mint
         return unless parent = workspace
                         .ast
                         .nodes
-                        .select { |other| other.is_a?(Ast::EnumDestructuring) || other.is_a?(Ast::Statement) || other.is_a?(Ast::For) }
+                        .select { |other| other.is_a?(Ast::TypeDestructuring) || other.is_a?(Ast::Statement) || other.is_a?(Ast::For) }
                         .select(&.file.path.==(variable.file.path))
                         .find { |other| other.from < variable.from && other.to > variable.to }
 

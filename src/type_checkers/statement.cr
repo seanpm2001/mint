@@ -5,7 +5,7 @@ module Mint
         case target = node.target
         when Ast::TupleDestructuring,
              Ast::ArrayDestructuring,
-             Ast::EnumDestructuring
+             Ast::TypeDestructuring
           case item = node.expression
           when Ast::Operation
             !item.right.is_a?(Ast::ReturnCall)

@@ -126,7 +126,7 @@ module Mint
     end
 
     def destructure(
-      node : Ast::EnumDestructuring,
+      node : Ast::TypeDestructuring,
       condition : Checkable,
       variables : Array(VariableScope) = [] of VariableScope
     )

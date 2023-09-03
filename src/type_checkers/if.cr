@@ -7,8 +7,8 @@ module Mint
       variables =
         case item = node.condition
         when Ast::Statement
-          if item.target.is_a?(Ast::EnumDestructuring)
-            destructure(item.target.as(Ast::EnumDestructuring), condition)
+          if item.target.is_a?(Ast::TypeDestructuring)
+            destructure(item.target.as(Ast::TypeDestructuring), condition)
           end
         end || [] of VariableScope
 

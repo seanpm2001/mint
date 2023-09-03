@@ -221,7 +221,7 @@ module Mint
            Ast::Directives::Svg,
            Ast::ArrayDestructuring,
            Ast::TupleDestructuring,
-           Ast::EnumDestructuring,
+           Ast::TypeDestructuring,
            Ast::NumberLiteral,
            Ast::RegexpLiteral,
            Ast::MemberAccess,

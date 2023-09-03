@@ -16,7 +16,6 @@ module Mint
       items = many do
         module_definition ||
           type_definition ||
-          self.enum ||
           component ||
           provider ||
           locale ||

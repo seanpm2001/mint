@@ -1,7 +1,7 @@
-/*A*/recordTest{/*B*/a:String,/*C*/b:Blah}
+/*A*/typeTest{/*B*/a:String,/*C*/b:Blah}
 --------------------------------------------------------------------------------
 /* A */
-record Test {
+type Test {
   /* B */
   a : String,
   /* C */

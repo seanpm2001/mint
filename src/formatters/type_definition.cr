@@ -10,7 +10,7 @@ module Mint
       comment =
         node.comment.try { |item| "#{format(item)}\n" }.to_s
 
-      "#{comment}record #{name} {\n#{indent(fields)}\n}"
+      "#{comment}type #{name} {\n#{indent(fields)}\n}"
     end
   end
 end

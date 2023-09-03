@@ -1,10 +1,10 @@
 module Mint
   class Parser
-    def type_definition : Ast::TypeDefinition?
+    def type_definition : Ast::Node?
       parse do |start_position|
         comment = self.comment
 
-        next unless word!("type") || word!("record")
+        next unless word!("type") || word!("record") || word!("enum")
         whitespace
 
         next error :type_definition_expected_name do
@@ -32,7 +32,7 @@ module Mint
           if char! '{'
             items =
               if (variants = list(separator: ',', terminator: '}') { type_definition_field }).empty?
-                many { type || self.comment }
+                many { enum_option }
               else
                 variants
               end
@@ -47,14 +47,39 @@ module Mint
           end || [] of Ast::TypeDefinitionField
         end
 
-        Ast::TypeDefinition.new(
-          parameters: parameters,
-          from: start_position,
-          comment: comment,
-          fields: fields,
-          to: position,
-          name: name,
-          file: file)
+        case fields
+        in Array(Ast::TypeDefinitionField)
+          Ast::TypeDefinition.new(
+            parameters: parameters,
+            from: start_position,
+            comment: comment,
+            fields: fields,
+            to: position,
+            name: name,
+            file: file)
+        in Array(Ast::EnumOption)
+          options = [] of Ast::EnumOption
+          comments = [] of Ast::Comment
+
+          fields.each do |item|
+            case item
+            when Ast::EnumOption
+              options << item
+            when Ast::Comment
+              comments << item
+            end
+          end
+
+          Ast::Enum.new(
+            parameters: parameters,
+            from: start_position,
+            comments: comments,
+            comment: comment,
+            options: options,
+            to: position,
+            file: file,
+            name: name)
+        end
       end
     end
   end

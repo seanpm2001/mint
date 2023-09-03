@@ -1,6 +1,6 @@
-recordTest{a:String using "blah",b:Blah using "what"}
+typeTest{a:String using "blah",b:Blah using "what"}
 --------------------------------------------------------------------------------
-record Test {
+type Test {
   a : String using "blah",
   b : Blah using "what"
 }

@@ -3,8 +3,8 @@ module Mint
     class Variable < Node
       getter value
 
-      def initialize(@value : String,
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
+                     @value : String,
                      @from : Int64,
                      @to : Int64)
       end

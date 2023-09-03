@@ -4,8 +4,8 @@ module Mint
       getter keys, store
 
       def initialize(@keys : Array(ConnectVariable),
-                     @store : TypeId,
                      @file : Parser::File,
+                     @store : TypeId,
                      @from : Int64,
                      @to : Int64)
       end

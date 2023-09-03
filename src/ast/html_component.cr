@@ -10,9 +10,9 @@ module Mint
                      @closing_tag_position : Int64?,
                      @comments : Array(Comment),
                      @children : Array(Node),
+                     @file : Parser::File,
                      @component : TypeId,
                      @ref : Variable?,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

@@ -3,10 +3,10 @@ module Mint
     class CssNestedAt < Node
       getter content, body, name
 
-      def initialize(@body : Array(Node),
+      def initialize(@file : Parser::File,
+                     @body : Array(Node),
                      @content : String,
                      @name : String,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

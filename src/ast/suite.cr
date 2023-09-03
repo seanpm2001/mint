@@ -3,8 +3,8 @@ module Mint
     class Suite < Node
       getter tests, name, comments, constants
 
-      def initialize(@comments : Array(Comment),
-                     @constants : Array(Constant),
+      def initialize(@constants : Array(Constant),
+                     @comments : Array(Comment),
                      @name : StringLiteral,
                      @tests : Array(Test),
                      @file : Parser::File,

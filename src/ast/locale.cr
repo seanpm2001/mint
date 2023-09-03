@@ -4,9 +4,9 @@ module Mint
       getter fields, comment, language
 
       def initialize(@fields : Array(RecordField),
+                     @file : Parser::File,
                      @comment : Comment?,
                      @language : String,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

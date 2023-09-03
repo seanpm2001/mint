@@ -4,9 +4,9 @@ module Mint
       getter option, name, expressions
 
       def initialize(@expressions : Array(Node),
+                     @file : Parser::File,
                      @option : TypeId,
                      @name : TypeId?,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

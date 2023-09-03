@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def array_access(lhs : Ast::Node) : Ast::ArrayAccess?
+    def array_access(expression : Ast::Node) : Ast::ArrayAccess?
       parse do |start_position|
         next unless char! '['
         whitespace
@@ -13,7 +13,7 @@ module Mint
             next error :array_access_expected_index do
               expected "the index into the array", word
               snippet self
-            end unless item = expression
+            end unless item = self.expression
 
             item
           else
@@ -27,11 +27,11 @@ module Mint
         end unless char! ']'
 
         Ast::ArrayAccess.new(
+          expression: expression,
           from: start_position,
           to: position,
           index: index,
-          file: file,
-          lhs: lhs)
+          file: file)
       end
     end
   end

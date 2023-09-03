@@ -4,9 +4,9 @@ module Mint
       getter key, type, mapping, comment
 
       def initialize(@mapping : StringLiteral?,
+                     @file : Parser::File,
                      @comment : Comment?,
                      @key : Variable,
-                     @file : Parser::File,
                      @from : Int64,
                      @type : Type,
                      @to : Int64)

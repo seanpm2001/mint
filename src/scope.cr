@@ -318,7 +318,7 @@ module Mint
         build(node.content, node)
       when Ast::Variable
       when Ast::ArrayAccess
-        build(node.lhs, node)
+        build(node.expression, node)
 
         case node.index
         when Ast::Node

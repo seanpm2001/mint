@@ -1,11 +1,11 @@
 module Mint
   class Ast
     class NextCall < Node
-      getter data
       property entity : Ast::Node? = nil
+      getter data
 
-      def initialize(@data : Record,
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
+                     @data : Record,
                      @from : Int64,
                      @to : Int64)
       end

@@ -3,10 +3,10 @@ module Mint
     class Property < Node
       getter name, default, type, comment
 
-      def initialize(@default : Node?,
+      def initialize(@file : Parser::File,
                      @comment : Comment?,
+                     @default : Node?,
                      @name : Variable,
-                     @file : Parser::File,
                      @from : Int64,
                      @type : Type?,
                      @to : Int64)

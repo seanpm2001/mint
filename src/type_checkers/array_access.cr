@@ -4,11 +4,11 @@ module Mint
       index =
         node.index
 
-      lhs =
-        node.lhs
+      expression =
+        node.expression
 
       type =
-        resolve lhs
+        resolve expression
 
       case index
       in Ast::Node
@@ -21,7 +21,7 @@ module Mint
           snippet index
         end unless Comparer.compare(index_type, NUMBER)
 
-        check_array_access(lhs, type)
+        check_array_access(expression, type)
       in Int64
         if type.name == "Tuple"
           parameter =
@@ -36,21 +36,21 @@ module Mint
             end
 
             snippet "The exact type of the tuple is:", type
-            snippet "The tuple is here:", lhs
+            snippet "The tuple is here:", expression
           end unless parameter
 
           parameter
         else
-          check_array_access(lhs, type)
+          check_array_access(expression, type)
         end
       end
     end
 
-    def check_array_access(lhs, type)
+    def check_array_access(expression, type)
       error! :array_access_not_an_array do
         block "The object you are trying to access an item of is not an array."
         expected ARRAY, type
-        snippet "The array is here:", lhs
+        snippet "The array is here:", expression
       end unless resolved = Comparer.compare(type, ARRAY)
 
       Type.new("Maybe", [resolved.parameters.first] of Checkable)

@@ -9,10 +9,10 @@ module Mint
           format node.index.as(Ast::Node)
         end
 
-      lhs =
-        format node.lhs
+      expression =
+        format node.expression
 
-      "#{lhs}[#{index}]"
+      "#{expression}[#{index}]"
     end
   end
 end

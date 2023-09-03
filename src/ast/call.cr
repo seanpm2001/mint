@@ -4,8 +4,8 @@ module Mint
       getter arguments, expression
 
       def initialize(@arguments : Array(CallExpression),
-                     @expression : Node,
                      @file : Parser::File,
+                     @expression : Node,
                      @from : Int64,
                      @to : Int64)
       end

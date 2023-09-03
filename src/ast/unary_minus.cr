@@ -3,8 +3,8 @@ module Mint
     class UnaryMinus < Node
       getter expression, negations
 
-      def initialize(@expression : Node,
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
+                     @expression : Node,
                      @from : Int64,
                      @to : Int64)
       end

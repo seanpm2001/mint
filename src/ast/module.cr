@@ -6,9 +6,9 @@ module Mint
       def initialize(@functions : Array(Function),
                      @constants : Array(Constant),
                      @comments : Array(Comment),
+                     @file : Parser::File,
                      @comment : Comment?,
                      @name : TypeId,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

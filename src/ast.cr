@@ -1,7 +1,5 @@
 module Mint
   class Ast
-    alias TypeOrVariable = Type | TypeVariable
-
     getter components, modules, records, stores, routes, providers, operators
     getter suites, enums, comments, nodes, keywords, locales
 

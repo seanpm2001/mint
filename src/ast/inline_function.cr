@@ -4,10 +4,10 @@ module Mint
       getter body, arguments, type
 
       def initialize(@arguments : Array(Argument),
-                     @type : TypeOrVariable?,
-                     @body : Block,
                      @file : Parser::File,
+                     @body : Block,
                      @from : Int64,
+                     @type : Node?,
                      @to : Int64)
       end
     end

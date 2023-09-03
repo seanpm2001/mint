@@ -2,10 +2,10 @@ module Mint
   class Compiler
     def _compile(node : Ast::ArrayAccess) : String
       type =
-        cache[node.lhs]
+        cache[node.expression]
 
-      lhs =
-        compile node.lhs
+      expression =
+        compile node.expression
 
       index =
         case node.index
@@ -16,9 +16,9 @@ module Mint
         end
 
       if type.name == "Tuple" && node.index.is_a?(Int64)
-        "#{lhs}[#{index}]"
+        "#{expression}[#{index}]"
       else
-        "_at(#{lhs}, #{index})"
+        "_at(#{expression}, #{index})"
       end
     end
   end

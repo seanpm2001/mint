@@ -9,9 +9,9 @@ module Mint
         Dot
       end
 
-      def initialize(@expression : Node,
+      def initialize(@file : Parser::File,
+                     @expression : Node,
                      @field : Variable,
-                     @file : Parser::File,
                      @from : Int64,
                      @type : Type,
                      @to : Int64)

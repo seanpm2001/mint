@@ -11,9 +11,9 @@ module Mint
                      @comments : Array(Comment),
                      @styles : Array(HtmlStyle),
                      @children : Array(Node),
+                     @file : Parser::File,
                      @ref : Variable?,
                      @tag : Variable,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

@@ -5,9 +5,9 @@ module Mint
 
       def initialize(@branches : Array(CaseBranch),
                      @comments : Array(Comment),
+                     @file : Parser::File,
                      @condition : Node,
                      @await : Bool,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

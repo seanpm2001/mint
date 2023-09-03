@@ -4,9 +4,9 @@ module Mint
       getter value, comment, parameters
 
       def initialize(@parameters : Array(Node),
+                     @file : Parser::File,
                      @comment : Comment?,
                      @value : TypeId,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

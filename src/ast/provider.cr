@@ -9,10 +9,10 @@ module Mint
                      @comments : Array(Comment),
                      @states : Array(State),
                      @subscription : TypeId,
+                     @file : Parser::File,
                      @comment : Comment?,
                      @gets : Array(Get),
                      @name : TypeId,
-                     @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
       end

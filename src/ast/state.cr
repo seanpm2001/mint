@@ -3,10 +3,10 @@ module Mint
     class State < Node
       getter default, type, name, comment
 
-      def initialize(@default : Node,
+      def initialize(@file : Parser::File,
                      @comment : Comment?,
                      @name : Variable,
-                     @file : Parser::File,
+                     @default : Node,
                      @from : Int64,
                      @type : Type?,
                      @to : Int64)

@@ -1,20 +1,18 @@
 module Mint
   class Ast
     class StringLiteral < Node
-      getter value
       getter? broken
+      getter value
 
       def initialize(@value : Array(String | Interpolation),
-                     @broken : Bool,
                      @file : Parser::File,
+                     @broken : Bool,
                      @from : Int64,
                      @to : Int64)
       end
 
       def string_value
-        value
-          .select(String)
-          .join
+        value.select(String).join
       end
 
       def static?

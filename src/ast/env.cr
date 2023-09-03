@@ -3,8 +3,8 @@ module Mint
     class Env < Node
       getter name
 
-      def initialize(@name : String,
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
+                     @name : String,
                      @from : Int64,
                      @to : Int64)
       end

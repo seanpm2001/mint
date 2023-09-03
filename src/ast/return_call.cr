@@ -1,12 +1,11 @@
 module Mint
   class Ast
     class ReturnCall < Node
+      property statement : Ast::Statement? = nil
       getter expression
 
-      property statement : Ast::Statement? = nil
-
-      def initialize(@expression : Node,
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
+                     @expression : Node,
                      @from : Int64,
                      @to : Int64)
       end

@@ -29,7 +29,7 @@ class C extends _E {
 
 class A extends _C {
   render() {
-    const b = __match(new B(`Some string...`), _PE(B,[
+    const b = __match(_n(B)(`Some string...`), _PE(B,[
       _PV
     ]));
 

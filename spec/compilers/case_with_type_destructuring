@@ -79,7 +79,7 @@ class A extends _C {
   }
 
   render() {
-    this.a(new D(new C(``)));
+    this.a(_n(D)(_n(C)(``)));
     return ``;
   }
 };

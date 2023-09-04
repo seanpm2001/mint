@@ -31,7 +31,7 @@ class C extends _E {
 class A extends _C {
   render() {
     return (async () => {
-      let b = await new B(``);
+      let b = await _n(B)(``);
 
       return _match(b,[
         [

@@ -4,8 +4,10 @@ module Mint
       parse do
         type =
           if word! "::"
+            # TODO: puts "[Deprecation] Enum access will be deprecated in the next release. Use a dot '.' instead of a double colon '::'"
             Ast::Access::Type::DoubleColon
           elsif char! ':'
+            # TODO: puts "[Deprecation] Constant access will be deprecated in the next release. Use a dot '.' instead of a colon ':'"
             Ast::Access::Type::Colon
           elsif char! '.'
             Ast::Access::Type::Dot

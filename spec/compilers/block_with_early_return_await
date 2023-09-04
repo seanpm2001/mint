@@ -35,7 +35,7 @@ class C extends _E {
 class A extends _C {
   render() {
     (async () => {
-      const b = __match(await new B(`Some string...`), _PE(B,[
+      const b = __match(await _n(B)(`Some string...`), _PE(B,[
         _PV
       ]));
 

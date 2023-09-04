@@ -30,7 +30,7 @@ class C extends _E {
 
 class A extends _C {
   render() {
-    return _match(new B(``),[
+    return _match(_n(B)(``),[
       [
         _PE(B,[
           _PV

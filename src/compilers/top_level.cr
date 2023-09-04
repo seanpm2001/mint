@@ -383,19 +383,25 @@ module Mint
             }
           } else if (pattern instanceof Pattern) {
             if (value instanceof pattern.x) {
-              for (let index in pattern.pattern) {
-                if (!__match(value[`_${index}`], pattern.pattern[index], values)) {
+              if (pattern.pattern instanceof RecordPattern) {
+                if (!__match(value, pattern.pattern, values)) {
                   return false
+                }
+              } else {
+                for (let index in pattern.pattern) {
+                  if (!__match(value[`_${index}`], pattern.pattern[index], values)) {
+                    return false
+                  }
                 }
               }
             } else {
               return false
             }
-          } else if (pattern instanceof RecordPattern && value instanceof Record) {
+          } else if (pattern instanceof RecordPattern) {
             for (let index in pattern.patterns) {
               const item = pattern.patterns[index];
 
-              if (!__match(value[item[0]], item[1], values)) {
+              if (!__match(value[value._mapping[item[0]]], item[1], values)) {
                 return false
               }
             }
@@ -447,6 +453,10 @@ module Mint
           } else {
             return callback(item)
           }
+        }
+
+        const _n = (item) => {
+          return (...args) => new item(...args)
         }
 
         class DoError extends Error {}

@@ -65,7 +65,7 @@ module Mint
           when "encode"
             encode
           else
-            enum_id || value
+            value
           end
         end
 

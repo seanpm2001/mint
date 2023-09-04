@@ -85,11 +85,11 @@ class A extends _C {
   }
 
   b() {
-    return new C(``,``);
+    return _n(C)(``, ``);
   }
 
   c() {
-    return new D(new E(``));
+    return _n(D)(_n(E)(``));
   }
 
   render() {

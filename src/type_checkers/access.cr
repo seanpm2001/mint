@@ -12,13 +12,44 @@ module Mint
       stack
     end
 
+    def to_function_type(node : Ast::EnumOption, parent : Ast::Enum)
+      parent_type =
+        resolve parent
+
+      option_type =
+        resolve node
+
+      if node.parameters.empty?
+        parent_type
+      else
+        parameters =
+          case item = node.parameters.first?
+          when Ast::EnumRecordDefinition
+            item.fields.map do |field|
+              type =
+                resolve field.type
+
+              type.label = field.key.value
+              type
+            end
+          else
+            option_type.parameters.dup
+          end
+
+        parameters << parent_type.as(Checkable)
+        Comparer.normalize(Type.new("Function", parameters))
+      end
+    end
+
     def check(node : Ast::Access) : Checkable
+      possibilities = [] of String
+
       result =
         case variable = node.expression
         when Ast::Access
           stack = unwind_access(node)
-          possibilities = [] of String
           target = ""
+          found = nil
 
           loop do
             case item = stack.shift?
@@ -35,27 +66,27 @@ module Mint
               break
             end
           end
-
-          found = nil
-          possibilities.each do |target| # ameba:disable Lint/ShadowingOuterLocalVar
-            break if found = scope.resolve(target, node).try(&.node)
-          end
-
-          {found, target}
         when Ast::Variable
-          {lookup(variable), variable.value}
+          possibilities << variable.value
         end
 
-      if result
-        entity, entity_name = result
+      possibilities.each do |possibility|
+        if parent = ast.enums.find(&.name.value.==(possibility))
+          if option = parent.options.find(&.value.value.==(node.field.value))
+            variables[node] = {option, parent}
+            return to_function_type(option, parent)
+          end
+        end
 
-        if entity && entity_name[0].ascii_uppercase?
-          variables[node.expression] = {entity, entity}
-          check!(entity)
-          if target_node = scope.resolve(node.field.value, entity).try(&.node)
-            variables[node] = {target_node, entity}
-            variables[node.field] = {target_node, entity}
-            return resolve target_node
+        if entity = scope.resolve(possibility, node).try(&.node)
+          if entity && possibility[0].ascii_uppercase?
+            variables[node.expression] = {entity, entity}
+            check!(entity)
+            if target_node = scope.resolve(node.field.value, entity).try(&.node)
+              variables[node] = {target_node, entity}
+              variables[node.field] = {target_node, entity}
+              return resolve target_node
+            end
           end
         end
       end

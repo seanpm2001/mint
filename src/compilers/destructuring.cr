@@ -74,13 +74,13 @@ module Mint
                 ])
               end
 
-            [js.call("_PR", [js.array(fields)])]
+            js.call("_PR", [js.array(fields)])
           end
-        end || node.parameters.map do |param|
+        end || js.array(node.parameters.map do |param|
           destructuring(param, variables)
-        end
+        end)
 
-      js.call("_PE", [js.class_of(lookups[node]), js.array(items)])
+      js.call("_PE", [js.class_of(lookups[node]), items])
     end
   end
 end

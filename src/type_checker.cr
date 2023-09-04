@@ -115,8 +115,10 @@ module Mint
       add_record Record.new("Unit"), Ast::Record.empty
 
       ast.type_definitions.each do |definition|
+        next if definition.fields.is_a?(Array(Ast::EnumOption))
+        value = check(definition)
         check! definition
-        add_record check(definition), definition
+        add_record(value, definition)
       end
 
       ast.components.each do |component|
@@ -171,7 +173,7 @@ module Mint
       records.find(&.name.==(name)) || begin
         node = ast.type_definitions.find(&.name.value.==(name))
 
-        if node
+        if node && node.fields.is_a?(Array(Ast::TypeDefinitionField))
           record = check(node)
           add_record record, node
           record

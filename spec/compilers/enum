@@ -32,6 +32,13 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
+class A extends _E {
+  constructor() {
+    super();
+    this.length = 0;
+  }
+};
+
 class B extends _E {
   constructor() {
     super();
@@ -39,10 +46,11 @@ class B extends _E {
   }
 };
 
-class F extends _E {
-  constructor() {
+class C extends _E {
+  constructor(_0) {
     super();
-    this.length = 0;
+    this._0 = _0;
+    this.length = 1;
   }
 };
 
@@ -62,15 +70,7 @@ class E extends _E {
   }
 };
 
-class G extends _E {
-  constructor(_0) {
-    super();
-    this._0 = _0;
-    this.length = 1;
-  }
-};
-
-class C extends _E {
+class F extends _E {
   constructor(_0, _1) {
     super();
     this._0 = _0;
@@ -79,17 +79,17 @@ class C extends _E {
   }
 };
 
-class A extends _C {
+class G extends _C {
   a() {
-    return new B();
+    return new A();
   }
 
   b() {
-    return _n(C)(``, ``);
+    return _n(F)(``, ``);
   }
 
   c() {
-    return _n(D)(_n(E)(``));
+    return _n(C)(_n(D)(``));
   }
 
   render() {
@@ -100,4 +100,4 @@ class A extends _C {
   }
 };
 
-A.displayName = "Main";
+G.displayName = "Main";

@@ -27,7 +27,6 @@ module Mint
 
             unified_branch =
               Comparer.compare(type, resolved)
-
             error! :case_branch_not_matches do
               block do
                 text "The return type of the"
@@ -65,26 +64,31 @@ module Mint
       case condition
       when Type
         parent =
-          ast.enums.find(&.name.value.==(condition.name))
+          ast.type_definitions.find(&.name.value.==(condition.name))
 
         if parent
           not_matched =
-            parent.options.reject do |option|
-              node
-                .branches
-                .any? do |branch|
-                  case match = branch.match
-                  when Ast::TypeDestructuring
-                    match.option.value == option.value.value &&
-                      !match.parameters.any? do |item|
-                        item.is_a?(Ast::TupleDestructuring) ||
-                          item.is_a?(Ast::TypeDestructuring) ||
-                          item.is_a?(Ast::ArrayDestructuring)
-                      end
-                  else
-                    false
+            case fields = parent.fields
+            when Array(Ast::EnumOption)
+              fields.reject do |option|
+                node
+                  .branches
+                  .any? do |branch|
+                    case match = branch.match
+                    when Ast::TypeDestructuring
+                      match.option.value == option.value.value &&
+                        !match.parameters.any? do |item|
+                          item.is_a?(Ast::TupleDestructuring) ||
+                            item.is_a?(Ast::TypeDestructuring) ||
+                            item.is_a?(Ast::ArrayDestructuring)
+                        end
+                    else
+                      false
+                    end
                   end
-                end
+              end
+            else
+              [] of Ast::EnumOption
             end
 
           case_unnecessary_all.call(catch_all) if not_matched.empty? && catch_all

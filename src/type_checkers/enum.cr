@@ -28,33 +28,5 @@ module Mint
 
       Type.new(node.name.value, parameters)
     end
-
-    def check(parameters : Array(Ast::Node),
-              names : Array(Ast::TypeVariable),
-              used_parameters : Set(Ast::TypeVariable))
-      parameters.each do |parameter|
-        case parameter
-        when Ast::Type
-          check parameter.parameters, names, used_parameters
-        when Ast::TypeVariable
-          param =
-            names.find(&.value.==(parameter.value))
-
-          error! :enum_not_defined_parameter do
-            block do
-              text "The parameter"
-              bold parameter.value
-              text "was not defined in the type of the enum."
-            end
-
-            block "Parameters used by options must be defined in the type of the enum."
-
-            snippet parameter
-          end unless param
-
-          used_parameters.add param
-        end
-      end
-    end
   end
 end

@@ -131,11 +131,11 @@ module Mint
       variables : Array(VariableScope) = [] of VariableScope
     )
       parent =
-        ast.enums.find(&.name.value.==(node.name.try &.value))
+        ast.type_definitions.find(&.name.value.==(node.name.try &.value))
 
-      error! :destructuring_enum_missing do
+      error! :destructuring_type_missing do
         block do
-          text "I could not find the enum for a destructuring:"
+          text "I could not find the type for a destructuring:"
           bold node.name.try(&.value).to_s
         end
 
@@ -143,9 +143,12 @@ module Mint
       end unless parent
 
       option =
-        parent.options.find(&.value.value.==(node.option.value))
+        case fields = parent.fields
+        when Array(Ast::EnumOption)
+          fields.find(&.value.value.==(node.option.value))
+        end
 
-      error! :destructuring_enum_option_missing do
+      error! :destructuring_type_option_missing do
         block do
           text "I could not find the option"
           bold node.option.value

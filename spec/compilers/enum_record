@@ -12,7 +12,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-class B extends _E {
+class A extends _E {
   constructor(_0, _1) {
     super();
     this._0 = _0;
@@ -26,18 +26,18 @@ class B extends _E {
   }
 };
 
-class C extends _E {
+class B extends _E {
   constructor() {
     super();
     this.length = 0;
   }
 };
 
-class A extends _C {
+class C extends _C {
   render() {
-    return _match(_n(B)(`Joe`, `Blue`),[
+    return _match(_n(A)(`Joe`, `Blue`),[
       [
-        _PE(B,_PR([
+        _PE(A,_PR([
           [
             "color",
             _PV
@@ -52,7 +52,7 @@ class A extends _C {
         }
       ],
       [
-        _PE(C,[]),
+        _PE(B,[]),
         () => {
           return ``
         }
@@ -61,4 +61,4 @@ class A extends _C {
   }
 };
 
-A.displayName = "Main";
+C.displayName = "Main";

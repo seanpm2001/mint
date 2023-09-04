@@ -6,16 +6,16 @@ enum Test (
 enum Test
 ---------------------------------------type_definition_expected_closing_bracket
 enum Test {
-----------------------------------------------------------enum_unused_parameter
+-----------------------------------------------type_definition_unused_parameter
 enum A(a, b, c) {
   B
   C
 }
------------------------------------------------------enum_not_defined_parameter
+------------------------------------------type_definition_not_defined_parameter
 enum A {
   B(a)
 }
------------------------------------------------------enum_not_defined_parameter
+------------------------------------------type_definition_not_defined_parameter
 enum A {
   B(Maybe(a))
 }

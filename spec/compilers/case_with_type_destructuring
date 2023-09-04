@@ -26,15 +26,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-class C extends _E {
-  constructor(_0) {
-    super();
-    this._0 = _0;
-    this.length = 1;
-  }
-};
-
-class D extends _E {
+class A extends _E {
   constructor(_0) {
     super();
     this._0 = _0;
@@ -43,29 +35,37 @@ class D extends _E {
 };
 
 class B extends _E {
+  constructor(_0) {
+    super();
+    this._0 = _0;
+    this.length = 1;
+  }
+};
+
+class C extends _E {
   constructor() {
     super();
     this.length = 0;
   }
 };
 
-class A extends _C {
+class D extends _C {
   a(b) {
     return _match(b,[
       [
-        _PE(B,[]),
+        _PE(C,[]),
         () => {
           return ``
         }
       ],
       [
-        _PE(D,[
+        _PE(B,[
           _PV
         ]),
         (c) => {
           return _match(c,[
             [
-              _PE(C,[
+              _PE(A,[
                 _PV
               ]),
               (d) => {
@@ -79,9 +79,9 @@ class A extends _C {
   }
 
   render() {
-    this.a(_n(D)(_n(C)(``)));
+    this.a(_n(B)(_n(A)(``)));
     return ``;
   }
 };
 
-A.displayName = "Main";
+D.displayName = "Main";

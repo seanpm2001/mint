@@ -85,15 +85,15 @@ component Main {
     ""
   }
 }
------------------------------------------------------destructuring_enum_missing
+-----------------------------------------------------destructuring_type_missing
 component Main {
   fun render : String {
     let Maybe::Just(a) = "" or return ""
     ""
   }
 }
-----------------------------------------------destructuring_enum_option_missing
-enum Maybe(a) {
+----------------------------------------------destructuring_type_option_missing
+enum Maybe {
   Nothing
 }
 

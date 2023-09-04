@@ -12,12 +12,12 @@ module Mint
         .try { |component| resolve component }
 
       node
-        .enums
+        .type_definitions
         .find(&.name.value.==("Maybe"))
         .try { |item| resolve item }
 
       node
-        .enums
+        .type_definitions
         .find(&.name.value.==("Result"))
         .try { |item| resolve item }
 
@@ -55,7 +55,7 @@ module Mint
 
       resolve node.providers
       resolve node.stores
-      resolve node.enums
+      resolve node.type_definitions
 
       VOID
     end

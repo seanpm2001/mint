@@ -5,12 +5,20 @@ module Mint
         format node.name
 
       fields =
-        format node.fields, ",\n"
+        case node.fields
+        when Array(Ast::EnumOption)
+          list node.fields
+        else
+          format node.fields, ",\n"
+        end
 
       comment =
         node.comment.try { |item| "#{format(item)}\n" }.to_s
 
-      "#{comment}type #{name} {\n#{indent(fields)}\n}"
+      parameters =
+        format_parameters(node.parameters)
+
+      "#{comment}type #{name}#{parameters} {\n#{indent(fields)}\n}"
     end
   end
 end

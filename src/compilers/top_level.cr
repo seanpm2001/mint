@@ -147,19 +147,29 @@ module Mint
     # --------------------------------------------------------------------------
 
     def maybe
-      ast.enums.find!(&.name.value.==("Maybe"))
+      ast.type_definitions.find!(&.name.value.==("Maybe"))
     end
 
     def just
       node =
-        maybe.options.find!(&.value.value.==("Just"))
+        case fields = maybe.fields
+        when Array(Ast::EnumOption)
+          fields.find!(&.value.value.==("Just"))
+        else
+          raise "SHOULD NOT HAPPEN"
+        end
 
       js.class_of(node)
     end
 
     def nothing
       node =
-        maybe.options.find!(&.value.value.==("Nothing"))
+        case fields = maybe.fields
+        when Array(Ast::EnumOption)
+          fields.find!(&.value.value.==("Nothing"))
+        else
+          raise "SHOULD NOT HAPPEN"
+        end
 
       js.class_of(node)
     end
@@ -167,19 +177,29 @@ module Mint
     # --------------------------------------------------------------------------
 
     def result
-      ast.enums.find!(&.name.value.==("Result"))
+      ast.type_definitions.find!(&.name.value.==("Result"))
     end
 
     def ok
       node =
-        result.options.find!(&.value.value.==("Ok"))
+        case fields = result.fields
+        when Array(Ast::EnumOption)
+          fields.find!(&.value.value.==("Ok"))
+        else
+          raise "SHOULD NOT HAPPEN"
+        end
 
       js.class_of(node)
     end
 
     def err
       node =
-        result.options.find!(&.value.value.==("Err"))
+        case fields = result.fields
+        when Array(Ast::EnumOption)
+          fields.find!(&.value.value.==("Err"))
+        else
+          raise "SHOULD NOT HAPPEN"
+        end
 
       js.class_of(node)
     end

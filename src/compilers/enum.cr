@@ -22,7 +22,7 @@ module Mint
             end
 
           assignments =
-            ids.map { |item| "this.#{item} = #{item}" }
+            ids.map { |id| "this.#{id} = #{id}" }
 
           js.class(
             name,

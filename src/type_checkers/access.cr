@@ -44,31 +44,29 @@ module Mint
     def check(node : Ast::Access) : Checkable
       possibilities = [] of String
 
-      result =
-        case variable = node.expression
-        when Ast::Access
-          stack = unwind_access(node)
-          target = ""
-          found = nil
+      case variable = node.expression
+      when Ast::Access
+        stack = unwind_access(node)
+        target = ""
 
-          loop do
-            case item = stack.shift?
-            when Ast::Variable
-              target +=
-                if target.blank?
-                  item.value
-                else
-                  "." + item.value
-                end
+        loop do
+          case item = stack.shift?
+          when Ast::Variable
+            target +=
+              if target.blank?
+                item.value
+              else
+                "." + item.value
+              end
 
-              possibilities.unshift target
-            else
-              break
-            end
+            possibilities.unshift target
+          else
+            break
           end
-        when Ast::Variable
-          possibilities << variable.value
         end
+      when Ast::Variable
+        possibilities << variable.value
+      end
 
       possibilities.each do |possibility|
         if parent = ast.enums.find(&.name.value.==(possibility))

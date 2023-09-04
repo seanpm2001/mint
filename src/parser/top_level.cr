@@ -45,8 +45,6 @@ module Mint
           ast.stores << item
         when Ast::Suite
           ast.suites << item
-        when Ast::Enum
-          ast.enums << item
         end
       end
     end

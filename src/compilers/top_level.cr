@@ -116,9 +116,6 @@ module Mint
       routes =
         compile ast.routes
 
-      enums =
-        compile ast.enums
-
       all_css =
         style_builder.compile
 
@@ -138,7 +135,7 @@ module Mint
         end
 
       elements =
-        (%w[] &+ enums &+ type_definitions &+ modules &+ providers &+ routes &+ components &+ static &+ stores &+ footer &+ suites &+ compiled_web_components)
+        (%w[] &+ type_definitions &+ modules &+ providers &+ routes &+ components &+ static &+ stores &+ footer &+ suites &+ compiled_web_components)
           .reject!(&.empty?)
 
       replace_skipped(js.statements(elements))

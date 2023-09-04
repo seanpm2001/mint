@@ -3,8 +3,7 @@ module Mint
     class Definition < LSP::RequestMessage
       def definition(node : Ast::TypeId, workspace : Workspace, stack : Array(Ast::Node))
         found =
-          workspace.ast.enums.find(&.name.value.==(node.value)) ||
-            workspace.ast.type_definitions.find(&.name.value.==(node.value)) ||
+          workspace.ast.type_definitions.find(&.name.value.==(node.value)) ||
             workspace.ast.stores.find(&.name.value.==(node.value)) ||
             find_component(workspace, node.value)
 
@@ -15,7 +14,7 @@ module Mint
         return if Core.ast.nodes.includes?(found)
 
         case found
-        when Ast::Store, Ast::Enum, Ast::Component, Ast::TypeDefinition
+        when Ast::Store, Ast::Component, Ast::TypeDefinition
           location_link node, found.name, found
         end
       end

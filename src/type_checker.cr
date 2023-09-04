@@ -332,8 +332,7 @@ module Mint
       if other && other != node
         what =
           case other
-          when Ast::Enum           then "enum"
-          when Ast::TypeDefinition then "record"
+          when Ast::TypeDefinition then "type"
           else
             ""
           end

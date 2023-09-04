@@ -54,7 +54,7 @@ module Mint
         enum_completions =
           workspace
             .ast
-            .enums
+            .type_definitions
             .flat_map { |node| completions(node) }
 
         (global_completions +

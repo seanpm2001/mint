@@ -152,13 +152,13 @@ module Mint
         block do
           text "I could not find the option"
           bold node.option.value
-          text "of enum"
+          text "of type"
           bold parent.name.value
           text "for a destructuring."
         end
 
         snippet "You tried to reference it here:", node
-        snippet "The enum is defined here:", parent
+        snippet "The type is defined here:", parent
       end unless option
 
       lookups[node] = option
@@ -217,7 +217,7 @@ module Mint
               block do
                 text "You are trying to destructure the"
                 bold index.to_s
-                text "parameter from the enum option:"
+                text "parameter from the type option:"
                 bold option.value.value
               end
 

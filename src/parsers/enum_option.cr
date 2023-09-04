@@ -19,7 +19,7 @@ module Mint
 
           whitespace
           next error :enum_option_expected_closing_parenthesis do
-            expected "the closing parenthesis of an enum option", word
+            expected "the closing parenthesis of an type option", word
             snippet self
           end unless char! ')'
         end

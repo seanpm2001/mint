@@ -14,7 +14,6 @@ module Mint
         ast.routes +
         ast.stores +
         ast.suites +
-        ast.enums +
         ast.comments +
         ast.locales
       )

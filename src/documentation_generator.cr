@@ -62,7 +62,7 @@ module Mint
         end
 
         json.field "enums" do
-          generate ast.enums.sort_by(&.name.value), json
+          # generate ast.enums.sort_by(&.name.value), json
         end
       end
     end

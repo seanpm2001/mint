@@ -14,7 +14,7 @@ module Mint
       # TODO: Probably this will need to go into the type checker
       # if we want to support cases like this:
       #
-      #   enum Test {
+      #   type Test {
       #     Branch(String)
       #   }
       #

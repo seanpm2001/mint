@@ -6,8 +6,6 @@ module Mint
           case item[1]
           when Ast::TypeDefinition
             hover(item[1], workspace)
-          when Ast::Enum
-            hover(item[1], workspace)
           end
         end || [] of String
       end

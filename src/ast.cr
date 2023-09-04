@@ -1,7 +1,7 @@
 module Mint
   class Ast
     getter components, modules, stores, routes, providers, operators
-    getter suites, enums, comments, nodes, keywords, locales, type_definitions
+    getter suites, comments, nodes, keywords, locales, type_definitions
 
     getter unified_modules, unified_locales
 
@@ -18,7 +18,6 @@ module Mint
                    @routes = [] of Routes,
                    @suites = [] of Suite,
                    @stores = [] of Store,
-                   @enums = [] of Enum,
                    @nodes = [] of Node)
     end
 
@@ -54,7 +53,6 @@ module Mint
       @stores.concat ast.stores
       @routes.concat ast.routes
       @suites.concat ast.suites
-      @enums.concat ast.enums
       @nodes.concat ast.nodes
 
       self

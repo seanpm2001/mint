@@ -1,17 +1,61 @@
 module Mint
   class TypeChecker
-    def check(node : Ast::Access) : Checkable
-      case variable = node.expression
+    def unwind_access(node : Ast::Access, stack = [] of Ast::Node) : Array(Ast::Node)
+      case item = node.expression
+      when Ast::Access
+        stack.unshift(item.field)
+        unwind_access(item, stack)
       when Ast::Variable
-        if variable.value[0].ascii_uppercase?
-          if entity = lookup(variable)
-            variables[variable] = {entity, entity}
-            check!(entity)
-            if target_node = scope.resolve(node.field.value, entity).try(&.node)
-              variables[node] = {target_node, entity}
-              variables[node.field] = {target_node, entity}
-              return resolve target_node
+        stack.unshift(node.expression)
+      end
+
+      stack
+    end
+
+    def check(node : Ast::Access) : Checkable
+      result =
+        case variable = node.expression
+        when Ast::Access
+          stack = unwind_access(node)
+          possibilities = [] of String
+          target = ""
+
+          loop do
+            case item = stack.shift?
+            when Ast::Variable
+              target +=
+                if target.blank?
+                  item.value
+                else
+                  "." + item.value
+                end
+
+              possibilities.unshift target
+            else
+              break
             end
+          end
+
+          found = nil
+          possibilities.each do |target| # ameba:disable Lint/ShadowingOuterLocalVar
+            break if found = scope.resolve(target, node).try(&.node)
+          end
+
+          {found, target}
+        when Ast::Variable
+          {lookup(variable), variable.value}
+        end
+
+      if result
+        entity, entity_name = result
+
+        if entity && entity_name[0].ascii_uppercase?
+          variables[node.expression] = {entity, entity}
+          check!(entity)
+          if target_node = scope.resolve(node.field.value, entity).try(&.node)
+            variables[node] = {target_node, entity}
+            variables[node.field] = {target_node, entity}
+            return resolve target_node
           end
         end
       end

@@ -16,7 +16,7 @@ module Mint
         next error :access_expected_entity do
           expected "the name of the accessed entity", word
           snippet self
-        end unless field = variable || variable_constant
+        end unless field = value
 
         Ast::Access.new(
           expression: expression,

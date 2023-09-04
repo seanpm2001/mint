@@ -265,8 +265,6 @@ module Mint
         build(node.selectors, node)
       when Ast::Get
         build(node.body, node)
-      when Ast::EnumId
-        build(node.expressions, node)
       when Ast::If
         build(node.branches[0], node)
         build(node.branches[1], node)

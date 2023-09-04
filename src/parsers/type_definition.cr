@@ -32,7 +32,7 @@ module Mint
           if char! '{'
             items =
               if (variants = list(separator: ',', terminator: '}') { type_definition_field }).empty?
-                many { enum_option }
+                many { type_variant }
               else
                 variants
               end

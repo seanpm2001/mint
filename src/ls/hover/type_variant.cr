@@ -1,14 +1,14 @@
 module Mint
   module LS
     class Hover < LSP::RequestMessage
-      def hover(node : Ast::EnumOption, workspace) : Array(String)
+      def hover(node : Ast::TypeVariant, workspace) : Array(String)
         item =
           workspace
             .ast
             .type_definitions
             .find do |definition|
               case fields = definition.fields
-              when Array(Ast::EnumOption)
+              when Array(Ast::TypeVariant)
                 fields.includes?(node)
               end
             end

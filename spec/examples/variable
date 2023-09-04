@@ -36,6 +36,27 @@ suite "Suite 2" {
     1 + 1 == TWO
   }
 }
+---------------------------------------------------------------variable_missing
+enum A {
+  B(String)
+  C
+}
+
+component Main {
+  fun render : String {
+    case (A::D(0)) {
+      => ""
+    }
+  }
+}
+---------------------------------------------------------------variable_missing
+component Main {
+  fun render : String {
+    case (C::D(0)) {
+      => ""
+    }
+  }
+}
 --------------------------------------------------------------variable_reserved
 component Main {
   fun b(default : String) : String {

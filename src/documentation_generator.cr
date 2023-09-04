@@ -60,10 +60,6 @@ module Mint
         json.field "records" do
           generate ast.type_definitions.sort_by(&.name.value), json
         end
-
-        json.field "enums" do
-          # generate ast.enums.sort_by(&.name.value), json
-        end
       end
     end
 

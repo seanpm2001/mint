@@ -18,3 +18,16 @@ module Test {
     test1() + test2()
   }
 }
+-------------------------------------------------------------------------------
+enum A {
+  B
+  C
+}
+
+component Main {
+  fun render : String {
+    case (A::B) {
+      => ""
+    }
+  }
+}

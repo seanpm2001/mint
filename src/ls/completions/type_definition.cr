@@ -3,7 +3,7 @@ module Mint
     class Completion < LSP::RequestMessage
       def completions(node : Ast::TypeDefinition) : Array(LSP::CompletionItem)
         case fields = node.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           fields.map do |option|
             name =
               "#{node.name.value}::#{option.value.value}"

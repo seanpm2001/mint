@@ -15,7 +15,7 @@ module Mint
         types[node] = type
 
         Comparer.normalize(type)
-      in Array(Ast::EnumOption)
+      in Array(Ast::TypeVariant)
         parameters =
           resolve node.parameters
 

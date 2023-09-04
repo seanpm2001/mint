@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def enum_option
+    def type_variant
       parse do |start_position|
         comment = self.comment
 
@@ -18,13 +18,13 @@ module Mint
           ) { enum_record_definition || type_variable || type }
 
           whitespace
-          next error :enum_option_expected_closing_parenthesis do
+          next error :type_variant_expected_closing_parenthesis do
             expected "the closing parenthesis of an type option", word
             snippet self
           end unless char! ')'
         end
 
-        Ast::EnumOption.new(
+        Ast::TypeVariant.new(
           parameters: parameters,
           from: start_position,
           comment: comment,

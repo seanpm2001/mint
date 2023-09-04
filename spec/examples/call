@@ -32,6 +32,19 @@ component Main {
     <div/>
   }
 }
+----------------------------------------------------call_argument_type_mismatch
+enum A {
+  B(String)
+  C
+}
+
+component Main {
+  fun render : String {
+    case (A::B(0)) {
+      => ""
+    }
+  }
+}
 ----------------------------------------------------call_argument_size_mismatch
 component Main {
   fun a (input : String) : String {

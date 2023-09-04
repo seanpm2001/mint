@@ -1,6 +1,6 @@
 module Mint
   class TypeChecker
-    def check(node : Ast::EnumOption) : Checkable
+    def check(node : Ast::TypeVariant) : Checkable
       parameters =
         resolve node.parameters
 

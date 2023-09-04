@@ -2,6 +2,10 @@
 component Main {
   fun render : String {
     "".
+---------------------------------------------------------access_expected_entity
+component Main {
+  fun render {
+    A::
 ---------------------------------------------------------access_field_not_found
 record Blah {
   blah : String

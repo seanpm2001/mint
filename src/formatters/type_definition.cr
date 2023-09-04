@@ -6,7 +6,7 @@ module Mint
 
       fields =
         case node.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           list node.fields
         else
           format node.fields, ",\n"

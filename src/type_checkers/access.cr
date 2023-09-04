@@ -12,7 +12,7 @@ module Mint
       stack
     end
 
-    def to_function_type(node : Ast::EnumOption, parent : Ast::TypeDefinition)
+    def to_function_type(node : Ast::TypeVariant, parent : Ast::TypeDefinition)
       parent_type =
         resolve parent
 
@@ -71,7 +71,7 @@ module Mint
       possibilities.each do |possibility|
         if parent = ast.type_definitions.find(&.name.value.==(possibility))
           case fields = parent.fields
-          when Array(Ast::EnumOption)
+          when Array(Ast::TypeVariant)
             if option = fields.find(&.value.value.==(node.field.value))
               variables[node] = {option, parent}
               return to_function_type(option, parent)

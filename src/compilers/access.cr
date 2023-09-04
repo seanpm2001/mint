@@ -3,7 +3,7 @@ module Mint
     def _compile(node : Ast::Access) : String
       if items = variables[node]?
         case items[0]
-        when Ast::EnumOption
+        when Ast::TypeVariant
           name =
             js.class_of(items[0])
 

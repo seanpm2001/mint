@@ -150,7 +150,7 @@ module Mint
     def just
       node =
         case fields = maybe.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           fields.find!(&.value.value.==("Just"))
         else
           raise "SHOULD NOT HAPPEN"
@@ -162,7 +162,7 @@ module Mint
     def nothing
       node =
         case fields = maybe.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           fields.find!(&.value.value.==("Nothing"))
         else
           raise "SHOULD NOT HAPPEN"
@@ -180,7 +180,7 @@ module Mint
     def ok
       node =
         case fields = result.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           fields.find!(&.value.value.==("Ok"))
         else
           raise "SHOULD NOT HAPPEN"
@@ -192,7 +192,7 @@ module Mint
     def err
       node =
         case fields = result.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           fields.find!(&.value.value.==("Err"))
         else
           raise "SHOULD NOT HAPPEN"

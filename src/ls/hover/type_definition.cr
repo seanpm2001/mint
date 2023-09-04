@@ -6,7 +6,7 @@ module Mint
           workspace.formatter.format_parameters(node.parameters)
 
         case items = node.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           fields = items.map do |option|
             comment =
               option.comment.try { |item| " - #{item.content.strip}" }

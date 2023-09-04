@@ -69,7 +69,7 @@ module Mint
         if parent
           not_matched =
             case fields = parent.fields
-            when Array(Ast::EnumOption)
+            when Array(Ast::TypeVariant)
               fields.reject do |option|
                 node
                   .branches
@@ -88,7 +88,7 @@ module Mint
                   end
               end
             else
-              [] of Ast::EnumOption
+              [] of Ast::TypeVariant
             end
 
           case_unnecessary_all.call(catch_all) if not_matched.empty? && catch_all
@@ -98,7 +98,7 @@ module Mint
               "#{format parent.name}::#{formatter.replace_skipped(format(option.value))}"
             end.join('\n')
 
-          error! :case_enum_not_covered do
+          error! :case_type_not_covered do
             block "Not all possibilities of a case expression are covered."
             block "To cover all remaining possibilities create branches for the following options:"
 

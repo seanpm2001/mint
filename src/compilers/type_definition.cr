@@ -17,9 +17,9 @@ module Mint
 
         "const #{name} = _R(#{mappings})"
       else
-        enum_ids =
+        variants =
           case fields = node.fields
-          when Array(Ast::EnumOption)
+          when Array(Ast::TypeVariant)
             fields.map do |option|
               name =
                 js.class_of(option)
@@ -58,7 +58,7 @@ module Mint
             [] of String
           end
 
-        js.statements(enum_ids)
+        js.statements(variants)
       end
     end
   end

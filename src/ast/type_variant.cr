@@ -1,6 +1,6 @@
 module Mint
   class Ast
-    class EnumOption < Node
+    class TypeVariant < Node
       getter value, comment, parameters
 
       def initialize(@parameters : Array(Node),

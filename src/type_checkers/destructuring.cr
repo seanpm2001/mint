@@ -144,7 +144,7 @@ module Mint
 
       option =
         case fields = parent.fields
-        when Array(Ast::EnumOption)
+        when Array(Ast::TypeVariant)
           fields.find(&.value.value.==(node.option.value))
         end
 
@@ -250,7 +250,7 @@ module Mint
               when Ast::Type
                 resolve(item)
               when Ast::TypeVariable
-                unified.parameters[parent.parameters.index! { |enum_item| enum_item.value == item.value }]
+                unified.parameters[parent.parameters.index! { |variable| variable.value == item.value }]
               else
                 VOID # Can't happen
               end

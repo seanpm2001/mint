@@ -3,7 +3,7 @@ module Mint
     class TypeDefinition < Node
       getter name, fields, parameters, comment
 
-      def initialize(@fields : Array(TypeDefinitionField) | Array(Ast::EnumOption),
+      def initialize(@fields : Array(TypeDefinitionField) | Array(Ast::TypeVariant),
                      @parameters : Array(TypeVariable),
                      @file : Parser::File,
                      @comment : Comment?,

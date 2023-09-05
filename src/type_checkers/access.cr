@@ -23,9 +23,9 @@ module Mint
         parent_type
       else
         parameters =
-          case item = node.parameters.first?
-          when Ast::EnumRecordDefinition
-            item.fields.map do |field|
+          case fields = node.fields
+          when Array(Ast::TypeDefinitionField)
+            fields.map do |field|
               type =
                 resolve field.type
 

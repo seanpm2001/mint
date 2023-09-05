@@ -7,22 +7,25 @@ module Mint
         next unless value = type_id
         whitespace
 
-        parameters = [] of Ast::Node
+        parameters =
+          if char! '('
+            whitespace
 
-        if char! '('
-          whitespace
+            items =
+              list(terminator: ')', separator: ',') do
+                type_definition_field(raise_on_colon: false) ||
+                  type_variable ||
+                  type
+              end
 
-          parameters.concat list(
-            terminator: ')',
-            separator: ','
-          ) { enum_record_definition || type_variable || type }
+            whitespace
+            next error :type_variant_expected_closing_parenthesis do
+              expected "the closing parenthesis of an type option", word
+              snippet self
+            end unless char! ')'
 
-          whitespace
-          next error :type_variant_expected_closing_parenthesis do
-            expected "the closing parenthesis of an type option", word
-            snippet self
-          end unless char! ')'
-        end
+            items
+          end || [] of Ast::Node
 
         Ast::TypeVariant.new(
           parameters: parameters,

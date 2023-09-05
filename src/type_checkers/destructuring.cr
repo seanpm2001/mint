@@ -142,7 +142,7 @@ module Mint
         snippet node
       end unless parent
 
-      option =
+      variant =
         case fields = parent.fields
         when Array(Ast::TypeVariant)
           fields.find(&.value.value.==(node.option.value))
@@ -150,7 +150,7 @@ module Mint
 
       error! :destructuring_type_option_missing do
         block do
-          text "I could not find the option"
+          text "I could not find the variant"
           bold node.option.value
           text "of type"
           bold parent.name.value
@@ -159,9 +159,9 @@ module Mint
 
         snippet "You tried to reference it here:", node
         snippet "The type is defined here:", parent
-      end unless option
+      end unless variant
 
-      lookups[node] = option
+      lookups[node] = variant
 
       type = resolve(parent)
 
@@ -174,39 +174,40 @@ module Mint
         got: type,
       ) unless unified
 
-      case option_param = option.parameters.first?
-      when Ast::EnumRecordDefinition
+      case fields = variant.fields
+      when Array(Ast::TypeDefinitionField)
         node.parameters.each_with_index do |param, index|
-          record =
-            resolve(option_param).as(Record)
-
           case param
           when Ast::Variable
-            found = option_param.fields.find do |field|
+            found = fields.find do |field|
               case param
               when Ast::Variable
                 param.value == field.key.value
               end
             end
 
-            error! :destructuring_record_field_missing do
+            error! :destructuring_type_field_missing do
               block do
                 text "I could not find the field"
                 bold param.value
-                text "of the"
-                bold record.name
                 text "for a destructuring."
               end
 
               snippet "You tried to reference it here:", param
             end unless found
 
-            destructure(param, record.fields[param.value], variables)
-          else
-            name =
-              option_param.fields[index].key.value
+            type =
+              resolve(found.type)
 
-            destructure(param, record.fields[name], variables)
+            destructure(param, type, variables)
+          else
+            field =
+              fields[index]
+
+            type =
+              resolve(field.type)
+
+            destructure(param, type, variables)
           end
         end
       else
@@ -217,22 +218,22 @@ module Mint
               block do
                 text "You are trying to destructure the"
                 bold index.to_s
-                text "parameter from the type option:"
-                bold option.value.value
+                text "parameter from the type variant:"
+                bold variant.value.value
               end
 
               block do
-                text "The option only has"
-                bold option.parameters.size.to_s
+                text "The variant only has"
+                bold variant.parameters.size.to_s
                 text "parameters."
               end
 
               snippet "You are trying to destructure it here:", param
-              snippet "The option is defined here:", option
-            end unless option.parameters[index]?
+              snippet "The option is defined here:", variant
+            end unless variant.parameters[index]?
 
-            option_type =
-              resolve(option.parameters[index]).not_nil!
+            variant_type =
+              resolve(variant.parameters[index]).not_nil!
 
             mapping = {} of String => Checkable
 
@@ -241,12 +242,12 @@ module Mint
             end
 
             resolved_type =
-              Comparer.fill(option_type, mapping).not_nil!
+              Comparer.fill(variant_type, mapping).not_nil!
 
             destructure(param, resolved_type, variables)
           else
             sub_type =
-              case item = option.parameters[index]
+              case item = variant.parameters[index]
               when Ast::Type
                 resolve(item)
               when Ast::TypeVariable

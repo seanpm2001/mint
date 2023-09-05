@@ -61,8 +61,7 @@ module Mint
 
     def destructuring(node : Ast::TypeDestructuring, variables : Array(String))
       items =
-        case lookups[node].as(Ast::TypeVariant).parameters.first?
-        when Ast::EnumRecordDefinition
+        if lookups[node].as(Ast::TypeVariant).fields
           params = node.parameters.select(Ast::Variable)
 
           if !params.empty?

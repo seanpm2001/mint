@@ -263,7 +263,7 @@ module Mint
       result = [] of T
 
       loop do
-        item = parse do
+        item = parse(track: false) do
           # Consume whitespace before the next thing
           whitespace
 

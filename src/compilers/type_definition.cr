@@ -28,9 +28,8 @@ module Mint
                 {} of String => String
 
               ids =
-                case item = option.parameters.first?
-                when Ast::EnumRecordDefinition
-                  item.fields.map_with_index do |field, index|
+                if fields = option.fields
+                  fields.map_with_index do |field, index|
                     mapping[field.key.value] = "\"_#{index}\""
 
                     "_#{index}"

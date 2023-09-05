@@ -1,18 +1,22 @@
 module Mint
   class Parser
-    def type_definition_field : Ast::TypeDefinitionField?
+    def type_definition_field(*, raise_on_colon : Bool = true) : Ast::TypeDefinitionField?
       parse do |start_position|
         comment = self.comment
 
         next unless key = variable
         whitespace
 
-        next error :type_definition_field_expected_colon do
-          expected "the colon separating a type field from the type", word
-          snippet self
-        end unless char! ':'
-        whitespace
+        if raise_on_colon
+          next error :type_definition_field_expected_colon do
+            expected "the colon separating a type field from the type", word
+            snippet self
+          end unless char! ':'
+        else
+          next unless char! ':'
+        end
 
+        whitespace
         next error :type_definition_field_expected_type do
           expected "the type of a type field", word
           snippet self

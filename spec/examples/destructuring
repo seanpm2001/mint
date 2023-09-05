@@ -103,7 +103,7 @@ component Main {
     ""
   }
 }
----------------------------------------------destructuring_record_field_missing
+-----------------------------------------------destructuring_type_field_missing
 enum Maybe {
   Just(item : String)
 }

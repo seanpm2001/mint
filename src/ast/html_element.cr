@@ -17,19 +17,6 @@ module Mint
                      @from : Int64,
                      @to : Int64)
       end
-
-      def static?
-        children.all?(&.static?) &&
-          ref.nil? &&
-          attributes.all?(&.static?) &&
-          styles.empty?
-      end
-
-      def static_value
-        tag.value +
-          attributes.join(&.static_value) +
-          children.join(&.static_value)
-      end
     end
   end
 end

@@ -1,5 +1,6 @@
 module Mint
   class Compiler
+    include StaticChecker
     include Skippable
 
     delegate lookups, checked, cache, component_records, to: @artifacts

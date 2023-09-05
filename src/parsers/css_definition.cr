@@ -14,8 +14,8 @@ module Mint
           many(parse_whitespace: false) {
             string_literal || interpolation || raw { char.in_set?("^;{\0\"") }
           }.map do |item|
-            if item.is_a?(Ast::StringLiteral) && item.static?
-              %("#{item.static_value}")
+            if item.is_a?(Ast::StringLiteral) && (raw = static_value(item))
+              %("#{raw}")
             else
               item
             end

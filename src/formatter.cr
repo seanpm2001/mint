@@ -1,5 +1,6 @@
 module Mint
   class Formatter
+    include StaticChecker
     include Skippable
 
     class Config

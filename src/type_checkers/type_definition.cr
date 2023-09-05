@@ -9,7 +9,7 @@ module Mint
           items.to_h { |item| {item.key.value, resolve(item).as(Checkable)} }
 
         mappings =
-          items.to_h { |item| {item.key.value, item.mapping.try(&.string_value)} }
+          items.to_h { |item| {item.key.value, static_value(item.mapping)} }
 
         type = Record.new(node.name.value, fields, mappings)
         types[node] = type

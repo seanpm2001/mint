@@ -56,14 +56,6 @@ module Mint
         false
       end
 
-      def static?
-        false
-      end
-
-      def static_value
-        ""
-      end
-
       def source
         file.contents[from, to - from]
       end

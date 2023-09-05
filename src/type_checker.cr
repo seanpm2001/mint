@@ -1,5 +1,6 @@
 module Mint
   class TypeChecker
+    include StaticChecker
     include Errorable
 
     alias Checkable = Type | Record | Variable

@@ -1,5 +1,7 @@
 module Mint
   class DocumentationGenerator
+    include StaticChecker
+
     @formatter = Formatter.new
 
     def generate(asts : Hash(MintJson, Ast))

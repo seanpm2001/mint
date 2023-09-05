@@ -2,7 +2,7 @@ module Mint
   class Ast
     class Statement < Node
       property if_node : Ast::If? = nil
-      delegate static?, to: @expression
+
       getter target, expression, await
 
       def initialize(@file : Parser::File,

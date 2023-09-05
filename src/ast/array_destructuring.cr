@@ -24,10 +24,12 @@ module Mint
         end
       end
 
+      # Returns whether there are any spreads in the items.
       def spread?
         items.any?(Ast::Spread)
       end
 
+      # Returns whether the destructuring is exhaustive.
       def exhaustive?
         items.all? do |item|
           item.is_a?(Ast::Variable) ||

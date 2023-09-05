@@ -5,8 +5,8 @@ module Mint
         getter entity
 
         def initialize(@file : Parser::File,
-                       @entity : Id,
                        @from : Int64,
+                       @entity : Id,
                        @to : Int64)
         end
       end

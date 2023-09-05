@@ -8,14 +8,14 @@ module Mint
         compile node.expression
 
       index =
-        case node.index
-        when Int64
-          node.index
+        case item = node.index
+        when Ast::NumberLiteral
+          item.value.to_i
         when Ast::Node
           compile node.index.as(Ast::Node)
         end
 
-      if type.name == "Tuple" && node.index.is_a?(Int64)
+      if type.name == "Tuple" && node.index.is_a?(Ast::NumberLiteral)
         "#{expression}[#{index}]"
       else
         "_at(#{expression}, #{index})"

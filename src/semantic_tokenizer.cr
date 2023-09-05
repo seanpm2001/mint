@@ -133,15 +133,6 @@ module Mint
       add(node.from, node.from + node.name.size, :property)
     end
 
-    def tokenize(node : Ast::ArrayAccess)
-      # TODO: The index should be parsed as a number literal when
-      #       implemented remove this
-      case index = node.index
-      when Int64
-        add(node.from + 1, node.from + 1 + index.to_s.size, :number)
-      end
-    end
-
     def tokenize(node : Ast::HtmlElement)
       # The closing tag is not saved only the position to it.
       node.closing_tag_position.try do |position|

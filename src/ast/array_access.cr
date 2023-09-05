@@ -3,9 +3,9 @@ module Mint
     class ArrayAccess < Node
       getter index, expression
 
-      def initialize(@index : Int64 | Node,
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
                      @expression : Node,
+                     @index : Node,
                      @from : Int64,
                      @to : Int64)
       end

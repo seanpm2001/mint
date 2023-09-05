@@ -11,28 +11,17 @@ module Mint
         resolve expression
 
       case index
-      in Ast::Node
-        index_type =
-          resolve index
-
-        error! :array_access_index_not_number do
-          block "The index of an array access is not a number."
-          expected NUMBER, index_type
-          snippet index
-        end unless Comparer.compare(index_type, NUMBER)
-
-        check_array_access(expression, type)
-      in Int64
+      when Ast::NumberLiteral
         if type.name == "Tuple"
           parameter =
-            type.parameters[index]?
+            type.parameters[index.value.to_i]?
 
           error! :array_access_invalid_tuple do
             block do
               text "The tuple only has"
               bold type.parameters.size.to_s
               text "members, but you wanted to access the"
-              bold ordinal(index)
+              bold ordinal(index.value.to_i)
             end
 
             snippet "The exact type of the tuple is:", type
@@ -43,6 +32,17 @@ module Mint
         else
           check_array_access(expression, type)
         end
+      end || begin
+        index_type =
+          resolve index
+
+        error! :array_access_index_not_number do
+          block "The index of an array access is not a number."
+          expected NUMBER, index_type
+          snippet index
+        end unless Comparer.compare(index_type, NUMBER)
+
+        check_array_access(expression, type)
       end
     end
 

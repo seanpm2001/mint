@@ -10,7 +10,7 @@ module Mint
           when Ast::Operation
             !item.right.is_a?(Ast::ReturnCall)
           else
-            !target.exhaustive? && !node.if_node
+            !exhaustive?(target) && !node.if_node
           end
         end
 

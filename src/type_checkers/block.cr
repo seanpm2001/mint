@@ -1,15 +1,15 @@
 module Mint
   class TypeChecker
     def check(node : Ast::Block) : Checkable
-      if node.statements.all?(Ast::CssDefinition)
-        resolve node.statements
+      if node.expressions.all?(Ast::CssDefinition)
+        resolve node.expressions
         VOID
       else
-        statements =
-          node.statements.select(Ast::Statement)
+        expressions =
+          node.expressions.select(Ast::Statement)
 
         with_returns(node) do
-          statements.dup.tap do |items|
+          expressions.dup.tap do |items|
             variables = [] of VariableScope
 
             while item = items.shift?
@@ -35,7 +35,7 @@ module Mint
           end
 
           last =
-            cache[statements.last]
+            cache[expressions.last]
 
           error! :statement_last_target do
             block do
@@ -47,7 +47,7 @@ module Mint
             end
 
             snippet node
-          end if statements.last.target
+          end if expressions.last.target
 
           if returns = @returns[node]?
             returns.each do |item|
@@ -63,7 +63,7 @@ module Mint
             end
           end
 
-          if node.async? && last.name != "Promise"
+          if async?(node) && last.name != "Promise"
             Type.new("Promise", [last] of Checkable)
           else
             last

@@ -20,19 +20,9 @@ module Mint
                      @uses : Array(Use),
                      @locales : Bool,
                      @global : Bool,
-                     @name : Id,
                      @from : Int64,
-                     @to : Int64)
-      end
-
-      def owns?(node)
-        {
-          functions,
-          constants,
-          states,
-          gets,
-          properties,
-        }.any? &.includes?(node)
+                     @to : Int64,
+                     @name : Id)
       end
     end
   end

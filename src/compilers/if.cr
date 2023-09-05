@@ -28,8 +28,8 @@ module Mint
         node.branches
 
       truthy =
-        if truthy_item.statements.all?(Ast::CssDefinition)
-          _compile truthy_item.statements.select(Ast::CssDefinition), block: block
+        if truthy_item.expressions.all?(Ast::CssDefinition)
+          _compile truthy_item.expressions.select(Ast::CssDefinition), block: block
         else
           compile truthy_item
         end
@@ -39,8 +39,8 @@ module Mint
         when Ast::If
           compile item, block: block
         when Ast::Block
-          if item.statements.all?(Ast::CssDefinition)
-            _compile item.statements.select(Ast::CssDefinition), block: block
+          if item.expressions.all?(Ast::CssDefinition)
+            _compile item.expressions.select(Ast::CssDefinition), block: block
           else
             compile item
           end

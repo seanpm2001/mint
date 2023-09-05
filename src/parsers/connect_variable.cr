@@ -2,7 +2,7 @@ module Mint
   class Parser
     def connect_variable
       parse do |start_position|
-        next unless value = variable(track: false) || variable_constant
+        next unless name = variable(track: false) || variable_constant
         whitespace
 
         if word! "as"
@@ -18,12 +18,12 @@ module Mint
 
             expected "the exposed name", word
             snippet self
-          end unless name = variable
+          end unless target = variable
         end
 
         Ast::ConnectVariable.new(
           from: start_position,
-          variable: value,
+          target: target,
           to: position,
           file: file,
           name: name)

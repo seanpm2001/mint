@@ -1,6 +1,6 @@
 module Mint
   class TypeChecker
-    include StaticChecker
+    include Helpers
     include Errorable
 
     alias Checkable = Type | Record | Variable
@@ -257,7 +257,7 @@ module Mint
           invalid_self_reference(
             referee: @referee.not_nil!,
             node: node) if @stack.none? { |item| item.is_a?(Ast::Function) || item.is_a?(Ast::InlineFunction) } &&
-                           @top_level_entity.try(&.owns?(node))
+                           @top_level_entity.try { |item| owns?(node, item) }
 
           cached
         else
@@ -277,7 +277,7 @@ module Mint
           else
             invalid_self_reference(
               referee: @referee.not_nil!,
-              node: node) if @top_level_entity.try(&.owns?(node))
+              node: node) if @top_level_entity.try { |item| owns?(node, item) }
 
             @stack.push node
 

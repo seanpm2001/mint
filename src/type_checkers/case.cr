@@ -43,7 +43,7 @@ module Mint
           end
 
       catch_all =
-        node.branches.find(&.match.nil?)
+        node.branches.find(&.pattern.nil?)
 
       case_unnecessary_all = ->(catch_node : Ast::Node) { error! :case_unnecessary_all do
         block "All possibilities of the case expression are covered."
@@ -74,10 +74,10 @@ module Mint
                 node
                   .branches
                   .any? do |branch|
-                    case match = branch.match
+                    case pattern = branch.pattern
                     when Ast::TypeDestructuring
-                      match.option.value == option.value.value &&
-                        !match.parameters.any? do |item|
+                      pattern.option.value == option.value.value &&
+                        !pattern.parameters.any? do |item|
                           item.is_a?(Ast::TupleDestructuring) ||
                             item.is_a?(Ast::TypeDestructuring) ||
                             item.is_a?(Ast::ArrayDestructuring)
@@ -108,7 +108,7 @@ module Mint
         elsif condition.name == "Array"
           destructurings =
             node.branches
-              .map(&.match)
+              .map(&.pattern)
               .select(Ast::ArrayDestructuring)
               .select! do |branch|
                 branch.items.all? do |item|
@@ -122,18 +122,18 @@ module Mint
               true
             else
               (1..destructurings.max_of(&.items.size)).to_a.all? do |length|
-                destructurings.any?(&.covers?(length))
+                destructurings.any? { |item| covers?(item, length) }
               end
             end
 
           covers_empty =
             node.branches
-              .map(&.match)
+              .map(&.pattern)
               .select(Ast::ArrayLiteral)
               .any?(&.items.empty?)
 
           covers_infitiy =
-            destructurings.any?(&.spread?)
+            destructurings.any? { |item| spread?(item) }
 
           covered =
             covers_cases && covers_infitiy && covers_empty
@@ -143,9 +143,9 @@ module Mint
         elsif condition.name == "Tuple"
           destructured =
             node.branches.any? do |branch|
-              case match = branch.match
+              case pattern = branch.pattern
               when Ast::TupleDestructuring
-                match.exhaustive?
+                exhaustive?(pattern)
               else
                 false
               end

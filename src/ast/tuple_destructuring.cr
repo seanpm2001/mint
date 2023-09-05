@@ -8,10 +8,6 @@ module Mint
                      @from : Int64,
                      @to : Int64)
       end
-
-      def exhaustive?
-        parameters.all?(Ast::Variable)
-      end
     end
   end
 end

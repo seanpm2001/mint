@@ -9,10 +9,10 @@ module Mint
         return unless store =
                         workspace.ast.stores.find(&.name.value.==(connect.store.value))
 
-        return unless target = store.functions.find(&.name.value.==(node.variable.value)) ||
-                               store.constants.find(&.name.value.==(node.variable.value)) ||
-                               store.states.find(&.name.value.==(node.variable.value)) ||
-                               store.gets.find(&.name.value.==(node.variable.value))
+        return unless target = store.functions.find(&.name.value.==(node.name.value)) ||
+                               store.constants.find(&.name.value.==(node.name.value)) ||
+                               store.states.find(&.name.value.==(node.name.value)) ||
+                               store.gets.find(&.name.value.==(node.name.value))
 
         case target
         when Ast::Function, Ast::State, Ast::Get, Ast::Constant

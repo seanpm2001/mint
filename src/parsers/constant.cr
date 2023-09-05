@@ -23,12 +23,12 @@ module Mint
         next error :constant_expected_expression do
           expected "the expression of a constant", word
           snippet self
-        end unless value = expression
+        end unless expression = self.expression
 
         Ast::Constant.new(
+          expression: expression,
           from: start_position,
           comment: comment,
-          value: value,
           to: position,
           file: file,
           name: name)

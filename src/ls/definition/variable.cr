@@ -33,7 +33,7 @@ module Mint
             key =
               lookup[0].as(Ast::ConnectVariable)
 
-            location_link node, key.name || key.variable, connect
+            location_link node, key.target || key.name, connect
           else
             variable_lookup(node, entity)
           end

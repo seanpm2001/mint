@@ -116,7 +116,7 @@ module Mint
           item.keys.map do |key|
             store_name = js.class_of(store)
 
-            original = key.variable.value
+            original = key.name.value
 
             id = js.variable_of(lookups[key])
             name = js.variable_of(key)

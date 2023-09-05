@@ -1,5 +1,6 @@
 module Mint
   class Ast
+    # TODO: Change condition to a statment like with if.
     class Case < Node
       getter branches, condition, comments, await
 

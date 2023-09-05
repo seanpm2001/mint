@@ -1,6 +1,6 @@
 module Mint
   class DocumentationGenerator
-    include StaticChecker
+    include Helpers
 
     @formatter = Formatter.new
 

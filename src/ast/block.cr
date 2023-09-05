@@ -1,17 +1,12 @@
 module Mint
   class Ast
     class Block < Node
-      getter statements
+      getter expressions
 
-      def initialize(@statements : Array(Node),
+      def initialize(@expressions : Array(Node),
                      @file : Parser::File,
                      @from : Int64,
                      @to : Int64)
-      end
-
-      # TODO: This does not belong here, remove at some point.
-      def async?
-        statements.select(Ast::Statement).any?(&.await)
       end
     end
   end

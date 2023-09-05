@@ -16,7 +16,7 @@ module Mint
       resolve store
 
       node.keys.each do |key|
-        key_value = key.variable.value
+        key_value = key.name.value
 
         found =
           store.functions.find(&.name.value.==(key_value)) ||

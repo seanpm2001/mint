@@ -127,7 +127,7 @@ module Mint
       # Checking for conflict between exposed entity and own entity
       node.connects.each do |connect|
         connect.keys.each do |key|
-          variable = key.name || key.variable
+          variable = key.target || key.name
           other = checked[variable.value]?
 
           error! :component_exposed_name_conflict do
@@ -146,7 +146,7 @@ module Mint
       # Checking for multiple connects exposing the same value
       node.connects.reduce({} of String => Ast::Node) do |memo, connect|
         connect.keys.each do |key|
-          variable = key.name || key.variable
+          variable = key.target || key.name
           other = memo[variable.value]?
 
           error! :component_multiple_exposed do

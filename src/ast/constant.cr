@@ -1,12 +1,12 @@
 module Mint
   class Ast
     class Constant < Node
-      getter name, value, comment
+      getter name, expression, comment
 
       def initialize(@file : Parser::File,
                      @comment : Comment?,
+                     @expression : Node,
                      @name : Variable,
-                     @value : Node,
                      @from : Int64,
                      @to : Int64)
       end

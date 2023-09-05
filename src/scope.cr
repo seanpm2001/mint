@@ -79,8 +79,8 @@ module Mint
           case store = @ast.stores.find(&.name.value.==(connect.store.value))
           when Ast::Store
             connect.keys.each do |key|
-              @scopes[store][1].items[key.variable.value]?.try do |value|
-                stack[1].items[key.name.try(&.value) || key.variable.value] = Target.new(key, value.node)
+              @scopes[store][1].items[key.name.value]?.try do |value|
+                stack[1].items[key.target.try(&.value) || key.name.value] = Target.new(key, value.node)
               end
             end
           end
@@ -276,8 +276,6 @@ module Mint
         build(node.condition, node)
         build(node.subject, node)
         build(node.body, node)
-      when Ast::Constant
-        build(node.value, node)
       when Ast::HtmlStyle
         build(node.arguments, node)
         build(node.name, node)
@@ -287,17 +285,17 @@ module Mint
       when Ast::Argument
         build(node.default, node)
       when Ast::Block
-        build(node.statements, node, stack: true)
+        build(node.expressions, node, stack: true)
       when Ast::Operation
         build(node.left, node)
         build(node.right, node)
-      when Ast::Access
+      when Ast::ReturnCall,
+           Ast::Constant,
+           Ast::Access
         build(node.expression, node)
       when Ast::Pipe
         build(node.expression, node)
         build(node.argument, node)
-      when Ast::ReturnCall
-        build(node.expression, node)
       when Ast::HtmlExpression
         build(node.expressions, node)
       when Ast::HtmlFragment

@@ -14,15 +14,6 @@ module Mint
                      @from : Int64,
                      @to : Int64)
       end
-
-      def owns?(node)
-        {
-          functions,
-          constants,
-          states,
-          gets,
-        }.any? &.includes?(node)
-      end
     end
   end
 end

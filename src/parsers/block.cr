@@ -2,16 +2,18 @@ module Mint
   class Parser
     def block : Ast::Block?
       parse do |start_position|
-        statements =
+        expressions =
           brackets do
             many { comment || statement }
           end
 
+        next unless expressions
+
         Ast::Block.new(
-          statements: statements,
+          expressions: expressions,
           from: start_position,
           to: position,
-          file: file) if statements
+          file: file)
       end
     end
 
@@ -29,7 +31,7 @@ module Mint
               statement_error : Proc(Nil)? = nil,
               & : -> Ast::Node?) : Ast::Block?
       parse do |start_position|
-        statements =
+        expressions =
           brackets(
             opening_bracket_error: opening_bracket_error,
             closing_bracket_error: closing_bracket_error) do
@@ -38,10 +40,10 @@ module Mint
             end
           end
 
-        next unless statements
+        next unless expressions
 
         Ast::Block.new(
-          statements: statements,
+          expressions: expressions,
           from: start_position,
           to: position,
           file: file)

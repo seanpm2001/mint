@@ -52,10 +52,6 @@ module Mint
         {file: file, from: from, to: to}
       end
 
-      def owns?(node)
-        false
-      end
-
       def source
         file.contents[from, to - from]
       end

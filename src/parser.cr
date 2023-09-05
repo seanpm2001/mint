@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    include StaticChecker
+    include Helpers
     include Errorable
 
     # The position of the cursor, which is at the character we are currently

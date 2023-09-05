@@ -2,7 +2,7 @@ module Mint
   class TypeChecker
     def check(node : Ast::CaseBranch, condition : Checkable) : Checkable
       type =
-        node.match.try do |item|
+        node.pattern.try do |item|
           variables =
             destructure(item, condition)
 

@@ -1,5 +1,6 @@
 module Mint
   class Ast
+    # TODO: Allow multiple comments in this node instead of a single one.
     class Comment < Node
       enum Type
         Inline

@@ -1,11 +1,11 @@
 module Mint
   class Ast
     class CaseBranch < Node
-      getter match, expression
+      getter pattern, expression
 
       def initialize(@expression : Node | Array(CssDefinition),
                      @file : Parser::File,
-                     @match : Node?,
+                     @pattern : Node?,
                      @from : Int64,
                      @to : Int64)
       end

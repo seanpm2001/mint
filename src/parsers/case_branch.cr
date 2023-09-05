@@ -3,7 +3,7 @@ module Mint
     def case_branch(for_css : Bool = false) : Ast::CaseBranch?
       parse do |start_position|
         unless word! "=>"
-          match = destructuring
+          pattern = destructuring
           whitespace
 
           next unless word! "=>"
@@ -25,7 +25,7 @@ module Mint
           end
 
         Ast::CaseBranch.new(
-          match: match.as(Ast::TypeDestructuring | Ast::TupleDestructuring | Ast::Node?),
+          pattern: pattern.as(Ast::TypeDestructuring | Ast::TupleDestructuring | Ast::Node?),
           expression: expression,
           from: start_position,
           to: position,

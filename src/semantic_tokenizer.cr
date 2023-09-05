@@ -22,7 +22,6 @@ module Mint
     # This represents which token types are used for which node.
     TOKEN_MAP = {
       Ast::TypeVariable  => TokenType::TypeParameter,
-      Ast::Variable      => TokenType::Variable,
       Ast::Comment       => TokenType::Comment,
       Ast::StringLiteral => TokenType::String,
       Ast::RegexpLiteral => TokenType::Regexp,
@@ -126,6 +125,14 @@ module Mint
     def tokenize(node : Ast::Node?)
       if type = TOKEN_MAP[node.class]?
         add(node, type)
+      end
+    end
+
+    def tokenize(node : Ast::Variable)
+      if node.value[0].ascii_lowercase?
+        add(node, TokenType::Variable)
+      else
+        add(node, TokenType::Type)
       end
     end
 

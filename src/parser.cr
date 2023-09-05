@@ -171,8 +171,10 @@ module Mint
       if word?(expected)
         @position += expected.size
 
-        if word.chars.all?(&.ascii_lowercase?) && !word.blank? && word != "or"
-          @ast.keywords << {position, position + word.size}
+        if expected.chars.all?(&.ascii_lowercase?) &&
+           !expected.blank? &&
+           expected != "or"
+          @ast.keywords << {position - expected.size, position}
         end
 
         true

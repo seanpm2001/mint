@@ -4,11 +4,12 @@ module Mint
       parse do |start_position|
         next unless name = id track: false
 
+        # TODO: Remove this branch in 0.21.0 when deprecation ends.
         if word! "::"
           next error :type_destructuring_expected_option do
             expected "the type of an type destructuring", word
             snippet self
-          end unless variant = id
+          end unless variant = id(track: false)
         else
           parts = name.value.split('.')
 
@@ -40,6 +41,9 @@ module Mint
               from: parent_to,
               file: file)
         end
+
+        ast.nodes << variant
+        ast.nodes << name
 
         items = [] of Ast::Node
 

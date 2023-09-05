@@ -8,7 +8,7 @@ module Mint
         next error :use_expected_provider do
           expected "the provider of a use", word
           snippet self
-        end unless provider = type_id
+        end unless provider = id
         whitespace
 
         next error :use_expected_record do

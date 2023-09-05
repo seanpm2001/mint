@@ -10,7 +10,7 @@ module Mint
         next error :type_definition_expected_name do
           expected "the name of a record definition", word
           snippet self
-        end unless name = type_id
+        end unless name = id
         whitespace
 
         parameters =

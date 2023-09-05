@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         comment = self.comment
 
-        next unless value = type_id
+        next unless value = id
         whitespace
 
         parameters =

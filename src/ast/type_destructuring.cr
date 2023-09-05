@@ -5,8 +5,8 @@ module Mint
 
       def initialize(@parameters : Array(Node),
                      @file : Parser::File,
-                     @option : TypeId,
-                     @name : TypeId?,
+                     @option : Id,
+                     @name : Id?,
                      @from : Int64,
                      @to : Int64)
       end

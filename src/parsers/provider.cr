@@ -10,7 +10,7 @@ module Mint
         next error :provider_expected_name do
           expected "the name of a provider", word
           snippet self
-        end unless name = type_id
+        end unless name = id
         whitespace
 
         next error :provider_expeceted_colon do
@@ -22,7 +22,7 @@ module Mint
         next error :provider_expected_subscription do
           expected "the subscription type of a provider", word
           snippet self
-        end unless subscription = type_id
+        end unless subscription = id
         whitespace
 
         body = brackets(

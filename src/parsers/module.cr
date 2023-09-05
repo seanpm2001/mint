@@ -16,7 +16,7 @@ module Mint
 
           expected "name of the module", word
           snippet self
-        end unless name = type_id
+        end unless name = id
         whitespace
 
         body = brackets(

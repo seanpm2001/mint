@@ -8,11 +8,11 @@ module Mint
                      @constants : Array(Constant),
                      @comments : Array(Comment),
                      @states : Array(State),
-                     @subscription : TypeId,
+                     @subscription : Id,
                      @file : Parser::File,
                      @comment : Comment?,
                      @gets : Array(Get),
-                     @name : TypeId,
+                     @name : Id,
                      @from : Int64,
                      @to : Int64)
       end

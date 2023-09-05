@@ -8,7 +8,7 @@ module Mint
         next error :connect_expected_store do
           expected "the name of the store for a connect", word
           snippet self
-        end unless store = type_id
+        end unless store = id
         whitespace
 
         next error :connect_expected_exposing do

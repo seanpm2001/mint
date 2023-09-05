@@ -5,7 +5,7 @@ module Mint
 
       def initialize(@keys : Array(ConnectVariable),
                      @file : Parser::File,
-                     @store : TypeId,
+                     @store : Id,
                      @from : Int64,
                      @to : Int64)
       end

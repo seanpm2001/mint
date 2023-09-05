@@ -19,7 +19,7 @@ module Mint
           end
 
           snippet self
-        end unless name = type_id
+        end unless name = id
         whitespace
 
         body = brackets(

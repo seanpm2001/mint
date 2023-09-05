@@ -3,7 +3,7 @@ module Mint
     module Directives
       class Asset < Node
         getter real_path : Path
-        getter path
+        getter path : String
 
         def initialize(
           @file : Parser::File,

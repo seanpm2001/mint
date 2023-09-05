@@ -20,7 +20,7 @@ module Mint
                      @uses : Array(Use),
                      @locales : Bool,
                      @global : Bool,
-                     @name : TypeId,
+                     @name : Id,
                      @from : Int64,
                      @to : Int64)
       end

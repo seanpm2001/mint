@@ -11,7 +11,7 @@ module Mint
         next error :store_expected_name do
           expected "the name of a store", word
           snippet self
-        end unless name = type_id
+        end unless name = id
         whitespace
 
         body =

@@ -8,7 +8,7 @@ module Mint
                      @comments : Array(Comment),
                      @file : Parser::File,
                      @comment : Comment?,
-                     @name : TypeId,
+                     @name : Id,
                      @from : Int64,
                      @to : Int64)
       end

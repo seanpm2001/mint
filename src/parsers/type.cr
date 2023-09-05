@@ -2,7 +2,7 @@ module Mint
   class Parser
     def type : Ast::Type?
       parse do |start_position|
-        next unless name = type_id
+        next unless name = id
 
         if char! '('
           parameters = list(separator: ',', terminator: ')') do

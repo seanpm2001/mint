@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         component = parse(track: false) do
           next unless char! '<'
-          type_id
+          id
         end
 
         next unless component

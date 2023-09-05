@@ -2,7 +2,7 @@ module Mint
   class Parser
     def html_body(expected_closing_bracket : Proc(Nil),
                   expected_closing_tag : Proc(Nil),
-                  tag : Ast::Variable | Ast::TypeId,
+                  tag : Ast::Variable | Ast::Id,
                   with_dashes : Bool)
       parse(track: false) do
         attributes = many { html_attribute(with_dashes) }
@@ -20,7 +20,7 @@ module Mint
 
           closing_tag =
             case tag
-            when Ast::Variable, Ast::TypeId
+            when Ast::Variable, Ast::Id
               tag.value
             else
               tag

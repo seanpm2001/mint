@@ -1,7 +1,7 @@
 module Mint
   module LS
     class Definition < LSP::RequestMessage
-      def definition(node : Ast::TypeId, workspace : Workspace, stack : Array(Ast::Node))
+      def definition(node : Ast::Id, workspace : Workspace, stack : Array(Ast::Node))
         found =
           workspace.ast.type_definitions.find(&.name.value.==(node.value)) ||
             workspace.ast.stores.find(&.name.value.==(node.value)) ||

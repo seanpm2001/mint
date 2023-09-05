@@ -1,6 +1,6 @@
 module Mint
   class Ast
-    class TypeId < Node
+    class Id < Node
       getter value
 
       def initialize(@file : Parser::File,

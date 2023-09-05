@@ -13,7 +13,7 @@ module Mint
         next error :documentation_directive_expected_entity do
           expected "the entity of a documentation directive", word
           snippet self
-        end unless entity = type_id
+        end unless entity = id
         whitespace
 
         next error :documentation_directive_expected_closing_parenthesis do

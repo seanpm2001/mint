@@ -20,7 +20,7 @@ module Mint
           # stack.each do |item|
           #   print item.class.name.sub("Mint::Ast::", "")
           #   case item
-          #   when Ast::TypeId, Ast::Variable
+          #   when Ast::Id, Ast::Variable
           #     print "(#{item.value})"
           #   end
           #   puts item.location.start

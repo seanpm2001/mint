@@ -11,7 +11,7 @@ module Mint
                      @comments : Array(Comment),
                      @children : Array(Node),
                      @file : Parser::File,
-                     @component : TypeId,
+                     @component : Id,
                      @ref : Variable?,
                      @from : Int64,
                      @to : Int64)

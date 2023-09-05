@@ -44,7 +44,9 @@ Dir
             type_checker = Mint::TypeChecker.new(ast)
             type_checker.check
           rescue item : Mint::Error
-            item.name.to_s.should eq(error)
+            if item.name.to_s != error
+              fail item.to_terminal.to_s
+            end
           end
 
           item.should be_a(Mint::Error)

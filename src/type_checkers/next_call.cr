@@ -14,8 +14,10 @@ module Mint
       end unless entity
 
       node.data.fields.each do |item|
+        next unless key = item.key
+
         name =
-          item.key.value
+          key.value
 
         state =
           case entity

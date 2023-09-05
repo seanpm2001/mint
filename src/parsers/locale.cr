@@ -28,7 +28,7 @@ module Mint
               end
             }
           ) do
-            list(terminator: '}', separator: ',') { record_field }
+            list(terminator: '}', separator: ',') { field }
           end
 
         next unless fields

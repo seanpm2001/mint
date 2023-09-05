@@ -10,10 +10,14 @@ module Mint
       comment =
         node.comment.try { |item| "#{format(item)}\n" }
 
-      if replace_skipped(value).includes?('\n')
-        "#{comment}#{key}:\n#{indent(value)}"
+      if key
+        if replace_skipped(value).includes?('\n')
+          "#{comment}#{key}:\n#{indent(value)}"
+        else
+          "#{comment}#{key}: #{value}"
+        end
       else
-        "#{comment}#{key}: #{value}"
+        "#{comment}#{value}"
       end
     end
   end

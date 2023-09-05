@@ -7,11 +7,13 @@ module Mint
     end
 
     def check_locale_record(node : Ast::Field, prefix : String?, language : String)
+      return unless key = node.key
+
       field_prefix =
         if prefix
-          "#{prefix}.#{node.key.value}"
+          "#{prefix}.#{key.value}"
         else
-          node.key.value
+          key.value
         end
 
       case item = node.value

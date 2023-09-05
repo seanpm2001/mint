@@ -1,15 +1,21 @@
 module Mint
   class Parser
-    def record_field : Ast::Field?
+    def field(*, key_required : Bool = true) : Ast::Field?
       parse do |start_position|
         comment = self.comment
 
-        next unless key = variable
-        whitespace
+        key =
+          parse(track: false) do
+            next unless item = variable
+            whitespace
 
-        next unless char! ':'
-        whitespace
+            next unless char! ':'
+            whitespace
 
+            item
+          end
+
+        next if key_required && !key
         next unless value = expression
 
         Ast::Field.new(

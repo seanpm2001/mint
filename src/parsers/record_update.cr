@@ -23,7 +23,7 @@ module Mint
         fields = list(
           terminator: '}',
           separator: ','
-        ) { record_field.as(Ast::Field?) }
+        ) { field }
 
         next error :record_update_expected_fields do
           expected "the fields for a record update", word

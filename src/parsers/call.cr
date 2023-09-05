@@ -8,7 +8,7 @@ module Mint
         arguments = list(
           terminator: ')',
           separator: ','
-        ) { call_expression.as(Ast::CallExpression?) }
+        ) { field(key_required: false) }
 
         whitespace
         next error :call_expected_closing_parenthesis do

@@ -1,11 +1,5 @@
 module Mint
   class TypeChecker
-    def check(node : Ast::CallExpression)
-      resolve(node.expression)
-        .dup
-        .tap(&.label = node.name.try(&.value))
-    end
-
     def check(node : Ast::Call)
       function_type =
         resolve node.expression
@@ -46,20 +40,19 @@ module Mint
              node.arguments.size < required_argument_size # If it's less then the minimum
 
       args =
-        case node.arguments
-        when .all?(&.name.nil?)
+        if node.arguments.all?(&.key.nil?)
           node.arguments
-        when .none?(&.name.nil?)
+        elsif node.arguments.all?(&.key.!=(nil))
           node.arguments.sort_by do |argument|
             index =
               function_type
                 .parameters
-                .index { |param| param.label == argument.name.try(&.value) }
+                .index { |param| param.label == argument.key.try(&.value) }
 
             error! :call_not_found_argument do
               block do
                 text "I was looking for the argument:"
-                bold argument.name.try(&.value).to_s
+                bold argument.key.try(&.value).to_s
                 text "but it's not there."
               end
 

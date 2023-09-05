@@ -12,12 +12,13 @@ module Mint
 
       def call
         arg =
-          Ast::CallExpression.new(
-            expression: argument,
+          Ast::Field.new(
             file: argument.file,
             from: argument.from,
             to: argument.to,
-            name: nil)
+            value: argument,
+            comment: nil,
+            key: nil)
 
         @call ||=
           case item = expression

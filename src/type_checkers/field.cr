@@ -6,6 +6,8 @@ module Mint
         resolve expression, should_create_record
       else
         resolve expression
+      end.dup.tap do |item|
+        item.label = node.key.try(&.value)
       end
     end
   end

@@ -26,18 +26,20 @@ module Mint
       end unless target.is_a?(Record)
 
       node.fields.each do |field|
+        next unless key = field.key
+
         type =
           resolve field
 
         record_field_lookup[field] = target.name
 
         value_type =
-          target.fields[field.key.value]?
+          target.fields[key.value]?
 
         error! :record_update_not_found_key do
           block do
             text "The field"
-            bold field.key.value
+            bold key.value
             text "does not exists on the target record:"
           end
 

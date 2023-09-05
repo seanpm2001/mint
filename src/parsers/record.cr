@@ -9,7 +9,7 @@ module Mint
         unless char! '}'
           whitespace
 
-          fields = list(terminator: '}', separator: ',') { record_field }
+          fields = list(terminator: '}', separator: ',') { field }
           whitespace
 
           next unless char! '}'

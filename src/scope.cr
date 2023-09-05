@@ -310,8 +310,6 @@ module Mint
       when Ast::Call
         build(node.arguments, node)
         build(node.expression, node)
-      when Ast::CallExpression
-        build(node.expression, node)
       when Ast::Directives::Format
         build(node.content, node)
       when Ast::Variable

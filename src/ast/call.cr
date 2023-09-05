@@ -3,7 +3,7 @@ module Mint
     class Call < Node
       getter arguments, expression
 
-      def initialize(@arguments : Array(CallExpression),
+      def initialize(@arguments : Array(Field),
                      @file : Parser::File,
                      @expression : Node,
                      @from : Int64,

@@ -128,3 +128,18 @@ component Main {
     }
   }
 }
+-------------------------------------------------------------------------------
+enum T {
+  A(String)
+  B
+}
+
+component Main {
+  fun render : String {
+    if (let T.A(a) = T.B) {
+      a
+    } else {
+      "b"
+    }
+  }
+}

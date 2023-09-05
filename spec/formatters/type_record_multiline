@@ -22,7 +22,7 @@ type A {
 
 component Main {
   const X =
-    A::B(
+    A.B(
       color: "Blue",
       name: "Joe")
 

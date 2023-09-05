@@ -36,7 +36,6 @@ Dir
       it "#{name} ##{index}" do
         source, error = sample
 
-        # Parse source
         if error
           begin
             ast = Mint::Parser.parse(source, file)
@@ -50,9 +49,6 @@ Dir
           end
 
           item.should be_a(Mint::Error)
-          # Check if they are rendered correctly.
-          # item.try(&.to_terminal)
-          # item.try(&.to_html)
         else
           begin
             ast = Mint::Parser.parse(source, file)

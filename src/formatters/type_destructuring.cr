@@ -5,7 +5,7 @@ module Mint
         format node.items, ", "
 
       name =
-        "#{format node.name}::" if node.name
+        "#{format node.name}." if node.name
 
       if items.empty?
         "#{name}#{format node.variant}"

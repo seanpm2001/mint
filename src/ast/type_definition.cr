@@ -7,9 +7,9 @@ module Mint
                      @parameters : Array(TypeVariable),
                      @file : Parser::File,
                      @comment : Comment?,
-                     @name : Id,
                      @from : Int64,
-                     @to : Int64)
+                     @to : Int64,
+                     @name : Id)
       end
     end
   end

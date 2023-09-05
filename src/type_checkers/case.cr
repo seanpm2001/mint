@@ -70,14 +70,14 @@ module Mint
           not_matched =
             case fields = parent.fields
             when Array(Ast::TypeVariant)
-              fields.reject do |option|
+              fields.reject do |field|
                 node
                   .branches
                   .any? do |branch|
                     case pattern = branch.pattern
                     when Ast::TypeDestructuring
-                      pattern.option.value == option.value.value &&
-                        !pattern.parameters.any? do |item|
+                      pattern.variant.value == field.value.value &&
+                        !pattern.items.any? do |item|
                           item.is_a?(Ast::TupleDestructuring) ||
                             item.is_a?(Ast::TypeDestructuring) ||
                             item.is_a?(Ast::ArrayDestructuring)
@@ -93,16 +93,16 @@ module Mint
 
           case_unnecessary_all.call(catch_all) if not_matched.empty? && catch_all
 
-          options =
-            not_matched.map do |option|
-              "#{format parent.name}::#{formatter.replace_skipped(format(option.value))}"
+          cases =
+            not_matched.map do |variant|
+              "#{format parent.name}::#{formatter.replace_skipped(format(variant.value))}"
             end.join('\n')
 
           error! :case_type_not_covered do
             block "Not all possibilities of a case expression are covered."
-            block "To cover all remaining possibilities create branches for the following options:"
+            block "To cover all remaining possibilities create branches for the following cases:"
 
-            snippet options
+            snippet cases
             snippet node
           end if !not_matched.empty? && !catch_all
         elsif condition.name == "Array"

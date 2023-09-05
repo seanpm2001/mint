@@ -56,13 +56,13 @@ module Mint
     end
 
     def destructuring(node : Ast::TupleDestructuring, variables : Array(String))
-      js.array(node.parameters.map { |item| destructuring(item, variables) })
+      js.array(node.items.map { |item| destructuring(item, variables) })
     end
 
     def destructuring(node : Ast::TypeDestructuring, variables : Array(String))
       items =
         if lookups[node].as(Ast::TypeVariant).fields
-          params = node.parameters.select(Ast::Variable)
+          params = node.items.select(Ast::Variable)
 
           if !params.empty?
             fields =
@@ -75,7 +75,7 @@ module Mint
 
             js.call("_PR", [js.array(fields)])
           end
-        end || js.array(node.parameters.map do |param|
+        end || js.array(node.items.map do |param|
           destructuring(param, variables)
         end)
 

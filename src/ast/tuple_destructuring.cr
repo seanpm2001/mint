@@ -1,9 +1,9 @@
 module Mint
   class Ast
     class TupleDestructuring < Node
-      getter parameters
+      getter items
 
-      def initialize(@parameters : Array(Node),
+      def initialize(@items : Array(Node),
                      @file : Parser::File,
                      @from : Int64,
                      @to : Int64)

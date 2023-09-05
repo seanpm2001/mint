@@ -1,8 +1,9 @@
 module Mint
   class Ast
     class NextCall < Node
-      property entity : Ast::Node? = nil
       getter data
+
+      property entity : Ast::Node? = nil
 
       def initialize(@file : Parser::File,
                      @data : Record,

@@ -3,8 +3,8 @@ module Mint
     class RecordUpdate < Node
       getter fields, expression
 
-      def initialize(@fields : Array(Field),
-                     @expression : Ast::Node,
+      def initialize(@expression : Ast::Node,
+                     @fields : Array(Field),
                      @file : Parser::File,
                      @from : Int64,
                      @to : Int64)

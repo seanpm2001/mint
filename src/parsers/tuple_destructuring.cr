@@ -5,13 +5,14 @@ module Mint
         next unless char! '{'
         whitespace
 
-        parameters = list(terminator: '}', separator: ',') { destructuring }
+        items =
+          list(terminator: '}', separator: ',') { destructuring }
 
         whitespace
         next unless char! '}'
 
         Ast::TupleDestructuring.new(
-          parameters: parameters,
+          items: items,
           from: start_position,
           to: position,
           file: file)

@@ -1,16 +1,16 @@
 module Mint
   class Formatter
     def format(node : Ast::TypeDestructuring)
-      parameters =
-        format node.parameters, ", "
+      items =
+        format node.items, ", "
 
       name =
         "#{format node.name}::" if node.name
 
-      if parameters.empty?
-        "#{name}#{format node.option}"
+      if items.empty?
+        "#{name}#{format node.variant}"
       else
-        "#{name}#{format node.option}(#{parameters})"
+        "#{name}#{format node.variant}(#{items})"
       end
     end
   end

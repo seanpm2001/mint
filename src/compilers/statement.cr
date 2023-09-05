@@ -27,7 +27,7 @@ module Mint
 
           case target
           when Ast::TupleDestructuring
-            if target.parameters.all?(Ast::Variable)
+            if target.items.all?(Ast::Variable)
               ["const [#{variables.join(",")}] = #{right}"]
             end
           end || begin

@@ -1,14 +1,14 @@
 module Mint
   class Ast
     class TypeDestructuring < Node
-      getter name, option, parameters
+      getter name, variant, items
 
-      def initialize(@parameters : Array(Node),
+      def initialize(@items : Array(Node),
                      @file : Parser::File,
-                     @option : Id,
-                     @name : Id?,
                      @from : Int64,
-                     @to : Int64)
+                     @variant : Id,
+                     @to : Int64,
+                     @name : Id?)
       end
     end
   end

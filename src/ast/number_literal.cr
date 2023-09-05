@@ -1,8 +1,8 @@
 module Mint
   class Ast
     class NumberLiteral < Node
-      getter value
       getter? float
+      getter value
 
       def initialize(@file : Parser::File,
                      @value : String,

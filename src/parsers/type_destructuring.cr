@@ -8,13 +8,13 @@ module Mint
         next error :type_destructuring_expected_option do
           expected "the type of an type destructuring", word
           snippet self
-        end unless option = id
+        end unless variant = id
 
-        parameters = [] of Ast::Node
+        items = [] of Ast::Node
 
         if char! '('
           whitespace
-          parameters.concat list(
+          items.concat list(
             terminator: ')',
             separator: ','
           ) { destructuring }
@@ -27,9 +27,9 @@ module Mint
         end
 
         Ast::TypeDestructuring.new(
-          parameters: parameters,
           from: start_position,
-          option: option,
+          variant: variant,
+          items: items,
           to: position,
           file: file,
           name: name)

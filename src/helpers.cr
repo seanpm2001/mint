@@ -34,7 +34,7 @@ module Mint
     def exhaustive?(node : Ast::Node) : Bool
       case node
       when Ast::TupleDestructuring
-        node.parameters.all?(Ast::Variable)
+        node.items.all?(Ast::Variable)
       when Ast::ArrayDestructuring
         node.items.all? do |item|
           item.is_a?(Ast::Variable) ||

@@ -6,13 +6,15 @@ module Mint
       def initialize(@parameters : Array(Node) | Array(TypeDefinitionField),
                      @file : Parser::File,
                      @comment : Comment?,
-                     @value : Id,
                      @from : Int64,
-                     @to : Int64)
+                     @to : Int64,
+                     @value : Id)
       end
 
       def fields : Array(TypeDefinitionField)?
-        parameters.select(Ast::TypeDefinitionField) if @parameters.all?(Ast::TypeDefinitionField)
+        if @parameters.all?(Ast::TypeDefinitionField)
+          parameters.select(Ast::TypeDefinitionField)
+        end
       end
     end
   end

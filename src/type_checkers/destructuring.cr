@@ -109,16 +109,16 @@ module Mint
         block "This destructuring of a tuple does not match the given tuple."
         block do
           text "I was expecting a tuple with"
-          bold node.parameters.size.to_s
-          text "parameters."
+          bold node.items.size.to_s
+          text "items."
         end
 
         snippet "Instead it is this:", condition
 
         snippet node
-      end if node.parameters.size > condition.parameters.size
+      end if node.items.size > condition.parameters.size
 
-      node.parameters.each_with_index do |item, index|
+      node.items.each_with_index do |item, index|
         destructure(item, condition.parameters[index], variables)
       end
 
@@ -145,13 +145,13 @@ module Mint
       variant =
         case fields = parent.fields
         when Array(Ast::TypeVariant)
-          fields.find(&.value.value.==(node.option.value))
+          fields.find(&.value.value.==(node.variant.value))
         end
 
       error! :destructuring_type_option_missing do
         block do
           text "I could not find the variant"
-          bold node.option.value
+          bold node.variant.value
           text "of type"
           bold parent.name.value
           text "for a destructuring."
@@ -176,7 +176,7 @@ module Mint
 
       case fields = variant.fields
       when Array(Ast::TypeDefinitionField)
-        node.parameters.each_with_index do |param, index|
+        node.items.each_with_index do |param, index|
           case param
           when Ast::Variable
             found = fields.find do |field|
@@ -211,7 +211,7 @@ module Mint
           end
         end
       else
-        node.parameters.each_with_index do |param, index|
+        node.items.each_with_index do |param, index|
           case param
           when Ast::Variable
             error! :destructuring_no_parameter do

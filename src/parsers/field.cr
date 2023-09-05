@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def record_field : Ast::RecordField?
+    def record_field : Ast::Field?
       parse do |start_position|
         comment = self.comment
 
@@ -12,7 +12,7 @@ module Mint
 
         next unless value = expression
 
-        Ast::RecordField.new(
+        Ast::Field.new(
           value: value,
           from: start_position,
           comment: comment,

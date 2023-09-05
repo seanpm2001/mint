@@ -9,6 +9,7 @@ module Mint
                      @to : Int64)
       end
 
+      # TODO: This does not belong here, remove at some point.
       def async?
         statements.select(Ast::Statement).any?(&.await)
       end

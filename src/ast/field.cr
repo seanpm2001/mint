@@ -1,6 +1,6 @@
 module Mint
   class Ast
-    class RecordField < Node
+    class Field < Node
       getter key, value, comment
 
       def initialize(@file : Parser::File,

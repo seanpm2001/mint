@@ -6,7 +6,7 @@ module Mint
       end
     end
 
-    def check_locale_record(node : Ast::RecordField, prefix : String?, language : String)
+    def check_locale_record(node : Ast::Field, prefix : String?, language : String)
       field_prefix =
         if prefix
           "#{prefix}.#{node.key.value}"

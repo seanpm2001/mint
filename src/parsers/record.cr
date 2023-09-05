@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         next unless char! '{'
 
-        fields = [] of Ast::RecordField
+        fields = [] of Ast::Field
 
         unless char! '}'
           whitespace

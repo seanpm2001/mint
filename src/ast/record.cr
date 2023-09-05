@@ -5,11 +5,11 @@ module Mint
 
       UNIT = new(
         file: Parser::File.new("", ""),
-        fields: [] of RecordField,
+        fields: [] of Field,
         from: 0,
         to: 2)
 
-      def initialize(@fields : Array(RecordField),
+      def initialize(@fields : Array(Field),
                      @file : Parser::File,
                      @from : Int64,
                      @to : Int64)

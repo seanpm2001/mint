@@ -1,6 +1,6 @@
 module Mint
   class Formatter
-    def format(node : Ast::RecordField) : String
+    def format(node : Ast::Field) : String
       value =
         format node.value
 

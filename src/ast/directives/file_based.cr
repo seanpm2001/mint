@@ -1,7 +1,7 @@
 module Mint
   class Ast
     module Directives
-      class FileBase < Node
+      class FileBased < Node
         getter real_path : Path
         getter path : String
 
@@ -39,6 +39,15 @@ module Mint
         def file_contents : String
           File.read(real_path)
         end
+      end
+
+      class Asset < FileBased
+      end
+
+      class Inline < FileBased
+      end
+
+      class Svg < FileBased
       end
     end
   end

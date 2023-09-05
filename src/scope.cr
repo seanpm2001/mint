@@ -335,7 +335,7 @@ module Mint
       when Ast::Route
         build(node.expression, node)
         build(node.arguments, node)
-      when Ast::RecordField
+      when Ast::Field
         build(node.value, node)
 
         case parent

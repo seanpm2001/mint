@@ -96,7 +96,7 @@ module Mint
 
       def variable_record_key(node : Ast::Variable, workspace : Workspace, stack : Array(Ast::Node))
         case field = stack[1]?
-        when Ast::RecordField
+        when Ast::Field
           return unless record_name = workspace.type_checker.record_field_lookup[field]?
 
           return unless record_definition_field = workspace

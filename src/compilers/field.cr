@@ -1,6 +1,6 @@
 module Mint
   class Compiler
-    def resolve(node : Ast::RecordField) : Hash(String, String)
+    def resolve(node : Ast::Field) : Hash(String, String)
       value =
         compile node.value
 

@@ -1,9 +1,5 @@
 module Mint
   class TypeChecker
-    def static_type_signature(node : Ast::State) : Checkable
-      node.type.try { |type| resolve type } || Variable.new("a")
-    end
-
     def check(node : Ast::State) : Checkable
       default =
         with_restricted_top_level_entity(node) do

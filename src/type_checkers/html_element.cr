@@ -1,9 +1,5 @@
 module Mint
   class TypeChecker
-    def static_type_signature(node : Ast::HtmlElement) : Checkable
-      Type.new("Dom.Element")
-    end
-
     def check(node : Ast::HtmlElement) : Checkable
       unless node.styles.empty?
         error! :html_element_style_outside_of_component do

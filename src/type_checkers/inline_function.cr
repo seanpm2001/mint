@@ -1,18 +1,5 @@
 module Mint
   class TypeChecker
-    def static_type_signature(node : Ast::InlineFunction) : Checkable
-      arguments =
-        node.arguments.map { |argument| resolve argument.type }
-
-      return_type =
-        node.type.try { |type| resolve type } || Variable.new("a")
-
-      defined_type =
-        Type.new("Function", arguments + [return_type])
-
-      Comparer.normalize(defined_type)
-    end
-
     def check(node : Ast::InlineFunction) : Checkable
       check_arguments(node.arguments)
 

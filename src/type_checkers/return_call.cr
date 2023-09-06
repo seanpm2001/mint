@@ -14,8 +14,6 @@ module Mint
       type =
         resolve node.expression
 
-      push_return(node)
-
       type
     end
   end

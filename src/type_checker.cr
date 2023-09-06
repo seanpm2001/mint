@@ -59,23 +59,6 @@ module Mint
     @languages : Array(String)
     @referee : Ast::Node?
 
-    @returns : Hash(Ast::Node, Array(Ast::ReturnCall)) = {} of Ast::Node => Array(Ast::ReturnCall)
-    @returns_stack : Array(Ast::Node) = [] of Ast::Node
-
-    def push_return(node : Ast::ReturnCall)
-      if item = @returns_stack.last
-        @returns[item] ||= [] of Ast::ReturnCall
-        @returns[item].push(node)
-      end
-    end
-
-    def with_returns(node : Ast::Node, &)
-      @returns_stack.push(node)
-      yield
-    ensure
-      @returns_stack.delete(node)
-    end
-
     @record_name_char : String = 'A'.pred.to_s
 
     @stack = [] of Ast::Node

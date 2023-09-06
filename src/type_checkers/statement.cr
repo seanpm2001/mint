@@ -32,7 +32,7 @@ module Mint
       type =
         type.parameters.first if node.await && type.name == "Promise"
 
-      types[node] = type
+      type
     end
   end
 end

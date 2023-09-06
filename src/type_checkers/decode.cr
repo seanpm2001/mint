@@ -25,8 +25,6 @@ module Mint
         snippet node
       end unless check_decode(type)
 
-      types[node] = type
-
       result_type =
         Type.new("Result", [OBJECT_ERROR, type] of Checkable)
 

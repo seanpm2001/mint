@@ -3,8 +3,6 @@ module Mint
     def _compile(node : Ast::Variable) : String
       if node.value == "void"
         "null"
-      elsif type = types[node]?
-        js.class_of(type.name)
       else
         entity, parent = variables[node]
 

@@ -11,7 +11,6 @@ module Mint
                      @variables = {} of Ast::Node => Tuple(Ast::Node, Ast::Node),
                      @lookups = {} of Ast::Node => Ast::Node,
                      @assets = [] of Ast::Directives::Asset,
-                     @types = {} of Ast::Node => Checkable,
                      @cache = {} of Ast::Node => Checkable,
                      @locales = {} of String => Hash(String, Ast::Node),
                      @argument_order = [] of Ast::Node,

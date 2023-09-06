@@ -1,8 +1,6 @@
 module Mint
   class TypeChecker
     def check(node : Ast::TypeDefinition) : Checkable
-      check_global_types node.name.value, node
-
       case items = node.fields
       in Array(Ast::TypeDefinitionField)
         fields =
@@ -12,7 +10,6 @@ module Mint
           items.to_h { |item| {item.key.value, static_value(item.mapping)} }
 
         type = Record.new(node.name.value, fields, mappings)
-        types[node] = type
 
         Comparer.normalize(type)
       in Array(Ast::TypeVariant)

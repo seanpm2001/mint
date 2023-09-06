@@ -1,7 +1,7 @@
 module Mint
   class TypeChecker
-    include Helpers
     include Errorable
+    include Helpers
 
     alias Checkable = Type | Record | Variable
 
@@ -45,7 +45,7 @@ module Mint
     property? checking = true
 
     delegate checked, record_field_lookup, component_records, to: artifacts
-    delegate types, variables, ast, lookups, cache, scope, to: artifacts
+    delegate variables, ast, lookups, cache, scope, to: artifacts
     delegate assets, resolve_order, locales, argument_order, to: artifacts
 
     delegate format, to: formatter
@@ -53,7 +53,6 @@ module Mint
     @record_names = {} of String => Ast::Node
     @formatter = Formatter.new
     @names = {} of String => Ast::Node
-    @types = {} of String => Ast::Node
     @records = [] of Record
     @top_level_entity : Ast::Node?
     @languages : Array(String)
@@ -308,27 +307,6 @@ module Mint
         snippet "You are trying to define something with the same name here:", node
         snippet "The #{what} is defined here:", other
       end
-    end
-
-    def check_global_types(name : String, node : Ast::Node) : Nil
-      other = @types[name]?
-
-      if other && other != node
-        what =
-          case other
-          when Ast::TypeDefinition then "type"
-          else
-            ""
-          end
-
-        global_name_conflict(
-          other: other,
-          what: what,
-          node: node,
-          name: name)
-      end
-
-      @types[name] = node
     end
 
     def check_global_names(name : String, node : Ast::Node) : Nil

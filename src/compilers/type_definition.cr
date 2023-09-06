@@ -1,9 +1,7 @@
 module Mint
   class Compiler
     def _compile(node : Ast::TypeDefinition) : String
-      type = types[node]?
-
-      case type
+      case type = cache[node]?
       when TypeChecker::Record
         name =
           js.class_of(type.name)

@@ -22,8 +22,6 @@ module Mint
         snippet "It was used here:", node
       end unless record
 
-      types[node] = record
-
       node.fields.each do |field|
         record_field_lookup[field] = record.name
       end

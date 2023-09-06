@@ -19,6 +19,8 @@ module Mint
           string_literal
         when '/'
           regexp_literal
+        when '#'
+          tuple_literal
         when '.'
           member_access
         when '['

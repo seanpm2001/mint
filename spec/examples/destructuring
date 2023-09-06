@@ -1,7 +1,7 @@
 ----------------------------------------------------destructuring_type_mismatch
 component Main {
   fun render : String {
-    case ("x") {
+    case "x" {
       true => "a"
       "b" => "b"
       => "c"
@@ -11,7 +11,7 @@ component Main {
 -------------------------------------------------destructuring_multiple_spreads
 component Main {
   fun render : String {
-    case ([]) {
+    case [] {
       [...a,...b] => "a"
     }
   }
@@ -19,7 +19,7 @@ component Main {
 ----------------------------------------------------destructuring_type_mismatch
 component Main {
   fun render : String {
-    case ("") {
+    case "" {
       [...a,...b] => "a"
     }
   }
@@ -27,11 +27,16 @@ component Main {
 ---------------------------------------------------destructuring_tuple_mismatch
 component Main {
   fun render : String {
-    case ({"a", "b"}) {
+    case {"a", "b"} {
       {a, b, c} => "a"
     }
   }
 }
+-------------------------------tuple_destructuring_expected_closing_parenthesis
+component Main {
+  fun render : String {
+    case #("a", "b") {
+      #(a, b, c
 ----------------------------------------------------destructuring_type_mismatch
 component Main {
   fun render : String {
@@ -43,7 +48,7 @@ component Main {
 ----------------------------------------------------destructuring_type_mismatch
 component Main {
   fun render : String {
-    case ({"a", "b"}) {
+    case {"a", "b"} {
       {"a", {"b"}} => "a"
     }
   }
@@ -51,7 +56,7 @@ component Main {
 ----------------------------------------------------destructuring_type_mismatch
 component Main {
   fun render : String {
-    case ({"a", "b"}) {
+    case {"a", "b"} {
       {{a}, b} => "a"
     }
   }
@@ -117,7 +122,7 @@ component Main {
 -------------------------------------------------------------------------------
 component Main {
   fun render : String {
-    case ("x") {
+    case "x" {
       "a" => "a"
       "b" => "b"
       => "c"

@@ -16,3 +16,15 @@ component Main {
     { x |> pipe }[0]
   }
 }
+-------------------------------------tuple_literal_expected_closing_parenthesis
+component Main {
+  fun render : String {
+    #("a", "b"
+  }
+}
+-------------------------------------------------------------------------------
+component Main {
+  fun render : String {
+    #("a", "b")[0]
+  }
+}

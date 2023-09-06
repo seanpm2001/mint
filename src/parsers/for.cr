@@ -3,17 +3,15 @@ module Mint
     def for_expression : Ast::For?
       parse do |start_position|
         next unless word! "for"
-        next unless whitespace!
+        whitespace
 
         parens = char! '('
         whitespace
 
-        arguments = list(
-          terminator: parens ? ')' : '{',
-          separator: ','
-        ) { variable }
-        whitespace
+        arguments =
+          list(terminator: parens ? ')' : '{', separator: ',') { variable }
 
+        whitespace
         next error :for_expected_of do
           expected "the of word! of a for expression", word
           snippet self

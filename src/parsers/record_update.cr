@@ -4,8 +4,8 @@ module Mint
       parse do |start_position|
         expression = parse(track: false) do
           next unless char! '{'
-
           whitespace
+
           value = variable || self.expression
           whitespace
 

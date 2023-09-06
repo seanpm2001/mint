@@ -5,9 +5,7 @@ module Mint
         next unless char.in?('*', '/')
 
         url =
-          case char
-          when '*'
-            step
+          if char! '*'
             "*"
           else
             gather { chars { |char| !char.in?(' ', '\n', '\r', '\t', '{', '(') } }.to_s
@@ -17,9 +15,12 @@ module Mint
 
         whitespace
         if char! '('
-          arguments = list(terminator: ')', separator: ',') { argument(false) }
-          whitespace
+          arguments =
+            list(terminator: ')', separator: ',') do
+              argument(parse_default_value: false)
+            end
 
+          whitespace
           next error :route_expected_closing_parenthesis do
             expected "the closing parenthesis of a route", word
             snippet self

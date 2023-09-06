@@ -11,7 +11,7 @@ module Mint
         whitespace
 
         next error :array_destructuring_expected_closing_bracket do
-          expected "the closing bracket of the array destructuring", word
+          expected "the closing bracket of an array destructuring", word
           snippet self
         end unless char! ']'
 

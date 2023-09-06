@@ -2,12 +2,11 @@ module Mint
   class Parser
     def access(expression : Ast::Node) : Ast::Access?
       parse do
+        # TODO: Remove this if chain in 0.21.0 when deprecation ends.
         type =
           if word! "::"
-            # TODO: puts "[Deprecation] Enum access will be deprecated in the next release. Use a dot '.' instead of a double colon '::'"
             Ast::Access::Type::DoubleColon
           elsif char! ':'
-            # TODO: puts "[Deprecation] Constant access will be deprecated in the next release. Use a dot '.' instead of a colon ':'"
             Ast::Access::Type::Colon
           elsif char! '.'
             Ast::Access::Type::Dot
@@ -15,7 +14,7 @@ module Mint
 
         next unless type
 
-        next error :access_expected_entity do
+        next error :access_expected_field do
           expected "the name of the accessed entity", word
           snippet self
         end unless field = value

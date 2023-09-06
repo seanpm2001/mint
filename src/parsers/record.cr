@@ -8,7 +8,6 @@ module Mint
 
         unless char! '}'
           whitespace
-
           fields = list(terminator: '}', separator: ',') { field }
           whitespace
 

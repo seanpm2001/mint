@@ -9,8 +9,8 @@ module Mint
         Ast::Variable.new(
           from: start_position,
           to: position,
-          file: file,
-          value: name)
+          value: name,
+          file: file)
       end
     end
   end

@@ -1,7 +1,7 @@
 module Mint
   class Parser
-    def variable_constant : Ast::Variable?
-      parse do |start_position|
+    def variable_constant(*, track = true) : Ast::Variable?
+      parse(track: track) do |start_position|
         next unless value = identifier_constant
 
         Ast::Variable.new(
@@ -12,7 +12,7 @@ module Mint
       end
     end
 
-    def variable(track = true, extra_chars = [] of Char) : Ast::Variable?
+    def variable(*, track = true, extra_chars = [] of Char) : Ast::Variable?
       parse(track: track) do |start_position|
         value = gather do
           next unless char.ascii_lowercase?

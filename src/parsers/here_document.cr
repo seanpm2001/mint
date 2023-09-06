@@ -26,10 +26,10 @@ module Mint
         Ast::HereDocument.new(
           from: start_position,
           modifier: modifier,
+          token: token,
           value: value,
           to: position,
-          file: file,
-          token: token)
+          file: file)
       end
     end
   end

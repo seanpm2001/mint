@@ -7,9 +7,7 @@ module Mint
         if char! '('
           parameters = list(separator: ',', terminator: ')') do
             whitespace
-            type =
-              self.type.as(Ast::Type?) ||
-                type_variable.as(Ast::TypeVariable?)
+            type = self.type || type_variable
 
             whitespace
             next error :type_expected_type_or_type_variable do

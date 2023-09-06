@@ -25,9 +25,9 @@ module Mint
         end unless char! ')'
 
         Ast::Call.new(
+          expression: expression,
           from: start_position,
           arguments: arguments,
-          expression: expression,
           to: position,
           file: file)
       end

@@ -3,12 +3,7 @@ module Mint
     def css_nested_at : Ast::CssNestedAt?
       parse do |start_position|
         next unless char! '@'
-
-        name =
-          gather { word!("media") || word!("supports") }
-
-        next unless name
-        next unless whitespace?
+        next unless name = gather { word!("media") || word!("supports") }
 
         content =
           gather { chars { char != '{' } }.presence.try(&.strip)
@@ -33,7 +28,7 @@ module Mint
                 expected "the body of a CSS at rule", word
                 snippet self
               end if items.empty?
-            }) { many { css_node.as(Ast::Node | Nil) } }
+            }) { many { css_node } }
 
         next unless body
 

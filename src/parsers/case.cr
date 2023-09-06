@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def case_expression(for_css : Bool = false) : Ast::Case?
+    def case_expression(*, for_css : Bool = false) : Ast::Case?
       parse do |start_position|
         next unless word! "case"
         whitespace
@@ -37,7 +37,7 @@ module Mint
               expected "the branches of a case expression", word
               snippet self
             end if items.none?(Ast::CaseBranch)
-          }) { many { case_branch(for_css) || comment } }
+          }) { many { case_branch(for_css: for_css) || comment } }
 
         next unless body
 

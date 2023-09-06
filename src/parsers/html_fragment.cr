@@ -7,9 +7,7 @@ module Mint
         comments = [] of Ast::Comment
         children = [] of Ast::Node
 
-        items = many { expression || comment }
-
-        items.each do |item|
+        many { expression || comment }.each do |item|
           case item
           when Ast::Comment
             comments << item

@@ -13,6 +13,8 @@ module Mint
     end
 
     def parse : Nil
+      # Comment needs to be last since other comments are parsed with the
+      # entities.
       items = many do
         module_definition ||
           type_definition ||

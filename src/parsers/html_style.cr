@@ -2,13 +2,8 @@ module Mint
   class Parser
     def html_style : Ast::HtmlStyle?
       parse do |start_position|
-        name = parse(track: false) do
-          next unless word! "::"
-          next unless value = variable track: false, extra_chars: ['-']
-          value
-        end
-
-        next unless name
+        next unless word! "::"
+        next unless name = variable track: false, extra_chars: ['-']
 
         arguments = [] of Ast::Node
 

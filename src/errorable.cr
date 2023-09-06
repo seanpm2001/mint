@@ -9,18 +9,17 @@ module Mint
     # The errors found during parsing.
     getter errors : Array(Error) = [] of Error
 
+    def self.error(name : Symbol, &)
+      raise Error.new(name).tap { |error| with error yield }
+    end
+
     def error!(name : Symbol, &)
       raise Error.new(name).tap { |error| with error yield }
     end
 
     def error(name : Symbol, &)
-      # raise Error.new(name).tap { |error| with error yield }
       errors << Error.new(name).tap { |error| with error yield }
       nil
-    end
-
-    def self.error(name : Symbol, &)
-      raise Error.new(name).tap { |error| with error yield }
     end
   end
 

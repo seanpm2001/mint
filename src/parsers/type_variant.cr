@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def type_variant
+    def type_variant : Ast::TypeVariant?
       parse do |start_position|
         comment = self.comment
 
@@ -20,7 +20,7 @@ module Mint
 
             whitespace
             next error :type_variant_expected_closing_parenthesis do
-              expected "the closing parenthesis of an type option", word
+              expected "the closing parenthesis of an type variant", word
               snippet self
             end unless char! ')'
 

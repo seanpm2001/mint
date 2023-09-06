@@ -96,12 +96,14 @@ module Mint
           when Ast::LocaleKey
             locales = true
           when Ast::Function
-            node.keep_name = true if node.name.value.in?([
-                                       "componentWillUnmount",
-                                       "componentDidUpdate",
-                                       "componentDidMount",
-                                       "render",
-                                     ])
+            if node.name.value.in?([
+                 "componentWillUnmount",
+                 "componentDidUpdate",
+                 "componentDidMount",
+                 "render",
+               ])
+              node.keep_name = true
+            end
           when Ast::HtmlElement
             node.styles.each do |style|
               style.style_node =
@@ -115,7 +117,7 @@ module Mint
             node.in_component = true
 
             if ref = node.ref
-              refs << {ref, node.as(Ast::Node)}
+              refs << {ref, node}
             end
           end
         end

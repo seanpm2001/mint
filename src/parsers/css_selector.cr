@@ -2,10 +2,13 @@ module Mint
   class Parser
     def css_selector(only_definitions : Bool = false) : Ast::CssSelector?
       parse do |start_position|
+        next if char == '/'
+
         selectors = list(
           terminator: '{',
           separator: ','
         ) { css_selector_name }
+
         next if selectors.empty?
         next unless char == '{'
 
@@ -21,7 +24,7 @@ module Mint
           if only_definitions
             many { comment || css_definition }
           else
-            many { css_node.as(Ast::Node | Nil) }
+            many { css_node }
           end
         end
 
@@ -38,28 +41,6 @@ module Mint
           to: position,
           file: file,
           body: body)
-      end
-    end
-
-    def css_selector_name : String?
-      if ampersand = char! '&'
-        double_colon = word!("::")
-        bracket = char!('[')
-        colon = char!(':')
-        dot = char!('.')
-      end
-
-      name =
-        gather { chars { |char| !char.in?(',', '{', '}') } }.presence.try(&.strip)
-
-      return unless name || ampersand
-
-      case
-      when double_colon then "::#{name}"
-      when bracket      then "[#{name}"
-      when colon        then ":#{name}"
-      when dot          then ".#{name}"
-      else                   " #{name}"
       end
     end
   end

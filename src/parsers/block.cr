@@ -3,9 +3,7 @@ module Mint
     def block : Ast::Block?
       parse do |start_position|
         expressions =
-          brackets do
-            many { comment || statement }
-          end
+          brackets { many { comment || statement } }
 
         next unless expressions
 
@@ -19,24 +17,22 @@ module Mint
 
     def block(opening_bracket_error : Proc(Nil)? = nil,
               closing_bracket_error : Proc(Nil)? = nil,
-              statement_error : Proc(Nil)? = nil)
+              items_empty_error : Proc(Nil)? = nil) : Ast::Block?
       block(
         opening_bracket_error,
         closing_bracket_error,
-        statement_error) { comment || statement }
+        items_empty_error) { comment || statement }
     end
 
     def block(opening_bracket_error : Proc(Nil)? = nil,
               closing_bracket_error : Proc(Nil)? = nil,
-              statement_error : Proc(Nil)? = nil,
+              items_empty_error : Proc(Nil)? = nil,
               & : -> Ast::Node?) : Ast::Block?
       parse do |start_position|
         expressions =
-          brackets(
-            opening_bracket_error: opening_bracket_error,
-            closing_bracket_error: closing_bracket_error) do
+          brackets(opening_bracket_error, closing_bracket_error) do
             many { yield }.tap do |items|
-              next statement_error.call if statement_error && items.none?
+              next items_empty_error.call if items_empty_error && items.none?
             end
           end
 

@@ -27,9 +27,7 @@ module Mint
                 snippet self
               end
             }
-          ) do
-            list(terminator: '}', separator: ',') { field }
-          end
+          ) { list(terminator: '}', separator: ',') { field } }
 
         next unless fields
 

@@ -11,7 +11,7 @@ module Mint
         whitespace
 
         next error :documentation_directive_expected_entity do
-          expected "the entity of a documentation directive", word
+          expected "the entity (component, module, etc...) of a documentation directive", word
           snippet self
         end unless entity = id
         whitespace

@@ -19,9 +19,9 @@ module Mint
         next unless value = expression
 
         Ast::Field.new(
-          value: value,
           from: start_position,
           comment: comment,
+          value: value,
           to: position,
           file: file,
           key: key)

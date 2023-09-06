@@ -1,7 +1,7 @@
 module Mint
   class Parser
-    include Helpers
     include Errorable
+    include Helpers
 
     # The position of the cursor, which is at the character we are currently
     # parsing.
@@ -88,7 +88,7 @@ module Mint
     end
 
     # Returns the current word (sequence of ascii lowercase letters).
-    def ascii_word
+    def ascii_word : String
       index = position
       word = ""
 
@@ -189,13 +189,13 @@ module Mint
     end
 
     # Returns whether the current character is a whitespace.
-    def whitespace?
+    def whitespace? : Bool
       char.ascii_whitespace?
     end
 
     # Consumes all available whitespace and returns true / false whether
     # there were any.
-    def whitespace!
+    def whitespace! : Bool
       parse do |start_position|
         whitespace
         next false if position == start_position
@@ -303,7 +303,7 @@ module Mint
     def brackets(opening_bracket_error : Proc(Nil)? = nil,
                  closing_bracket_error : Proc(Nil)? = nil,
                  empty_check : Proc(T, Nil)? = nil,
-                 & : -> T?) forall T
+                 & : -> T?) : T? forall T
       parse(track: false) do
         unless char! '{'
           case item = opening_bracket_error
@@ -328,6 +328,25 @@ module Mint
         end
 
         result
+      end
+    end
+
+    # Parses a thing, if succeeds it discards all errors while parsing it.
+    def oneof(& : -> T?) : T? forall T
+      # Copy the errors for later use.
+      errors = self.errors.dup
+
+      # Empty the errors, since we want to gather them.
+      @errors = [] of Error
+
+      yield.tap do |result|
+        if result
+          # Restore the original errors
+          @errors = errors
+        else
+          # Restore the original errors and add the new ones.
+          @errors = errors + @errors
+        end
       end
     end
 

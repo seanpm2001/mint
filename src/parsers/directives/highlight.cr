@@ -16,7 +16,7 @@ module Mint
               snippet self
             end },
             ->{ error :highlight_directive_expected_body do
-              expected "body of a format directive", word
+              expected "body of a highlight directive", word
               snippet self
             end })
 

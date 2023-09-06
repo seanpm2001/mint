@@ -5,7 +5,7 @@ module Mint
         negation =
           char! '-'
 
-        next if (value = gather { chars &.ascii_number? }.to_s).empty?
+        next unless value = gather { chars &.ascii_number? }
 
         float = false
 
@@ -15,9 +15,8 @@ module Mint
             snippet self
           end unless char.ascii_number?
 
-          float = true
-
           value += '.' + gather { chars(&.ascii_number?) }.to_s
+          float = true
         end
 
         value = "-#{value}" if negation

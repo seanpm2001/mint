@@ -2,9 +2,10 @@ module Mint
   class Parser
     def connect_variable
       parse do |start_position|
-        next unless name = variable(track: false) || variable_constant
-        whitespace
+        next unless name = variable_constant(track: false) ||
+                           variable(track: false)
 
+        whitespace
         if word! "as"
           whitespace
 

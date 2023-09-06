@@ -29,10 +29,10 @@ module Mint
 
         body.each do |item|
           case item
-          when Ast::Route
-            routes << item
           when Ast::Comment
             comments << item
+          when Ast::Route
+            routes << item
           end
         end
 

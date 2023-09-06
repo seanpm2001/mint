@@ -28,7 +28,7 @@ module Mint
                 bold "array literal"
                 text "must be defined after the"
                 bold "of"
-                text "word!."
+                text "keyword."
               end
 
               expected "the type", word

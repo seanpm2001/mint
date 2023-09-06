@@ -2,12 +2,8 @@ module Mint
   class Parser
     def html_component : Ast::HtmlComponent?
       parse do |start_position|
-        component = parse(track: false) do
-          next unless char! '<'
-          id
-        end
-
-        next unless component
+        next unless char! '<'
+        next unless component = id
         whitespace
 
         if word! "as"

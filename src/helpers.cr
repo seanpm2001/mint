@@ -82,7 +82,8 @@ module Mint
         node.value.all?(String)
       when Ast::HtmlAttribute
         static?(node.value)
-      when Ast::Block
+      when Ast::HtmlExpression,
+           Ast::Block
         static?(node.expressions)
       when Ast::Statement
         static?(node.expression)
@@ -95,8 +96,6 @@ module Mint
           node.styles.empty? &&
           static?(node.children) &&
           static?(node.attributes)
-      when Ast::HtmlExpression
-        static?(node.expressions)
       when Ast::RegexpLiteral,
            Ast::NumberLiteral,
            Ast::BoolLiteral
@@ -122,9 +121,8 @@ module Mint
         node.value.select(String).join
       when Ast::HtmlAttribute
         "#{node.name.value}=#{static_value(node.value)}"
-      when Ast::HtmlExpression
-        static_value(node.expressions)
-      when Ast::Block
+      when Ast::HtmlExpression,
+           Ast::Block
         static_value(node.expressions)
       when Ast::Statement
         static_value(node.expression)

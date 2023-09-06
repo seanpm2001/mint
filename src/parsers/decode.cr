@@ -3,7 +3,7 @@ module Mint
     def decode : Ast::Decode?
       parse do |start_position|
         next unless word! "decode"
-        next unless whitespace!
+        whitespace
 
         unless word! "as"
           whitespace

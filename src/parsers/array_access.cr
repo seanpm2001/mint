@@ -6,13 +6,13 @@ module Mint
         whitespace
 
         next error :array_access_expected_index do
-          expected "the index into the array", word
+          expected "the index for the item of an array access", word
           snippet self
         end unless index = self.expression
-
         whitespace
+
         next error :array_access_expected_closing_bracket do
-          expected "the closing bracket of the array", word
+          expected "the closing bracket of an array access", word
           snippet self
         end unless char! ']'
 

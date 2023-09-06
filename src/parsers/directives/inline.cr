@@ -11,7 +11,7 @@ module Mint
         whitespace
 
         next error :inline_directive_expected_path do
-          expected "the closing parenthesis of an inline directive", word
+          expected "the path (to the file to be inlined) of an inline directive", word
           snippet self
         end unless path = gather { chars { char != ')' } }.presence.try(&.strip)
         whitespace

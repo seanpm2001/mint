@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def case_branch(for_css : Bool = false) : Ast::CaseBranch?
+    def case_branch(*, for_css : Bool = false) : Ast::CaseBranch?
       parse do |start_position|
         unless word! "=>"
           pattern = destructuring
@@ -25,9 +25,9 @@ module Mint
           end
 
         Ast::CaseBranch.new(
-          pattern: pattern.as(Ast::TypeDestructuring | Ast::TupleDestructuring | Ast::Node?),
           expression: expression,
           from: start_position,
+          pattern: pattern,
           to: position,
           file: file)
       end

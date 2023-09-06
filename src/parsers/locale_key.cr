@@ -6,7 +6,7 @@ module Mint
 
         value = gather do
           next unless char.ascii_lowercase?
-          chars { |char| char.ascii_letter? || char.ascii_number? || char == '.' }
+          ascii_letters_or_numbers(extra_char: '.')
         end
 
         next unless value

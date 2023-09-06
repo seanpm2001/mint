@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    def argument(parse_default_value : Bool = true) : Ast::Argument?
+    def argument(*, parse_default_value : Bool = true) : Ast::Argument?
       parse do |start_position|
         next unless name = variable
 
@@ -8,7 +8,6 @@ module Mint
         next error :argument_expected_colon do
           block "A colon must separate the arguments name from its type."
           expected "the colon of the argument", word
-
           snippet self
         end unless char! ':'
 
@@ -16,7 +15,6 @@ module Mint
         next error :argument_expected_type do
           block "An argument must have its type defined."
           expected "the type of the argument", word
-
           snippet self
         end unless type = self.type || type_variable
 

@@ -6,7 +6,7 @@ module Mint
       #
       # We are doing two big cases as an optimization: each parser can be used
       # standalone and will return nil if it can't parse, but limiting what can
-      # pe parsed avoid a lot of unneccesary cycles.
+      # pe parsed avoids a lot of unneccesary cycles.
       left =
         case char
         when '('
@@ -69,34 +69,33 @@ module Mint
           end
         end
 
-      case left
-      when Nil
-        nil
-      else
-        # We try to chain accesses and calls until we can.
-        loop do
-          node =
-            if word? "::"
+      return unless left
+
+      # We try to chain accesses and calls until we can.
+      #
+      # TODO: Remove `::`, `:` cases in 0.21.0 when deprecation ends.
+      loop do
+        node =
+          if word? "::"
+            access(left)
+          else
+            case char
+            when ':'
               access(left)
-            else
-              case char
-              when ':'
-                access(left)
-              when '.'
-                access(left)
-              when '('
-                call(left)
-              when '['
-                array_access(left)
-              end
+            when '.'
+              access(left)
+            when '('
+              call(left)
+            when '['
+              array_access(left)
             end
+          end
 
-          break unless node
-          left = node
-        end
-
-        left
+        break unless node
+        left = node
       end
+
+      left
     end
   end
 end

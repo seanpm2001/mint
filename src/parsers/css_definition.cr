@@ -3,10 +3,7 @@ module Mint
     def css_definition : Ast::CssDefinition?
       parse do |start_position|
         next unless char.ascii_lowercase? || char == '-'
-
-        name =
-          gather { ascii_letters_or_numbers(extra_char: '-') }.to_s
-
+        next unless name = gather { ascii_letters_or_numbers(extra_char: '-') }
         next unless char! ':'
         whitespace
 

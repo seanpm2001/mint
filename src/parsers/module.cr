@@ -19,23 +19,22 @@ module Mint
         end unless name = id
         whitespace
 
-        body = brackets(
-          ->{ error :module_expected_opening_bracket do
-            expected "the opening bracket of a module", word
-            snippet self
-          end },
-          ->{ error :module_expected_closing_bracket do
-            expected "the closing bracket of a module", word
-            snippet self
-          end },
-          ->(items : Array(Ast::Node)) {
-            error :module_expected_body do
-              expected "the body of the module", word
+        body =
+          brackets(
+            ->{ error :module_expected_opening_bracket do
+              expected "the opening bracket of a module", word
               snippet self
-            end if items.reject(Ast::Comment).empty?
-          }) do
-          many { function || constant || self.comment }
-        end
+            end },
+            ->{ error :module_expected_closing_bracket do
+              expected "the closing bracket of a module", word
+              snippet self
+            end },
+            ->(items : Array(Ast::Node)) {
+              error :module_expected_body do
+                expected "the body of the module", word
+                snippet self
+              end if items.reject(Ast::Comment).empty?
+            }) { many { function || constant || self.comment } }
 
         next unless body
 

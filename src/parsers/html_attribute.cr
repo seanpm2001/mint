@@ -36,9 +36,9 @@ module Mint
         next unless value
 
         Ast::HtmlAttribute.new(
-          value: value.as(Ast::Node),
           from: start_position,
           to: position,
+          value: value,
           file: file,
           name: name)
       end

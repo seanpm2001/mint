@@ -3,7 +3,7 @@ module Mint
     def encode : Ast::Encode?
       parse do |start_position|
         next unless word! "encode"
-        next unless whitespace!
+        whitespace
 
         next error :encode_expected_expression do
           block do

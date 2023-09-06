@@ -18,8 +18,8 @@ module Mint
 
       Ast::Pipe.new(
         expression: expression,
-        argument: argument,
         from: argument.from,
+        argument: argument,
         to: expression.to,
         file: file)
     end

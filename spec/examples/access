@@ -1,8 +1,8 @@
----------------------------------------------------------access_expected_entity
+----------------------------------------------------------access_expected_field
 component Main {
   fun render : String {
     "".
----------------------------------------------------------access_expected_entity
+----------------------------------------------------------access_expected_field
 component Main {
   fun render {
     A::
@@ -40,7 +40,7 @@ component Main {
     blah.blah.blah
   }
 }
----------------------------------------------------------access_expected_entity
+----------------------------------------------------------access_expected_field
 component Main {
   fun render : String {
     A.

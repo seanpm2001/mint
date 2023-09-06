@@ -1,6 +1,6 @@
 module Mint
   class Parser
-    # These are the supported operators with their precedence.
+    # These are the supported operators with their precedences.
     OPERATORS = {
       "|>" => 0,
       "or" => 0,

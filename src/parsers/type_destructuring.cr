@@ -1,19 +1,19 @@
 module Mint
   class Parser
-    def type_destructuring
+    def type_destructuring : Ast::TypeDestructuring?
       parse do |start_position|
         next unless name = id track: false
 
         # TODO: Remove this branch in 0.21.0 when deprecation ends.
         if word! "::"
-          next error :type_destructuring_expected_option do
+          next error :type_destructuring_expected_variant do
             expected "the type of an type destructuring", word
             snippet self
           end unless variant = id(track: false)
         else
           parts = name.value.split('.')
 
-          next error :type_destructuring_expected_option do
+          next error :type_destructuring_expected_variant do
             expected "the type of an type destructuring", word
             snippet self
           end if parts.size == 0

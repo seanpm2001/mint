@@ -11,7 +11,7 @@ module Mint
         whitespace
 
         next error :asset_directive_expected_path do
-          expected "the path of an asset directive", word
+          expected "the path to the asset of an asset directive", word
           snippet self
         end unless path = gather { chars { char != ')' } }.presence.try(&.strip)
         whitespace

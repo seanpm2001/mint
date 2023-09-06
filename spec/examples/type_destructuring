@@ -1,4 +1,4 @@
----------------------------------------------type_destructuring_expected_option
+--------------------------------------------type_destructuring_expected_variant
 module Test {
   fun toString (status : Status) : String {
     case (status) {

@@ -2,13 +2,8 @@ module Mint
   class Parser
     def html_element : Ast::HtmlElement?
       parse do |start_position|
-        tag = parse(track: false) do
-          next unless char! '<'
-          next unless value = variable track: false, extra_chars: ['-']
-          value
-        end
-
-        next unless tag
+        next unless char! '<'
+        next unless tag = variable track: false, extra_chars: ['-']
 
         styles = [] of Ast::HtmlStyle
 

@@ -1,9 +1,10 @@
 module Mint
   class Parser
-    def type_definition : Ast::Node?
+    def type_definition : Ast::TypeDefinition?
       parse do |start_position|
         comment = self.comment
 
+        # TODO: Remove `record` and `enum` in 0.21.0 when deprecation ends.
         next unless word!("type") || word!("record") || word!("enum")
         whitespace
 
@@ -30,8 +31,11 @@ module Mint
 
         fields = begin
           if char! '{'
+            variants =
+              list(separator: ',', terminator: '}') { type_definition_field }
+
             items =
-              if (variants = list(separator: ',', terminator: '}') { type_definition_field }).empty?
+              if variants.empty?
                 many { type_variant }
               else
                 variants

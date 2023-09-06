@@ -2,7 +2,7 @@ module Mint
   class Parser
     # Parses an operation, switching the operands if the precedence of the
     # next operation is higher than the current one. The precedences can be
-    # found in the operators parser file.
+    # found in the operator parser file.
     #
     # Operations can be chained recursively with this method as seen below.
     def operation(left : Ast::Node, operator : String) : Ast::Operation?

@@ -38,8 +38,8 @@ module Mint
         end unless default = expression
 
         Ast::State.new(
-          default: default,
           from: start_position,
+          default: default,
           comment: comment,
           to: position,
           file: file,

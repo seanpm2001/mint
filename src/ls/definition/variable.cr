@@ -43,26 +43,7 @@ module Mint
         end
       end
 
-      def variable_lookup_parent(node : Ast::Variable, target : TypeChecker::Artifacts::Node, workspace : Workspace)
-        case target
-        when Tuple(String, TypeChecker::Checkable, Ast::Node)
-          case variable = target[2]
-          when Ast::Variable
-            # For some variables in the .variables` cache, we only have access to the
-            # target Ast::Variable and not its containing node, so we must search for it
-            return unless parent = workspace
-                            .ast
-                            .nodes
-                            .select { |other| other.is_a?(Ast::EnumDestructuring) || other.is_a?(Ast::Statement) || other.is_a?(Ast::For) }
-                            .select(&.input.file.==(variable.input.file))
-                            .find { |other| other.from < variable.from && other.to > variable.to }
-
-            location_link node, variable, parent
-          end
-        end
-      end
-
-      def variable_lookup_parent(node : Ast::Variable, variable : Ast::Variable, server : Server, workspace : Workspace)
+      def variable_lookup_parent(node : Ast::Variable, variable : Ast::Variable, workspace : Workspace)
         # For some variables in the .variables` cache, we only have access to the
         # target Ast::Variable and not its containing node, so we must search for it
         return unless parent = workspace
@@ -72,7 +53,7 @@ module Mint
                         .select(&.file.path.==(variable.file.path))
                         .find { |other| other.from < variable.from && other.to > variable.to }
 
-        location_link server, node, variable, parent
+        location_link node, variable, parent
       end
 
       def variable_lookup(node : Ast::Variable, target : Ast::Node | TypeChecker::Checkable)

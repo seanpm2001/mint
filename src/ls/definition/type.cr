@@ -9,7 +9,7 @@ module Mint
 
         return if Core.ast.type_definitions.includes?(record)
 
-        location_link server, node.name, record.name, record
+        location_link node.name, record.name, record
       end
     end
   end

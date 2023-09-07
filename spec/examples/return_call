@@ -31,6 +31,24 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
+enum Test {
+  A(String)
+  B(String)
+}
+
+component Main {
+  fun render : String {
+    let value = {
+      let Test::B(x) =
+        Test::A("Hello") or return "YES"
+
+      "NO"
+      }
+
+    value
+  }
+}
+-------------------------------------------------------------------------------
 component Main {
   fun render : String {
     return "YES"

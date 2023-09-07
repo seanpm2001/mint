@@ -17,7 +17,7 @@ module Mint
               closing_bracket_error : Proc(Nil)? = nil,
               items_empty_error : Proc(Nil)? = nil,
               & : -> Ast::Node?) : Ast::Block?
-      parse do |start_position, start_nodes_position|
+      parse do |start_position|
         expressions =
           brackets(opening_bracket_error, closing_bracket_error) do
             many { yield }.tap do |items|
@@ -28,7 +28,20 @@ module Mint
         next unless expressions
 
         returns =
-          ast.nodes[start_nodes_position...].select(Ast::ReturnCall)
+          expressions.compact_map do |item|
+            case item
+            when Ast::ReturnCall
+              item
+            when Ast::Statement
+              case expression = item.expression
+              when Ast::Operation
+                case right = expression.right
+                when Ast::ReturnCall
+                  right
+                end
+              end
+            end
+          end
 
         Ast::Block.new(
           expressions: expressions,

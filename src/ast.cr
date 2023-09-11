@@ -63,7 +63,7 @@ module Mint
     end
 
     def includes?(node : Ast::Node, other : Ast::Node)
-      node.input == other.input &&
+      node.file == other.file &&
         node.from <= other.from &&
         node.to >= other.to
     end
@@ -71,6 +71,14 @@ module Mint
     # Normalizes the ast:
     # - merges multiple modules with the same name
     def normalize
+      nodes.each do |node|
+        nodes.each do |item|
+          if item != node && includes?(item, node)
+            node.stack.unshift item
+          end
+        end
+      end
+
       nodes.select(Ast::HtmlComponent).each do |item|
         item.component_node = components.find(&.name.value.==(item.component.value))
       end
@@ -90,7 +98,16 @@ module Mint
               comment: nil,
               from: 0,
               to: 0,
-            )
+            ).tap do |unified|
+              nodes.each do |node|
+                modules.each do |item|
+                  if index = node.stack.index(item)
+                    node.stack[index] = unified
+                    break
+                  end
+                end
+              end
+            end
           end
 
       @unified_locales =

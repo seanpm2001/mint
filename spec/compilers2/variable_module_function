@@ -1,0 +1,44 @@
+module A {
+  fun a : String {
+    "Hello"
+  }
+
+  fun b : Function(String) {
+    a
+  }
+}
+
+component Main {
+  fun render : String {
+    let a =
+      A.b()
+
+    a()
+  }
+}
+--------------------------------------------------------------------------------
+a() {
+  return `Hello`;
+};
+
+b() {
+  return a;
+};
+
+export a;
+
+export b;
+---------------------------------------------------------------------------a.mjs
+import { a } from "runtime.js";
+
+class A extends a {
+  render() {
+    const b = B.a();
+    return b();
+  }
+};
+
+A.displayName = "Main";
+
+export default A;
+------------------------------------------------------------------------main.mjs

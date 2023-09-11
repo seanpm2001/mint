@@ -5,14 +5,15 @@ module Mint
   # In Mint it's used to get variable names for blocks of selectors
   # and CSS properties.
   class NamePool(T, B)
-    INITIAL = 'a'.pred.to_s
-
     @cache = {} of Tuple(B, T) => String
     @current = {} of B => String
 
+    def initialize(@initial = 'a'.pred.to_s)
+    end
+
     def of(subject : T, base : B)
       @cache[{base, subject}] ||= begin
-        @current[base] = (@current[base]? || INITIAL).succ
+        @current[base] = (@current[base]? || @initial).succ
       end
     end
   end

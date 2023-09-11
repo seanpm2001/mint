@@ -1,0 +1,31 @@
+component Main {
+  fun test : String {
+    let getName =
+      (name : String) : String { name }
+
+    getName("Joe")
+  }
+
+  fun render : String {
+    test()
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  a() {
+    const c = (b) => {
+      return b
+    };
+
+    return c(`Joe`);
+  }
+
+  render() {
+    this.a();
+    return ``;
+  }
+};
+
+A.displayName = "Main";

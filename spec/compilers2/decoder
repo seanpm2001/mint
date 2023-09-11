@@ -1,0 +1,80 @@
+record Y  {
+  size : Number using "SIIIZEEE"
+}
+
+record X {
+  string : String,
+  number : Number,
+  bool : Bool,
+  time : Time,
+  maybe : Maybe(String),
+  array : Array(String),
+  y : Y
+}
+
+component Main {
+  fun x (input : Object) : Result(Object.Error, x) {
+    decode input as X
+  }
+
+  fun render : String {
+    x(``)
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+const A = _R({
+  size: [
+    "SIIIZEEE",
+    Decoder.number
+  ]
+});
+
+const B = _R({
+  string: [
+    "string",
+    Decoder.string
+  ],
+  number: [
+    "number",
+    Decoder.number
+  ],
+  bool: [
+    "bool",
+    Decoder.boolean
+  ],
+  time: [
+    "time",
+    Decoder.time,
+    Encoder.time
+  ],
+  maybe: [
+    "maybe",
+    Decoder.maybe(Decoder.string),
+    Encoder.maybe()
+  ],
+  array: [
+    "array",
+    Decoder.array(Decoder.string),
+    Encoder.array()
+  ],
+  y: [
+    "y",
+    ((_)=>A.decode(_)),
+    ((_)=>A.encode(_))
+  ]
+});
+
+class C extends _C {
+  a(b) {
+    return ((_)=>B.decode(_))(b);
+  }
+
+  render() {
+    this.a();
+    return ``;
+  }
+};
+
+C.displayName = "Main";

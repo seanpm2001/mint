@@ -1,0 +1,38 @@
+store Test {
+  get a : String {
+    "Hello"
+  }
+
+  fun b : String {
+    Test.a
+  }
+}
+
+component Main {
+  fun render : String {
+    Test.b()
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return B.a();
+  }
+};
+
+A.displayName = "Main";
+
+const B = new(class extends _S {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+  get b() {
+    return `Hello`
+  }
+
+  a() {
+    return B.b;
+  }
+});

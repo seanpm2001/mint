@@ -1,0 +1,21 @@
+component Main {
+  fun render : Html {
+    <div>
+      <>
+        <{ "A" }>
+      </>
+    </div>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return _h("div", {}, [
+      _h(React.Fragment, {}, [
+        `A`
+      ])
+    ]);
+  }
+};
+
+A.displayName = "Main";

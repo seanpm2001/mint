@@ -1,0 +1,61 @@
+component Main {
+  fun render : Array(String) {
+    case ([]) {
+      [] => [""]
+      ["a"] => ["a"]
+      [a] => [a]
+      [a, b] => [a, b]
+      [a, ...middle, b] => middle
+    }
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return _match([],[
+      [
+        [],
+        () => {
+          return [``]
+        }
+      ],
+      [
+        [
+          `a`
+        ],
+        () => {
+          return [`a`]
+        }
+      ],
+      [
+        [
+          _PV
+        ],
+        (a) => {
+          return [a]
+        }
+      ],
+      [
+        [
+          _PV,
+          _PV
+        ],
+        (b, c) => {
+          return [b, c]
+        }
+      ],
+      [
+        [
+          _PV,
+          _PS,
+          _PV
+        ],
+        (e, d, f) => {
+          return d
+        }
+      ]
+    ]);
+  }
+};
+
+A.displayName = "Main";

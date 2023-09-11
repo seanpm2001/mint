@@ -1,0 +1,48 @@
+component Main {
+  style test {
+    color: yellow;
+
+    @media (max-width: 300px) {
+      if (true) {
+        color: red;
+      }
+    }
+  }
+
+  fun render : Html {
+    <div::test/>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  $Main_test() {
+    const _ = {};
+
+    (true ? Object.assign(_, {
+      [`--a-a`]: `red`
+    }) : null);
+
+    return _;
+  }
+
+  render() {
+    return _h("div", {
+      className: `Main_test`,
+      style: _style([this.$Main_test()])
+    });
+  }
+};
+
+A.displayName = "Main";
+
+_insertStyles(`
+.Main_test {
+  color: yellow;
+}
+
+@media (max-width: 300px) {
+  .Main_test {
+    color: var(--a-a);
+  }
+}
+`);

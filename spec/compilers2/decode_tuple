@@ -1,0 +1,16 @@
+component Main {
+  fun render : String {
+    decode (`[]`) as Tuple(String, Number, String)
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    Decoder.tuple([Decoder.string,Decoder.number,Decoder.string])((([])));
+    return ``;
+  }
+};
+
+A.displayName = "Main";

@@ -42,6 +42,7 @@ module Mint
 
       getter file : Parser::File
 
+      property stack : Array(Node) = [] of Node
       property from : Int64
       getter to : Int64
 

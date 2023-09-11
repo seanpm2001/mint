@@ -1,0 +1,87 @@
+component Main {
+  state hoverBackground : String = "yellow"
+  state background : String = "blue"
+
+  style test {
+    background: #{background};
+    color: red;
+
+    &:hover {
+      background: #{hoverBackground};
+      color: cyan;
+    }
+
+    &::first-line {
+      text-transform: uppercase;
+    }
+
+    div {
+      font-family: #{"Hello"};
+      color: blue;
+    }
+  }
+
+  fun render : Html {
+    <div::test>
+    </div>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  constructor(props) {
+    super(props);
+
+    this.state = new Record({
+      b: `yellow`,
+      a: `blue`
+    });
+  }
+
+  $Main_test() {
+    const _ = {
+      [`--a-a`]: this.a,
+      [`--b-a`]: this.b,
+      [`--c-a`]: `Hello`
+    };
+
+    return _;
+  }
+
+  get b() {
+    return this.state.b;
+  }
+
+  get a() {
+    return this.state.a;
+  }
+
+  render() {
+    return _h("div", {
+      className: `Main_test`,
+      style: _style([this.$Main_test()])
+    });
+  }
+};
+
+A.displayName = "Main";
+
+_insertStyles(`
+.Main_test {
+  background: var(--a-a);
+  color: red;
+}
+
+.Main_test:hover {
+  background: var(--b-a);
+  color: cyan;
+}
+
+.Main_test::first-line {
+  text-transform: uppercase;
+}
+
+.Main_test div {
+  font-family: var(--c-a);
+  color: blue;
+}
+`);

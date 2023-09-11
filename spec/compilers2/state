@@ -1,0 +1,41 @@
+component Main {
+  state test : String = "Hello"
+  state blah : String = "0"
+
+  fun asd : String {
+    test + blah
+  }
+
+  fun render : String {
+    asd()
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  constructor(props) {
+    super(props);
+
+    this.state = new Record({
+      b: `Hello`,
+      c: `0`
+    });
+  }
+
+  get b() {
+    return this.state.b;
+  }
+
+  get c() {
+    return this.state.c;
+  }
+
+  a() {
+    return this.b + this.c;
+  }
+
+  render() {
+    return this.a();
+  }
+};
+
+A.displayName = "Main";

@@ -1,0 +1,43 @@
+record Test {
+  name : String,
+  age : Number
+}
+
+component Main {
+  fun test : Object {
+    encode { name: "Hello", age: 20 }
+  }
+
+  fun render : String {
+    test()
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+const A = _R({
+  name: [
+    "name",
+    Decoder.string
+  ],
+  age: [
+    "age",
+    Decoder.number
+  ]
+});
+
+class B extends _C {
+  a() {
+    return ((_)=>A.encode(_))(new A({
+      name: `Hello`,
+      age: 20
+    }));
+  }
+
+  render() {
+    this.a();
+    return ``;
+  }
+};
+
+B.displayName = "Main";

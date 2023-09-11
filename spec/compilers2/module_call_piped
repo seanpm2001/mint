@@ -1,0 +1,34 @@
+module Test {
+  fun a (x : Bool, value : String) : String {
+    value
+  }
+
+  fun b : String {
+    true
+    |> Test.a("Lorem ipsum dolor sit amet")
+  }
+}
+
+component Main {
+  fun render : String {
+    Test.b()
+  }
+}
+--------------------------------------------------------------------------------
+const B = new(class extends _M {
+  b(c, d) {
+    return d;
+  }
+
+  a() {
+    return B.b(true, `Lorem ipsum dolor sit amet`);
+  }
+});
+
+class A extends _C {
+  render() {
+    return B.a();
+  }
+};
+
+A.displayName = "Main";

@@ -1,0 +1,29 @@
+module Html.Testing {
+  fun renderAll : Html {
+    <p>
+      <{ "It should work" }>
+    </p>
+  }
+}
+
+component Main {
+  fun render : Html {
+    Html.Testing.renderAll()
+  }
+}
+--------------------------------------------------------------------------------
+const B = new(class extends _M {
+  a() {
+    return _h("p", {}, [
+      `It should work`
+    ]);
+  }
+});
+
+class A extends _C {
+  render() {
+    return B.a();
+  }
+};
+
+A.displayName = "Main";

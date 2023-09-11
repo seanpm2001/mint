@@ -64,7 +64,10 @@ module Mint
           file: file,
           body: body,
           name: name,
-          type: type)
+          type: type
+        ).tap do |node|
+          body.parent = node
+        end
       end
     end
   end

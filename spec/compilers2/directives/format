@@ -1,0 +1,21 @@
+component Main {
+  fun render : String {
+    let {result, formatted} =
+      @format {
+        "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloH" \
+        "Bello"
+      }
+
+    result + formatted
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    const [a,b] = [`HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHBello`, `"HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloH" \\
+"Bello"`];
+    return a + b;
+  }
+};
+
+A.displayName = "Main";

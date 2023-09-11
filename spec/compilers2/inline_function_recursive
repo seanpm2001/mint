@@ -1,0 +1,40 @@
+module Test {
+  fun factorial(n : Number) : Number {
+    let helper = (n : Number, acc : Number) : Number {
+      if (n == 0) {
+        acc
+      } else {
+        helper(n - 1, acc * n)
+      }
+    }
+
+    helper(n, 1)
+  }
+}
+
+component Main {
+  fun render : String {
+    Test.factorial(3)
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+const B = new(class extends _M {
+  a(b) {
+    const d = (e, c) => {
+      return (_compare(e, 0) ? c : d(e - 1, c * e))
+    };
+
+    return d(b, 1);
+  }
+});
+
+class A extends _C {
+  render() {
+    B.a(3);
+    return ``;
+  }
+};
+
+A.displayName = "Main";

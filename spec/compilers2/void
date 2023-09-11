@@ -1,0 +1,29 @@
+component Main {
+  fun test : Void {
+    void
+  }
+
+  fun render : String {
+    let x = test
+
+    ""
+  }
+}
+-------------------------------------------------------------------------------
+import { a } from "runtime.js";
+
+class A extends a {
+  b() {
+    return null;
+  }
+
+  render() {
+    const c = this.b;
+    return ``;
+  }
+};
+
+A.displayName = "Main";
+
+export default A;
+-----------------------------------------------------------------------main.mjs

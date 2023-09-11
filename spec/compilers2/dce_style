@@ -1,0 +1,17 @@
+component Main {
+  style test {
+    color: red;
+  }
+
+  fun render : Html {
+    <div/>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return _h("div", {});
+  }
+};
+
+A.displayName = "Main";

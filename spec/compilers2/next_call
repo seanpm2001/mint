@@ -1,0 +1,53 @@
+component Main {
+  state name : String = "Joe"
+  state age : Number = 24
+
+  fun test : Promise(Void) {
+    next
+      {
+        name: "Hello",
+        age: 30
+      }
+  }
+
+  fun render : String {
+    test()
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  constructor(props) {
+    super(props);
+
+    this.state = new Record({
+      b: `Joe`,
+      c: 24
+    });
+  }
+
+  get b() {
+    return this.state.b;
+  }
+
+  get c() {
+    return this.state.c;
+  }
+
+  a() {
+    return new Promise((_resolve) => {
+      this.setState(_u(this.state, new Record({
+        b: `Hello`,
+        c: 30
+      })), _resolve)
+    });
+  }
+
+  render() {
+    this.a();
+    return ``;
+  }
+};
+
+A.displayName = "Main";

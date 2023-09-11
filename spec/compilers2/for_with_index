@@ -1,0 +1,37 @@
+component Main {
+  fun render : Array(Html) {
+    for (item, index of ["A", "B"]) {
+      <div>
+        <{ item }>
+      </div>
+    } when {
+      index == 10
+    }
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return (() => {
+      const _0 = [];
+      const _1 = [`A`, `B`];
+      let _i = -1;
+
+      for (let a of _1) {
+        _i++;
+        const b = _i;
+
+        const _2 = _compare(b, 10)
+        if (!_2) { continue };
+
+        _0.push(_h("div", {}, [
+          a
+        ]));
+      };
+
+      return _0;
+    })();
+  }
+};
+
+A.displayName = "Main";

@@ -1,0 +1,13 @@
+component Main {
+  fun render : String {
+    @TEST
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return `TRUE`;
+  }
+};
+
+A.displayName = "Main";

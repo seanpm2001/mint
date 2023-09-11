@@ -1,0 +1,68 @@
+component Main {
+  fun render : String {
+    case ({"A", {"B"}}) {
+      {"A", {"C"}} =>
+        "B"
+
+      {"A", {"B"}} =>
+        "A"
+
+      {a, b} =>
+        a
+
+      {a, {b}} =>
+        b
+    }
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return _match([`A`, [`B`]],[
+      [
+        [
+          `A`,
+          [
+            `C`
+          ]
+        ],
+        () => {
+          return `B`
+        }
+      ],
+      [
+        [
+          `A`,
+          [
+            `B`
+          ]
+        ],
+        () => {
+          return `A`
+        }
+      ],
+      [
+        [
+          _PV,
+          _PV
+        ],
+        (a, b) => {
+          return a
+        }
+      ],
+      [
+        [
+          _PV,
+          [
+            _PV
+          ]
+        ],
+        (d, c) => {
+          return c
+        }
+      ]
+    ]);
+  }
+};
+
+A.displayName = "Main";

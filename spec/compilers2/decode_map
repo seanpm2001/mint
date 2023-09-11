@@ -1,0 +1,16 @@
+component Main {
+  fun render : String {
+    decode (`[]`) as Map(String, Number)
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    Decoder.map(Decoder.number)((([])));
+    return ``;
+  }
+};
+
+A.displayName = "Main";

@@ -1,0 +1,78 @@
+record MouseProvider.Data {
+  moves : Function(Position, Void),
+  ups : Function(Position, Void)
+}
+
+provider MouseProvider : MouseProvider.Data {
+  fun update : Void {
+    void
+  }
+}
+
+component Main {
+  use MouseProvider {
+    moves: (data : Position) : Void { void },
+    ups: (data : Position) : Void { void }
+  } when {
+    false
+  }
+
+  fun render : Html {
+    <div/>
+  }
+}
+--------------------------------------------------------------------------------
+const A = _R({});
+
+const B = new(class extends _P {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+  update() {
+    return null;
+  }
+});
+
+class C extends _C {
+  componentWillUnmount() {
+    B._unsubscribe(this);
+  }
+
+  componentDidUpdate() {
+    if (false) {
+      B._subscribe(this, new A({
+        moves: (a) => {
+          return null
+        },
+        ups: (b) => {
+          return null
+        }
+      }))
+    } else {
+      B._unsubscribe(this)
+    };
+  }
+
+  componentDidMount() {
+    if (false) {
+      B._subscribe(this, new A({
+        moves: (a) => {
+          return null
+        },
+        ups: (b) => {
+          return null
+        }
+      }))
+    } else {
+      B._unsubscribe(this)
+    };
+  }
+
+  render() {
+    return _h("div", {});
+  }
+};
+
+C.displayName = "Main";

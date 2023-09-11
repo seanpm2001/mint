@@ -3,6 +3,8 @@ module Mint
     class Block < Node
       getter expressions, returns
 
+      property parent : Ast::Node? = nil
+
       def initialize(@returns : Array(ReturnCall),
                      @expressions : Array(Node),
                      @file : Parser::File,

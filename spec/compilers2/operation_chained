@@ -1,0 +1,24 @@
+component Main {
+  fun test : Bool {
+    "a" == "b" && true != false
+  }
+
+  fun render : String {
+    test()
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  a() {
+    return _compare(`a`, `b`) && !_compare(true, false);
+  }
+
+  render() {
+    this.a();
+    return ``;
+  }
+};
+
+A.displayName = "Main";

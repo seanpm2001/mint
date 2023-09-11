@@ -1,0 +1,26 @@
+component Main {
+  style base {
+    width: 100%;
+  }
+
+  fun render : Html {
+    <div::base class="something">
+    </div>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return _h("div", {
+      className: `something` + ` Main_base`
+    });
+  }
+};
+
+A.displayName = "Main";
+
+_insertStyles(`
+.Main_base {
+  width: 100%;
+}
+`);

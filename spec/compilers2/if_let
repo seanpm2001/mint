@@ -1,0 +1,52 @@
+enum T {
+  A(String)
+  B
+}
+
+component Main {
+  fun render : String {
+    if (let T::A(a) = T::A("")) {
+      a
+    } else {
+      "b"
+    }
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _E {
+  constructor(_0) {
+    super();
+    this._0 = _0;
+    this.length = 1;
+  }
+};
+
+class B extends _E {
+  constructor() {
+    super();
+    this.length = 0;
+  }
+};
+
+class C extends _C {
+  render() {
+    return _match(_n(A)(``),[
+      [
+        _PE(A,[
+          _PV
+        ]),
+        (a) => {
+          return a
+        }
+      ],
+      [
+        null,
+        () => {
+          return `b`
+        }
+      ]
+    ]);
+  }
+};
+
+C.displayName = "Main";

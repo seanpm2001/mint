@@ -1,0 +1,22 @@
+component Main {
+  fun render : String {
+    case ("Hello") {
+      => "false"
+    }
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return _match(`Hello`,[
+      [
+        null,
+        () => {
+          return `false`
+        }
+      ]
+    ]);
+  }
+};
+
+A.displayName = "Main";

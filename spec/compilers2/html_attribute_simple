@@ -1,0 +1,16 @@
+component Main {
+  fun render : Html {
+    <div title="Hello">
+    </div>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  render() {
+    return _h("div", {
+      "title": `Hello`
+    });
+  }
+};
+
+A.displayName = "Main";

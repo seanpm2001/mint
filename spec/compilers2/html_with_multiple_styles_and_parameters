@@ -1,0 +1,43 @@
+component Main {
+  style one {
+    color: red;
+  }
+
+  style two(color : String) {
+    color: #{color};
+  }
+
+  fun render : Html {
+    <div::one::two("blue")>
+    </div>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  $Main_two(a) {
+    const _ = {
+      [`--a-a`]: a
+    };
+
+    return _;
+  }
+
+  render() {
+    return _h("div", {
+      className: `Main_one Main_two`,
+      style: _style([this.$Main_two(`blue`)])
+    });
+  }
+};
+
+A.displayName = "Main";
+
+_insertStyles(`
+.Main_one {
+  color: red;
+}
+
+.Main_two {
+  color: var(--a-a);
+}
+`);

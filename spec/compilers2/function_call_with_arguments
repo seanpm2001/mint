@@ -1,0 +1,33 @@
+component Main {
+  fun call (a : String, b : Bool) : Bool {
+    b
+  }
+
+  fun test : Bool {
+    call("Hello", true)
+  }
+
+  fun render : String {
+    test()
+
+    ""
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _C {
+  a(b, c) {
+    return c;
+  }
+
+  d() {
+    return this.a(`Hello`, true);
+  }
+
+  render() {
+    this.d();
+    return ``;
+  }
+};
+
+A.displayName = "Main";
+

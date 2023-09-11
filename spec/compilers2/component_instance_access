@@ -1,0 +1,93 @@
+enum Maybe(value) {
+  Just(value)
+  Nothing
+}
+
+component Instance {
+  get name : String {
+    "Instance"
+  }
+
+  fun render : Html {
+    <div></div>
+  }
+}
+
+component Main {
+  fun handleClick : String {
+    case (instance) {
+      Maybe::Just(component) => component.name
+      Maybe::Nothing => ""
+    }
+  }
+
+  fun render : Html {
+    <div onClick={handleClick}>
+      <Instance as instance/>
+    </div>
+  }
+}
+--------------------------------------------------------------------------------
+class A extends _E {
+  constructor(_0) {
+    super();
+    this._0 = _0;
+    this.length = 1;
+  }
+};
+
+class B extends _E {
+  constructor() {
+    super();
+    this.length = 0;
+  }
+};
+
+class C extends _C {
+  get a() {
+    return `Instance`
+  }
+
+  render() {
+    return _h("div", {});
+  }
+};
+
+C.displayName = "Instance";
+
+class D extends _C {
+  get c() {
+    return (this._instance ? new A(this._instance) : new B);
+  }
+
+  b() {
+    return _match(this.c,[
+      [
+        _PE(A,[
+          _PV
+        ]),
+        (d) => {
+          return d.a
+        }
+      ],
+      [
+        _PE(B,[]),
+        () => {
+          return ``
+        }
+      ]
+    ]);
+  }
+
+  render() {
+    return _h("div", {
+      "onClick": (event => (this.b)(_normalizeEvent(event)))
+    }, [
+      _h(C, {
+        ref: (instance) => { this._instance = instance }
+      })
+    ]);
+  }
+};
+
+D.displayName = "Main";

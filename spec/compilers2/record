@@ -1,0 +1,46 @@
+record Test {
+  a : String,
+  b : Number
+}
+
+component Main {
+  fun test : Test {
+    {
+      a: "Hello",
+      b: 0
+    }
+  }
+
+  fun render : Html {
+    test()
+
+    <div/>
+  }
+}
+--------------------------------------------------------------------------------
+const A = _R({
+  a: [
+    "a",
+    Decoder.string
+  ],
+  b: [
+    "b",
+    Decoder.number
+  ]
+});
+
+class B extends _C {
+  a() {
+    return new A({
+      a: `Hello`,
+      b: 0
+    });
+  }
+
+  render() {
+    this.a();
+    return _h("div", {});
+  }
+};
+
+B.displayName = "Main";

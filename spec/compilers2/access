@@ -1,0 +1,26 @@
+record X {
+  name : String
+}
+
+component Main {
+  fun render : String {
+    { name: "test" }.name
+  }
+}
+--------------------------------------------------------------------------------
+const A = _R({
+  name: [
+    "name",
+    Decoder.string
+  ]
+});
+
+class B extends _C {
+  render() {
+    return new A({
+      name: `test`
+    }).name;
+  }
+};
+
+B.displayName = "Main";

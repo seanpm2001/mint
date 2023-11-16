@@ -313,7 +313,7 @@ module Mint
     @style_cache : Hash(Ast::Node, String) = {} of Ast::Node => String
 
     @cache : Hash(Ast::Node, String) = {} of Ast::Node => String
-
+    @class_cache : Hash(Ast::Node, String) = {} of Ast::Node => String
     @type_cache : Hash(String, String) = {} of String => String
 
     @next_variable : String = 'a'.pred.to_s
@@ -321,6 +321,7 @@ module Mint
     @next_style : String = 'a'.pred.to_s
 
     getter? optimize = true
+    getter type_cache, class_cache
     getter renderer
 
     forward_missing_to renderer
@@ -343,7 +344,7 @@ module Mint
     end
 
     def class_of(node : Ast::Node)
-      @cache[node] ||= next_class
+      @class_cache[node] ||= next_class
     end
 
     def style_of(node : Ast::Node)

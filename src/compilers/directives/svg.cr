@@ -7,7 +7,7 @@ module Mint
       static_components[name] ||= begin
         value = compile_svg_directive(node)
         return "" unless value
-        value
+        {value, node.parent_component}
       end
 
       "$#{name}()"

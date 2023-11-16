@@ -48,6 +48,7 @@ module Mint
       end
 
       class Svg < FileBased
+        property parent_component : Ast::Component? = nil
       end
 
       class HighlightFile < FileBased

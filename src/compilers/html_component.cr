@@ -1,11 +1,11 @@
 module Mint
   class Compiler
     def _compile(node : Ast::HtmlComponent) : String
-      if hash = static_value(node)
+      if (hash = static_value(node)) && !node.component_node.try(&.async?)
         name =
           static_components_pool.of(hash, nil)
 
-        static_components[name] ||= compile_html_component(node)
+        static_components[name] ||= {compile_html_component(node), node.parent_component}
 
         "$#{name}()"
       else
@@ -19,7 +19,7 @@ module Mint
 
       children =
         if node.children.empty?
-          ""
+          nil
         else
           items =
             compile node.children, ", "
@@ -37,14 +37,27 @@ module Mint
         attributes["ref"] = "(instance) => { this._#{ref.value} = instance }"
       end
 
-      contents =
-        [name,
-         js.object(attributes),
-         children]
-          .reject!(&.empty?)
-          .join(", ")
+      if lookups[node][0].as(Ast::Component).async?
+        contents =
+          js.object({
+            "key" => %("#{Random::Secure.hex}"),
+            "x"   => name,
+            "p"   => js.object(attributes),
+            "c"   => children || "[]",
+          })
 
-      "_h(#{contents})"
+        "_h(_X, #{contents})"
+      else
+        contents =
+          [name,
+           js.object(attributes),
+           children]
+            .compact
+            .reject!(&.empty?)
+            .join(", ")
+
+        "_h(#{contents})"
+      end
     end
   end
 end

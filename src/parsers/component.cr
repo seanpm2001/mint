@@ -7,6 +7,9 @@ module Mint
         global = word! "global"
         whitespace
 
+        async = word! "async"
+        whitespace
+
         next unless word! "component"
         whitespace
 
@@ -134,15 +137,24 @@ module Mint
           styles: styles,
           states: states,
           to: position,
+          async: async,
           file: file,
           refs: refs,
           name: name,
           uses: uses,
           gets: gets
-        ).tap do |node|
-          ast.nodes[start_nodes_position...]
-            .select(Ast::NextCall)
-            .each(&.entity=(node))
+        ).tap do |component|
+          ast.nodes[start_nodes_position...].each do |node|
+            case node
+            when Ast::Style
+              node.component = component if component.async?
+            when Ast::NextCall
+              node.entity = component
+            when Ast::HtmlComponent,
+                 Ast::Directives::Svg
+              node.parent_component = component
+            end
+          end
         end
       end
     end

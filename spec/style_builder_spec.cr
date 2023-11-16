@@ -63,7 +63,7 @@ describe Mint::StyleBuilder do
     builder = Mint::StyleBuilder.new(css_prefix: "foo_")
     builder.process(style, "HASH_ID")
 
-    compiled = builder.compile
+    compiled = builder.compile[nil]
     compiled.should contain(".foo_HASH_ID_test div span pre a {")
   end
 
@@ -86,7 +86,7 @@ describe Mint::StyleBuilder do
     builder = Mint::StyleBuilder.new(optimize: true)
     builder.process(style, "HASH_ID")
 
-    compiled = builder.compile
+    compiled = builder.compile[nil]
     compiled.should contain(".a div {")
   end
 end

@@ -8,10 +8,13 @@ module Mint
     delegate record_field_lookup, locales, argument_order, to: @artifacts
 
     getter js, style_builder, static_components, static_components_pool
-    getter build, relative
+    getter build, relative, async_components
 
-    @static_components = {} of String => String
+    @static_components = {} of String => {String, Ast::Component?}
     @static_components_pool = NamePool(String, Nil).new
+
+    @async_components = {} of String => {String, Ast::Component?}
+    @all_css = {} of Ast::Component? => String
 
     def initialize(@artifacts : TypeChecker::Artifacts, @optimize = false, css_prefix = nil, @relative = false, @build = false, @web_components = {} of String => String)
       @style_builder =

@@ -25,6 +25,7 @@ module Mint
     end
 
     def initialize(@host, @port, @auto_format, @live_reload)
+      @compiler = Compiler.new(TypeChecker::Artifacts.new(Ast.new))
       MintJson.parse_current.check_dependencies!
 
       workspace = Workspace.current
@@ -36,14 +37,14 @@ module Mint
         case result
         when Ast
           # Compile.
-          @script = Compiler.compile workspace.type_checker.artifacts, {
-            css_prefix:     workspace.json.application.css_prefix,
+          @compiler = Compiler.new workspace.type_checker.artifacts,
+            css_prefix: workspace.json.application.css_prefix,
             web_components: workspace.json.web_components,
-            relative:       false,
-            optimize:       false,
-            build:          false,
-          }
+            relative: false,
+            optimize: false,
+            build: false
 
+          @script = @compiler.compile_app
           @artifacts = workspace.type_checker.artifacts
           @error = nil
         when Error
@@ -128,6 +129,15 @@ module Mint
           MIME.from_filename?(filename).to_s
 
         asset.file_contents
+      end
+
+      get "/__mint__/:name" do |env|
+        env.response.content_type = "application/javascript"
+
+        component =
+          @compiler.async_components[env.params.url["name"]]?.try(&.first)
+
+        component.to_s
       end
 
       get "/:name" do |env|

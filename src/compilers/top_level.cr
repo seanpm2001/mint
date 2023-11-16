@@ -21,33 +21,7 @@ module Mint
     # Compiles the application with the runtime and the rendering of the $Main
     # component.
     def self.compile(artifacts : TypeChecker::Artifacts, options = DEFAULT_OPTIONS) : String
-      compiler =
-        new(artifacts, **options)
-
-      main =
-        compiler.ast.components.find(&.name.value.==("Main")).try do |component|
-          globals =
-            compiler
-              .ast
-              .components
-              .select(&.global?)
-              .each_with_object({} of String => String) do |item, memo|
-                name =
-                  compiler.js.class_of(item)
-
-                memo[name] = "$#{name}"
-              end
-
-          main_class =
-            compiler.js.class_of(component)
-
-          globals_object =
-            compiler.js.object(globals)
-
-          "\n_program.render(#{main_class}, #{globals_object})"
-        end || ""
-
-      compiler.wrap_runtime(compiler.compile, main)
+      new(artifacts, **options).compile_app
     end
 
     def self.compile_embed(artifacts : TypeChecker::Artifacts, options = DEFAULT_OPTIONS) : String
@@ -96,6 +70,32 @@ module Mint
       compiler.wrap_runtime(compiler.compile(include_tests: true))
     end
 
+    def compile_app
+      main =
+        ast.components.find(&.name.value.==("Main")).try do |component|
+          globals =
+            ast
+              .components
+              .select(&.global?)
+              .each_with_object({} of String => String) do |item, memo|
+                name =
+                  js.class_of(item)
+
+                memo[name] = "$#{name}"
+              end
+
+          main_class =
+            js.class_of(component)
+
+          globals_object =
+            js.object(globals)
+
+          "\n_program.render(#{main_class}, #{globals_object})"
+        end || ""
+
+      wrap_runtime(compile, main)
+    end
+
     # Compiles the application
     def compile(include_tests : Bool = false) : String
       type_definitions =
@@ -116,12 +116,12 @@ module Mint
       routes =
         compile ast.routes
 
-      all_css =
+      @all_css =
         style_builder.compile
 
       footer =
-        unless all_css.empty?
-          ["_insertStyles(`\n#{all_css}\n`)"]
+        unless @all_css.empty?
+          ["_insertStyles(`\n#{@all_css[nil]}\n`)"]
         end
 
       suites =
@@ -130,8 +130,9 @@ module Mint
         end
 
       static =
-        static_components.map do |name, compiled|
-          js.const("$#{name}", "_m(() => #{compiled})")
+        static_components.compact_map do |name, compiled|
+          next if compiled[1].try(&.async?)
+          js.const("$#{name}", "_m(() => #{compiled[0]})")
         end
 
       elements =
@@ -256,13 +257,49 @@ module Mint
 
       minimized_class_warning =
         unless build
-          <<-JS
+          <<-JSA
           console.warn("%c!!!DO NOT TARGET ELEMENTS WITH SELECTORS BECAUSE THE SELECTORS WILL BE MINIMIZED IN THE PRODUCTION BUILD!!!", "font-size: 2em")
-          JS
+          JSA
         end
+
+      args = %w[
+        _normalizeEvent _R _h _createPortal _insertStyles _navigate _compare
+        _program _encode _style _array _wc _u _at TestContext ReactDOM Decoder
+        Encoder DateFNS Record React _C _P _M _S _E _PR _PE _PV _PS Locale
+        _L __match _match _m _o _s _n _X Nothing Just Err Ok
+      ] + js.type_cache.values + js.class_cache.values
+
+      @async_components.transform_values! do |(item, node)|
+        statics =
+          static_components.compact_map do |key, value|
+            "$#{key}" unless value[1].try(&.async?)
+          end
+
+        static =
+          static_components.compact_map do |name, compiled|
+            next unless compiled[1] == node
+            js.const("$#{name}", "_m(() => #{compiled[0]})")
+          end
+
+        css =
+          if x = @all_css[node]?
+            ["_insertStyles(`\n#{x}\n`)"]
+          else
+            [] of String
+          end
+
+        {replace_skipped(
+          "export default #{js.arrow_function(args + statics, js.statements(static + css + [js.return(item)]))}"),
+         node}
+      end
 
       <<-RESULT
       (() => {
+        const _l = async (name) => {
+          const x = await import(`/__mint__/${name}`)
+          return x.default(#{args.join(",")})
+        }
+
         const _enums = {}
         const mint = Mint(_enums)
 
@@ -477,6 +514,21 @@ module Mint
         }
 
         class DoError extends Error {}
+
+        class _X extends _C {
+          async componentDidMount() {
+            let x = await this.props.x();
+            this.setState({ x: x })
+          }
+
+          render() {
+            if (this.state.x) {
+              return _h(this.state.x, this.props.p, this.props.c)
+            } else {
+              return null
+            }
+          }
+        }
 
         #{body}
 

@@ -147,7 +147,7 @@ module Mint
     end
 
     getter selectors, property_pool, name_pool, style_pool, variables, ifs
-    getter cases
+    getter cases, mapping
 
     def initialize(@css_prefix : String? = nil, @optimize : Bool = false)
       # Three name pools so there would be no clashes,
@@ -165,6 +165,8 @@ module Mint
       # properties are defined in several places.
       @selectors = {} of Tuple(String?, String?, Array(String), Array(String)) => Selector
 
+      @mapping = {} of Ast::Style => Array(Selector)
+
       # This hash contains variables for a specific "style" tag, which will
       # be compiled by the compiler itself when compiling an HTML element
       # which uses the specific style tag.
@@ -175,27 +177,30 @@ module Mint
 
     # Compiles the processed data into a CSS style sheet.
     def compile
-      output = {} of Tuple(String?, String?, Array(String)) => Array(String)
-
       selectors
         .reject { |_, v| v.empty? }
-        .each do |(id, at, condition, rules), properties|
-          body =
-            properties.join('\n') { |key, value| "#{key}: #{value};" }
+        .group_by { |_, v| mapping.find(&.last.includes?(v)).try(&.first.component) }
+        .map do |component, items|
+          output = {} of Tuple(String?, String?, Array(String)) => Array(String)
 
-          rules.each do |rule|
-            output[{id, at, condition}] ||= %w[]
-            output[{id, at, condition}] << "#{rule.strip} {\n#{body.indent}\n}"
+          items.each do |(id, at, condition, rules), properties|
+            body =
+              properties.join('\n') { |key, value| "#{key}: #{value};" }
+
+            rules.each do |rule|
+              output[{id, at, condition}] ||= %w[]
+              output[{id, at, condition}] << "#{rule.strip} {\n#{body.indent}\n}"
+            end
           end
-        end
 
-      output.join("\n\n") do |(_, at, condition), rules|
-        if at.nil? && condition.empty?
-          rules.join("\n\n")
-        else
-          "@#{at} #{condition.join(" and ")} {\n#{rules.join("\n\n").indent}\n}"
-        end
-      end
+          {component, output.join("\n\n") do |(_, at, condition), rules|
+            if at.nil? && condition.empty?
+              rules.join("\n\n")
+            else
+              "@#{at} #{condition.join(" and ")} {\n#{rules.join("\n\n").indent}\n}"
+            end
+          end}
+        end.to_h
     end
 
     def compile_style(node : Ast::Style, compiler : Compiler)
@@ -232,7 +237,7 @@ module Mint
                 at : String?,
                 parents : Array(String),
                 conditions : Array(String),
-                style_node : Ast::Node)
+                style_node : Ast::Style)
       selectors = %w[]
 
       parents.each do |parent|
@@ -250,7 +255,7 @@ module Mint
                 at : String?,
                 selectors : Array(String),
                 conditions : Array(String),
-                style_node : Ast::Node)
+                style_node : Ast::Style)
       process(node.body, id, at, selectors, conditions + [node.content], style_node)
     end
 
@@ -260,11 +265,15 @@ module Mint
                 at : String?,
                 selectors : Array(String),
                 conditions : Array(String),
-                style_node : Ast::Node)
+                style_node : Ast::Style)
       # Create a selector for this specific state
       selector =
         @selectors[{id, at, conditions, selectors}] ||= Selector.new
 
+      mapping[style_node] ||= [] of Selector
+      mapping[style_node] << selector
+
+      # mapping = {} of Ast::Style
       body.each do |item|
         case item
         when Ast::CssDefinition

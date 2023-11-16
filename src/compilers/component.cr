@@ -101,11 +101,24 @@ module Mint
         ([constructor] &+ styles + gets &+ refs &+ states &+ store_stuff &+ functions)
           .compact
 
-      js.statements([
-        js.class(prefixed_name, extends: "_C", body: body),
-        display_name,
-        global_let,
-      ].compact)
+      if !node.async? || node.name.value == "Main"
+        js.statements([
+          js.class(prefixed_name, extends: "_C", body: body),
+          display_name,
+          global_let,
+        ].compact)
+      else
+        @async_components[prefixed_name] =
+          {js.class(prefixed_name, extends: "_C", body: body), node}
+
+        call = js.call("_l", [%("#{prefixed_name}")])
+
+        js.statements([
+          js.const(prefixed_name, js.async_arrow_function([] of String, js.return(call))),
+          display_name,
+          global_let,
+        ].compact)
+      end
     end
 
     def compile_component_store_data(node : Ast::Component) : Array(String)

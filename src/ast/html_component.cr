@@ -4,6 +4,7 @@ module Mint
       getter attributes, children, component, comments, ref
       getter closing_tag_position
 
+      property parent_component : Ast::Component? = nil
       property component_node : Ast::Component? = nil
       property? in_component : Bool = false
 

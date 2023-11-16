@@ -98,47 +98,9 @@ module Mint
     end
 
     def to_html
-      renderer = Render::Html.new
-      renderer.title "ERROR (#{name})"
-
-      blocks.each do |element|
-        case element
-        # when TypeList
-        #   renderer.type_list element.value
-        # when StringList
-        #   renderer.list element.value
-        # when Pre
-        #   renderer.pre element.value
-        # when Type
-        #   renderer.type element.value
-        # when Title
-        #   renderer.title element.value
-        when Error::Snippet
-          case node = element.value
-          when TypeChecker::Checkable
-            renderer.pre node.to_pretty
-          when Ast::Node
-            renderer.snippet node
-          end
-        when Array(Error::Element)
-          renderer.block do
-            element.each do |item|
-              case item
-              when Error::Text
-                text item.value
-              when Error::Bold
-                bold item.value
-              when Error::Code
-                code item.value
-              end
-            end
-          end
-        end
-      end
-
       # ameba:disable Lint/UselessAssign
       contents =
-        renderer.io.to_s
+        HTML.escape(to_terminal.to_s.uncolorize)
 
       ECR.render("#{__DIR__}/message.ecr")
     end

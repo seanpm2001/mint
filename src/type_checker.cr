@@ -54,8 +54,10 @@ module Mint
 
     property? checking = true
 
+    property component_stack = [] of Ast::Component
+
     delegate checked, record_field_lookup, component_records, to: artifacts
-    delegate variables, ast, lookups, cache, scope, to: artifacts
+    delegate variables, ast, lookups, cache, scope, references, to: artifacts
     delegate assets, resolve_order, locales, argument_order, to: artifacts
 
     delegate format, to: formatter
@@ -228,7 +230,20 @@ module Mint
     # Helpers for checking things
     # --------------------------------------------------------------------------
 
+    def track_references(node)
+      references[node] ||= Set(Ast::Component | Nil).new
+
+      if component_stack.empty?
+        references[node].add(nil)
+      else
+        component_stack.each do |component|
+          references[node].add(component)
+        end
+      end
+    end
+
     def check!(node)
+      track_references(node)
       checked.add(node) if checking?
     end
 
@@ -242,6 +257,8 @@ module Mint
     end
 
     def resolve(node : Ast::Node | Checkable, *args) : Checkable
+      track_references(node)
+
       case node
       in Checkable
         node

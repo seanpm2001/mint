@@ -135,7 +135,7 @@ module Mint
         env.response.content_type = "application/javascript"
 
         component =
-          @compiler.async_components[env.params.url["name"]]?.try(&.first)
+          @compiler.async_component(env.params.url["name"])
 
         component.to_s
       end

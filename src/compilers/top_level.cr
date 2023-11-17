@@ -96,32 +96,31 @@ module Mint
       wrap_runtime(compile, main)
     end
 
-    # Compiles the application
-    def compile(include_tests : Bool = false) : String
+    def compile_bucket(node, nodes, css, include_tests) : String
       type_definitions =
-        compile ast.type_definitions
+        compile nodes.select(Ast::TypeDefinition)
 
       providers =
-        compile ast.providers
+        compile nodes.select(Ast::Provider)
 
       components =
-        compile ast.components
+        compile nodes.select(Ast::Component)
 
       modules =
-        compile ast.unified_modules
+        compile nodes.select(Ast::Module)
 
       stores =
-        compile ast.stores
+        compile nodes.select(Ast::Store)
 
       routes =
-        compile ast.routes
+        compile nodes.select(Ast::Routes)
 
       @all_css =
         style_builder.compile
 
       footer =
-        unless @all_css.empty?
-          ["_insertStyles(`\n#{@all_css[nil]}\n`)"]
+        if @all_css[css]?
+          ["_insertStyles(`\n#{@all_css[css]?}\n`)"]
         end
 
       suites =
@@ -131,7 +130,7 @@ module Mint
 
       static =
         static_components.compact_map do |name, compiled|
-          next if compiled[1].try(&.async?)
+          next unless compiled[1] == node
           js.const("$#{name}", "_m(() => #{compiled[0]})")
         end
 
@@ -139,7 +138,61 @@ module Mint
         (%w[] &+ type_definitions &+ modules &+ providers &+ routes &+ components &+ static &+ stores &+ footer &+ suites &+ compiled_web_components)
           .reject!(&.empty?)
 
+      @main_constants = (js.class_cache.keys & nodes).map do |item|
+        js.class_cache[item]
+      end if @main_constants.empty?
+
       replace_skipped(js.statements(elements))
+    end
+
+    # Compiles the application
+    def compile(include_tests : Bool = false) : String
+      main =
+        ast.components.find!(&.name.value.==("Main"))
+
+      @buckets[main] = [] of Ast::Node
+      references.each do |node, set|
+        if set.includes?(nil) || (!set.includes?(nil) && set.size >= 2)
+          @buckets[main] << node
+        elsif item = set.first
+          @buckets[item] ||= [] of Ast::Node
+          @buckets[item] << node
+        end
+
+        entity =
+          case node
+          when Ast::Component
+            node.name.value
+          when Ast::Module
+            node.name.value
+          when Ast::Store
+            node.name.value
+          end
+
+        entities =
+          set.map do |item|
+            case item
+            in Ast::Component
+              item.name.value
+            in Nil
+              "nil"
+            end
+          end
+
+        if entity
+          puts "#{entity}: #{entities.join(",")}"
+        end
+      end
+
+      @buckets.each do |node, nodes|
+        if node
+          puts "#{node.name.value}: #{nodes.size}"
+        else
+          puts "Main: #{nodes.size}"
+        end
+      end
+
+      compile_bucket(main, @buckets[main], nil, include_tests)
     end
 
     # --------------------------------------------------------------------------
@@ -244,6 +297,27 @@ module Mint
 
     # --------------------------------------------------------------------------
 
+    def async_component(name)
+      if x = @async_components[name]?
+        item, node = x
+
+        statics =
+          static_components.compact_map do |key, value|
+            "$#{key}" unless value[1].try(&.async?)
+          end
+
+        other =
+          if node && (nodes = @buckets[node]?)
+            [compile_bucket(node, nodes, node, false)]
+          else
+            [] of String
+          end
+
+        replace_skipped(
+          "export default #{js.arrow_function(@args + statics, js.statements(other + [js.return(item)]))}")
+      end
+    end
+
     # Wraps the application with the runtime
     def wrap_runtime(body, main = "")
       html_event_module =
@@ -262,42 +336,18 @@ module Mint
           JSA
         end
 
-      args = %w[
+      @args = %w[
         _normalizeEvent _R _h _createPortal _insertStyles _navigate _compare
         _program _encode _style _array _wc _u _at TestContext ReactDOM Decoder
         Encoder DateFNS Record React _C _P _M _S _E _PR _PE _PV _PS Locale
-        _L __match _match _m _o _s _n _X Nothing Just Err Ok
-      ] + js.type_cache.values + js.class_cache.values
-
-      @async_components.transform_values! do |(item, node)|
-        statics =
-          static_components.compact_map do |key, value|
-            "$#{key}" unless value[1].try(&.async?)
-          end
-
-        static =
-          static_components.compact_map do |name, compiled|
-            next unless compiled[1] == node
-            js.const("$#{name}", "_m(() => #{compiled[0]})")
-          end
-
-        css =
-          if x = @all_css[node]?
-            ["_insertStyles(`\n#{x}\n`)"]
-          else
-            [] of String
-          end
-
-        {replace_skipped(
-          "export default #{js.arrow_function(args + statics, js.statements(static + css + [js.return(item)]))}"),
-         node}
-      end
+        _L _l __match _match _m _o _s _n _X Nothing Just Err Ok
+      ] + js.type_cache.values + @main_constants
 
       <<-RESULT
       (() => {
         const _l = async (name) => {
           const x = await import(`/__mint__/${name}`)
-          return x.default(#{args.join(",")})
+          return x.default(#{@args.join(",")})
         }
 
         const _enums = {}

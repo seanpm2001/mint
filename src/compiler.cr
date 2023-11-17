@@ -4,7 +4,7 @@ module Mint
     include Skippable
 
     delegate lookups, checked, cache, component_records, to: @artifacts
-    delegate ast, variables, resolve_order, to: @artifacts
+    delegate ast, variables, resolve_order, references, to: @artifacts
     delegate record_field_lookup, locales, argument_order, to: @artifacts
 
     getter js, style_builder, static_components, static_components_pool
@@ -15,6 +15,11 @@ module Mint
 
     @async_components = {} of String => {String, Ast::Component?}
     @all_css = {} of Ast::Component? => String
+
+    @main_constants = [] of String
+
+    @buckets = {} of Ast::Component => Array(Ast::Node)
+    @args = [] of String
 
     def initialize(@artifacts : TypeChecker::Artifacts, @optimize = false, css_prefix = nil, @relative = false, @build = false, @web_components = {} of String => String)
       @style_builder =

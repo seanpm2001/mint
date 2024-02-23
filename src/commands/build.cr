@@ -10,12 +10,8 @@ module Mint
         default: false,
         short: "r"
 
-      define_flag skip_manifest : Bool,
-        description: "If specified the web manifest will not be generated",
-        default: false
-
-      define_flag skip_service_worker : Bool,
-        description: "If specified the service worker functionality will be disabled",
+      define_flag generate_manifest : Bool,
+        description: "If specified the web manifest will be generated",
         default: false
 
       define_flag skip_icons : Bool,
@@ -27,11 +23,6 @@ module Mint
         default: true,
         short: "m"
 
-      define_flag inline : Bool,
-        description: "If specified the JavaScript and CSS will be inlined with the html",
-        default: false,
-        short: "i"
-
       define_flag runtime : String,
         description: "Will use supplied runtime path instead of the default distribution",
         required: false
@@ -42,18 +33,68 @@ module Mint
         short: "w"
 
       def run
-        execute "Building for production" do
-          Builder.new(
-            skip_service_worker: flags.skip_service_worker,
-            skip_manifest: flags.skip_manifest,
-            skip_icons: flags.skip_icons,
-            runtime_path: flags.runtime,
-            relative: flags.relative,
-            optimize: flags.minify,
-            inline: flags.inline,
-            watch: flags.watch)
+        execute "Building for production..." do
+          # Initialize the workspace from the current working directory. We don't
+          # check everything to speed things up so only the hot path is checked.
+          workspace = Workspace.current
+          workspace.check_everything = false
+          workspace.check_env = true
 
+          # Check if we have dependencies installed.
+          workspace.json.check_dependencies!
+
+          # On any change we copy the build to the dist directory.
+          workspace.on("change") do |result|
+            terminal.reset if flags.watch
+
+            case result
+            in Ast
+              terminal.puts "Building for production..."
+              terminal.divider
+
+              terminal.measure "#{COG} Clearing the \"#{DIST_DIR}\" directory..." do
+                FileUtils.rm_rf DIST_DIR
+              end
+
+              files =
+                Bundler.new(
+                  artifacts: workspace.type_checker.artifacts,
+                  json: workspace.json,
+                  config: Bundler::Config.new(
+                    generate_manifest: flags.generate_manifest,
+                    skip_icons: flags.skip_icons,
+                    runtime_path: flags.runtime,
+                    relative: flags.relative,
+                    optimize: flags.minify,
+                    include_program: true,
+                    live_reload: false,
+                    hash_assets: true,
+                    test: nil)).bundle
+
+              files
+                .keys
+                .sort_by!(&.size)
+                .reverse!
+                .each do |path|
+                  terminal.measure "#{COG} Writing #{path.lchop('/')}..." do
+                    noramlized_path =
+                      Path[DIST_DIR, path.lchop('/')]
+
+                    FileUtils.mkdir_p(noramlized_path.dirname)
+                    File.write(noramlized_path, files[path].call)
+                  end
+                end
+            in Error
+              terminal.print result.to_terminal
+            end
+          end
+
+          # Do the initial parsing and type checking.
+          workspace.update_cache
+
+          # Start wathing for changes if the flag is set.
           if flags.watch
+            workspace.watch
             sleep
           end
         end

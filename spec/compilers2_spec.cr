@@ -20,24 +20,40 @@ Dir
           Mint::TypeChecker.check(ast)
 
         config =
-          Mint::Compiler2::Config.new(
-            runtime_path: "runtime",
+          Mint::Bundler::Config.new(
+            generate_manifest: false,
             include_program: false,
-            css_prefix: nil,
+            live_reload: false,
+            runtime_path: nil,
+            skip_icons: false,
+            hash_assets: true,
             relative: false,
             optimize: false,
-            build: true,
             test: nil)
 
+        json =
+          Mint::MintJson.new
+
         files =
-          Mint::Compiler2
-            .program(artifacts, config)
-            .reject! { |_, contents| contents.blank? }
+          Mint::Bundler.new(
+            artifacts: artifacts,
+            config: config,
+            json: json
+          ).bundle.map do |path, contents|
+            {path, case contents
+            in Proc(String)
+              contents.call
+            in String
+              contents
+            end}
+          end.to_h
+            .reject { |_, contents| contents.blank? }
+            .reject { |key, _| key.in?("/__mint__/runtime.js", "index.html") }
 
         result =
           case files.size
           when 1
-            files["/index.js"]?.to_s
+            files.first[1]
           else
             files
               .map { |path, contents| "---=== #{path} ===---\n#{contents}" }

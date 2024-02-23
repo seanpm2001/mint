@@ -112,6 +112,7 @@ class TestRunner {
     if (message && message.toString) {
       message = message.toString();
     }
+
     this.socket.send(
       JSON.stringify({
         location: location,

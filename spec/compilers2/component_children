@@ -15,7 +15,7 @@ component Main {
 import {
   createElement as C,
   toArray as D
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   A = ({

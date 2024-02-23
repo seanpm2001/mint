@@ -16,10 +16,12 @@ module Mint
 
       getter base : Ast::Node | Nil
 
+      getter bundle_path : Proc(Ast::Node | Nil, String)
+
       # The current indentation depth.
       property depth : Int32 = 0
 
-      def initialize(*, @base, @pool, @class_pool)
+      def initialize(*, @base, @pool, @class_pool, @bundle_path)
       end
 
       def import(imports : Hash(String, String), optimize : Bool, path : String)
@@ -104,6 +106,8 @@ module Mint
             io << char
             io << (" " * depth * 2) if char == '\n'
           end
+        in Asset
+          io << "`#{bundle_path.call(item.value)}`"
         in Indent
           self.depth += 1
           render(item.items, io)

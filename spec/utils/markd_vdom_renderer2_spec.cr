@@ -110,7 +110,11 @@ describe Mint::Compiler2::VDOMRenderer2 do
           Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Variable | String, Mint::Ast::Node | Nil).new
 
         js_renderer =
-          Mint::Compiler2::Renderer.new(base: nil, class_pool: class_pool, pool: pool)
+          Mint::Compiler2::Renderer.new(
+            bundle_path: ->(_node : Mint::Ast::Node | Nil) { "" },
+            base: nil,
+            class_pool: class_pool,
+            pool: pool)
 
         node =
           Mint::Compiler2::VDOMRenderer2

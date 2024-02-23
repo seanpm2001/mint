@@ -32,6 +32,12 @@ module Mint
     getter root : String
     getter name = ""
 
+    def initialize
+      @json = ""
+      @root = ""
+      @file = ""
+    end
+
     def initialize(@json : String, @root : String, @file : String)
       begin
         @parser = JSON::PullParser.new(@json)

@@ -14,12 +14,17 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.css ===---
+.Main_unicode span::after {
+  content: var(--a-a);
+}
+
+---=== /__mint__/index.js ===---
 import {
   createElement as C,
   useSignal as B,
   style as D
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   const
@@ -35,8 +40,3 @@ export const A = () => {
     style: D([b()])
   }, [C(`span`, {})])
 };
-
----=== /index.css ===---
-.Main_unicode span::after {
-  content: var(--a-a);
-}

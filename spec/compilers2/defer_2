@@ -14,17 +14,17 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.js ===---
 import {
   patternVariable as E,
   createElement as F,
   destructure as C,
   useEffect as B,
   load as D
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
-  a = `/__mint__/d5f8d9aa357303a4ba78b554c55d598bd238f679b.js`,
+  a = `/__mint__/1.js`,
   A = () => {
     B(() => {
       (async () => {
@@ -39,15 +39,15 @@ export const
     return F(`div`, {}, [``])
   };
 
----=== /__mint__/d96571c631d11ed793b887a131e80107a65e05223.js ===---
+---=== /__mint__/2.js ===---
 export const
   a = `Hello`,
   b = a;
 
 export default b;
 
----=== /__mint__/d5f8d9aa357303a4ba78b554c55d598bd238f679b.js ===---
-export const a = [`/__mint__/d96571c631d11ed793b887a131e80107a65e05223.js`];
+---=== /__mint__/1.js ===---
+export const a = [`/__mint__/2.js`];
 
 export default a;
 

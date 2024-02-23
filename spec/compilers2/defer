@@ -26,18 +26,18 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.js ===---
 import {
   createElement as D,
   useEffect as B,
   load as C
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   a = () => {
     return `Blah`
   },
-  b = `/__mint__/d35d0e81d757e8f90c0687897aad44d12fb193211.js`,
+  b = `/__mint__/1.js`,
   A = () => {
     B(() => {
       (async () => {
@@ -48,8 +48,8 @@ export const
     return D(`div`, {}, [a()])
   };
 
----=== /__mint__/d35d0e81d757e8f90c0687897aad44d12fb193211.js ===---
-import { a as c } from "/index.js";
+---=== /__mint__/1.js ===---
+import { a as c } from "/__mint__/index.js";
 
 export const
   a = () => {

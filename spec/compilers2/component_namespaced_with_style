@@ -16,8 +16,13 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
-import { createElement as B } from "runtime";
+---=== /__mint__/index.css ===---
+.Ui·Dropdown_base {
+  background: red;
+}
+
+---=== /__mint__/index.js ===---
+import { createElement as B } from "/__mint__/runtime.js";
 
 export const
   A = () => {
@@ -28,8 +33,3 @@ export const
   C = () => {
     return B(A, {})
   };
-
----=== /index.css ===---
-.Ui·Dropdown_base {
-  background: red;
-}

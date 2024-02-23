@@ -40,7 +40,7 @@ import {
   useDidUpdate as F,
   useEffect as E,
   useId as D
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   a = new Map(),

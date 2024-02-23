@@ -58,7 +58,10 @@ module Mint
           next unless style_builder.any?(style)
 
           arguments =
-            compile item.arguments
+            item
+              .arguments
+              .sort_by { |arg| resolve_order.index(arg) || -1 }
+              .map { |arg| compile(arg).as(Compiled) }
 
           styles << js.call(style, arguments)
         end

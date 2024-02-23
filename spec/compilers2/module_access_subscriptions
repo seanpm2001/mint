@@ -28,7 +28,7 @@ import {
   createProvider as B,
   subscriptions as C,
   useId as E
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   a = new Map(),

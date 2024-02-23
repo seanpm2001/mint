@@ -37,7 +37,7 @@ import {
   createElement as F,
   signal as A,
   useId as E
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   a = new Map(),

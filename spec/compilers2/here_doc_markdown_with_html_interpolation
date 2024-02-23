@@ -11,7 +11,7 @@ component Main {
 import {
   createElement as B,
   fragment as C
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   const a = B(`div`, {});

@@ -16,7 +16,7 @@ component Main {
 import {
   patternVariable as C,
   match as B
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   return B([

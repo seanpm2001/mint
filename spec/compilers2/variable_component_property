@@ -12,7 +12,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { createElement as C } from "runtime";
+import { createElement as C } from "/__mint__/runtime.js";
 
 export const
   A = ({

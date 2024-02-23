@@ -89,7 +89,7 @@ module Mint
 
     def print_stack
       @stack.each_with_index do |i, index|
-        x = Compiler2.dbg_name(i)
+        x = Debugger.dbg(i)
 
         if index == 0
           puts x
@@ -248,13 +248,15 @@ module Mint
       references[node] ||= Set(Ast::Node | Nil).new
 
       # case node
-      # when Ast::Constant
-      #   if node.name.value == "INDEX"
-      #     puts "TRACK STACK #{Compiler2.dbg_name(node)}"
+      # when Ast::Function
+      #   if node.name.value == "walk"
+      #     puts "TRACK STACK #{Debugger.dbg(node)}"
       #     print_stack
-      #     @ref_stack[node]?.try(&.each { |child| Compiler2.dbg_name(child) })
-      #     puts component_stack.size
-      #     pp caller.reverse
+      #     @ref_stack[node]?.try(&.each { |child| Debugger.dbg(child) })
+      #     component_stack.each do |item|
+      #       puts Debugger.dbg(item)
+      #     end
+      #     # pp caller.reverse
       #   end
       # end
 
@@ -307,6 +309,7 @@ module Mint
             node: node) if @stack.none? { |item| item.is_a?(Ast::Function) || item.is_a?(Ast::InlineFunction) } &&
                            @top_level_entity.try { |item| owns?(node, item) }
 
+          save_ref(node)
           track_references(node)
           cached
         else
@@ -329,7 +332,7 @@ module Mint
               node: node) if @top_level_entity.try { |item| owns?(node, item) }
 
             @stack.push node
-            @refs.push node
+            save_ref(node)
 
             result = check(node, *args).as(Checkable)
 
@@ -343,6 +346,13 @@ module Mint
             result
           end
         end
+      end
+    end
+
+    def save_ref(node)
+      case node
+      when Ast::Function, Ast::Constant, Ast::State, Ast::Get, Ast::TypeVariant
+        @refs.push node
       end
     end
 

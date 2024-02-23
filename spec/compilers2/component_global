@@ -27,7 +27,7 @@ component Main {
 import {
   createElement as B,
   signal as D
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   A = () => {

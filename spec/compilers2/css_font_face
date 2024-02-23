@@ -17,16 +17,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
-import { createElement as B } from "runtime";
-
-export const A = () => {
-  return B(`div`, {
-    className: `Main_test`
-  })
-};
-
----=== /index.css ===---
+---=== /__mint__/index.css ===---
 @font-face {
   src: url(sansation_light.woff);
   font-family: myFirstFont;
@@ -37,3 +28,12 @@ export const A = () => {
   font-family: myFirstFont;
   font-weight: bold;
 }
+
+---=== /__mint__/index.js ===---
+import { createElement as B } from "/__mint__/runtime.js";
+
+export const A = () => {
+  return B(`div`, {
+    className: `Main_test`
+  })
+};

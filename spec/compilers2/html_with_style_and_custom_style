@@ -16,12 +16,18 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.css ===---
+.Main_test {
+  background: var(--a-a);
+  color: red;
+}
+
+---=== /__mint__/index.js ===---
 import {
   createElement as C,
   useSignal as B,
   style as D
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   const
@@ -43,9 +49,3 @@ export const A = () => {
     ])
   })
 };
-
----=== /index.css ===---
-.Main_test {
-  background: var(--a-a);
-  color: red;
-}

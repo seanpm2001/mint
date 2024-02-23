@@ -3,13 +3,17 @@ module Mint
     include Helpers
 
     # Represents a compiled item
-    alias Item = Ast::Node | Builtin | String | Signal | Indent | Raw | Variable | Ref | Encoder | Decoder
+    alias Item = Ast::Node | Builtin | String | Signal | Indent | Raw |
+                 Variable | Ref | Encoder | Decoder | Asset
 
     # Represents an generated idetifier from the parts of the union type.
     alias Id = Ast::Node | Variable | Encoder | Decoder
 
     # Represents compiled code.
     alias Compiled = Array(Item)
+
+    # Represents an reference to a file
+    record Asset, value : Ast::Node | Nil
 
     # Represents a Preact signal (https://preactjs.com/guide/v10/signals/). Signals are treated
     # differently from vaiables because we will need to access them using the `.value` accessor.
@@ -19,7 +23,10 @@ module Mint
     # because they have a `.current` accessor.
     record Ref, value : Ast::Node
 
+    # Represents an encoder.
     record Encoder, value : String
+
+    # Represents a decoder.
     record Decoder, value : String
 
     # Represents code which needs to be indented.
@@ -148,19 +155,17 @@ module Mint
     getter style_builder : StyleBuilder
 
     # The compiler config.
-    getter config : Config
+    getter config : Bundler::Config
 
     # The JavaScript builder instance.
     getter js : Js
 
-    def initialize(@artifacts, @config)
+    def initialize(@artifacts, css_prefix, @config)
       @js =
         Js.new(optimize: config.optimize)
 
       @style_builder =
-        StyleBuilder.new(
-          css_prefix: config.css_prefix,
-          optimize: config.optimize)
+        StyleBuilder.new(css_prefix: css_prefix, optimize: config.optimize)
     end
 
     # Adds a compiled entity.

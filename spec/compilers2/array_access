@@ -20,7 +20,7 @@ component Main {
 import {
   arrayAccess as E,
   variant as B
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   A = B(0),

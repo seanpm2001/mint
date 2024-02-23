@@ -14,11 +14,16 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.css ===---
+.Main_test {
+  color: var(--a-a, yellow);
+}
+
+---=== /__mint__/index.js ===---
 import {
   createElement as B,
   style as C
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   const a = () => {
@@ -35,8 +40,3 @@ export const A = () => {
     style: C([a()])
   })
 };
-
----=== /index.css ===---
-.Main_test {
-  color: var(--a-a, yellow);
-}

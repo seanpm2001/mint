@@ -3,7 +3,7 @@ module Mint
     class Test < Admiral::Command
       include Command
 
-      define_help description: "Runs the tests"
+      define_help description: "Runs the tests defined for the project"
 
       define_flag manual : Bool,
         description: "Start the test server for manual testing",
@@ -21,25 +21,25 @@ module Mint
         short: "r"
 
       define_flag host : String,
-        description: "Host to serve the tests on. (Default: 127.0.0.1)",
+        description: "Host to serve the tests on",
         default: ENV["HOST"]? || "127.0.0.1",
         required: false,
         short: "h"
 
       define_flag port : Int32,
-        description: "Port to serve the tests on. (Default: 3001)",
+        description: "Port to serve the tests on",
         default: (ENV["PORT"]? || "3001").to_i,
         required: false,
         short: "p"
 
       define_flag browser_host : String,
-        description: "Target host, useful when hosted on another machine. (Default: 127.0.0.1)",
+        description: "Target host, useful when hosted on another machine",
         default: ENV["BROWSER_HOST"]? || "127.0.0.1",
         required: false,
         short: "x"
 
       define_flag browser_port : Int32,
-        description: "Target port, useful when hosted on another machine. (Default: 3001)",
+        description: "Target port, useful when hosted on another machine",
         default: (ENV["BROWSER_PORT"]? || "3001").to_i,
         required: false,
         short: "c"
@@ -56,22 +56,14 @@ module Mint
         description: "The path to the test file to run"
 
       def run
-        MintJson.parse_current.check_dependencies!
+        runner = nil
 
-        runner =
-          TestRunner.new(flags, arguments)
-
-        if flags.watch
-          runner.watch
-        else
-          succeeded = nil
-
-          execute "Running Tests" do
-            succeeded = runner.run
-          end
-
-          exit(1) unless succeeded
+        execute "Running Tests" do
+          runner = TestRunner.new(flags, arguments)
         end
+
+        puts runner.try(&.failed?)
+        exit(1) if runner.try(&.failed?)
       end
     end
   end

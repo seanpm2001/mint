@@ -36,12 +36,12 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.js ===---
 import {
   lazyComponent as F,
   createElement as E,
   lazy as B
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   a = () => {
@@ -50,8 +50,8 @@ export const
   b = () => {
     return a()
   },
-  A = B('/__mint__/first.js'),
-  C = B('/__mint__/second.js'),
+  A = B(`/__mint__/1.js`),
+  C = B(`/__mint__/2.js`),
   D = () => {
     return E(`div`, {}, [
       E(F, {
@@ -70,10 +70,10 @@ export const
     ])
   };
 
----=== /__mint__/first.js ===---
-import { createElement as B } from "runtime";
+---=== /__mint__/1.js ===---
+import { createElement as B } from "/__mint__/runtime.js";
 
-import { b as a } from "/index.js";
+import { b as a } from "/__mint__/index.js";
 
 export const A = () => {
   return B(`div`, {}, [
@@ -84,10 +84,10 @@ export const A = () => {
 
 export default A;
 
----=== /__mint__/second.js ===---
-import { createElement as B } from "runtime";
+---=== /__mint__/2.js ===---
+import { createElement as B } from "/__mint__/runtime.js";
 
-import { b as a } from "/index.js";
+import { b as a } from "/__mint__/index.js";
 
 export const A = () => {
   return B(`div`, {}, [

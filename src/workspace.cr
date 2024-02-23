@@ -61,6 +61,12 @@ module Mint
     property? check_everything : Bool = true
     property? check_env : Bool = false
     property? format : Bool = false
+    getter test_path : String?
+
+    def test_path=(value)
+      @test_path = value
+      update_patterns
+    end
 
     def initialize(@root : String)
       json_path =
@@ -183,9 +189,22 @@ module Mint
     end
 
     def files_pattern : Array(String)
-      json
-        .source_directories
-        .map { |dir| Path[root, dir, "**", "*.mint"].to_posix.to_s }
+      files =
+        json
+          .source_directories
+          .map { |dir| Path[root, dir, "**", "*.mint"].to_posix.to_s }
+
+      if path = test_path
+        files + if path == "*"
+          json
+            .test_directories
+            .map { |dir| Path[root, dir, "**", "*.mint"].to_posix.to_s }
+        else
+          [path]
+        end
+      else
+        files
+      end
     end
 
     def static_pattern : Array(String)

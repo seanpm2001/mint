@@ -17,12 +17,18 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.css ===---
+.Main_base {
+  height: 20px;
+  background: var(--a-a);
+}
+
+---=== /__mint__/index.js ===---
 import {
   createElement as C,
   compare as B,
   style as D
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   const a = (b) => {
@@ -39,9 +45,3 @@ export const A = () => {
     style: D([a(`blue`)])
   })])
 };
-
----=== /index.css ===---
-.Main_base {
-  height: 20px;
-  background: var(--a-a);
-}

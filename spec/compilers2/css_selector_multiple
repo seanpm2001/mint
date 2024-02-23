@@ -19,11 +19,24 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
+---=== /__mint__/index.css ===---
+.Main_test div {
+  color: var(--a-a);
+}
+
+.Main_test:focus {
+  color: red;
+}
+
+.Main_test:hover {
+  color: red;
+}
+
+---=== /__mint__/index.js ===---
 import {
   createElement as B,
   style as C
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   const
@@ -41,16 +54,3 @@ export const A = () => {
     style: C([b()])
   })
 };
-
----=== /index.css ===---
-.Main_test div {
-  color: var(--a-a);
-}
-
-.Main_test:focus {
-  color: red;
-}
-
-.Main_test:hover {
-  color: red;
-}

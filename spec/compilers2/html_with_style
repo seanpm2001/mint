@@ -34,33 +34,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
-import {
-  createElement as C,
-  useSignal as B,
-  style as D
-} from "runtime";
-
-export const A = () => {
-  const
-    a = B(`blue`),
-    b = B(`yellow`),
-    c = () => {
-      const _ = {
-        [`--a-a`]: a.value,
-        [`--a-b`]: a.value,
-        [`--a-c`]: a.value,
-        [`--a-d`]: b.value
-      };
-      return _
-    };
-  return C(`div`, {
-    className: `Main_test`,
-    style: D([c()])
-  })
-};
-
----=== /index.css ===---
+---=== /__mint__/index.css ===---
 .Main_test {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-touch-callout: none;
@@ -85,3 +59,29 @@ export const A = () => {
 .Main_test > span {
   font-size: .8em;
 }
+
+---=== /__mint__/index.js ===---
+import {
+  createElement as C,
+  useSignal as B,
+  style as D
+} from "/__mint__/runtime.js";
+
+export const A = () => {
+  const
+    a = B(`blue`),
+    b = B(`yellow`),
+    c = () => {
+      const _ = {
+        [`--a-a`]: a.value,
+        [`--a-b`]: a.value,
+        [`--a-c`]: a.value,
+        [`--a-d`]: b.value
+      };
+      return _
+    };
+  return C(`div`, {
+    className: `Main_test`,
+    style: D([c()])
+  })
+};

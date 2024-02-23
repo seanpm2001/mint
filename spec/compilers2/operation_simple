@@ -5,7 +5,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { compare as B } from "runtime";
+import { compare as B } from "/__mint__/runtime.js";
 
 export const A = () => {
   B(`a`, `b`);

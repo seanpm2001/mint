@@ -5,32 +5,36 @@ module Mint
 
       define_help description: "Starts the development server"
 
-      define_flag auto_format : Bool,
-        description: "Auto formats the source files when running development server",
+      define_flag format : Bool,
+        description: "Formats the source files when they change.",
         required: false,
         default: false
 
       define_flag host : String,
-        description: "Change the host to serve the application on. (Default: 127.0.0.1)",
+        description: "The host to serve the application on.",
         default: ENV["HOST"]? || "127.0.0.1",
         required: false,
         short: "h"
 
       define_flag port : Int32,
-        description: "Change the port to serve the application on. (Default: 3000)",
+        description: "The port to serve the application on.",
         default: (ENV["PORT"]? || "3000").to_i,
         required: false,
         short: "p"
 
-      define_flag live_reload : Bool,
-        description: "Whether or not to reload the browser when something changes. (Default true)",
+      define_flag reload : Bool,
+        description: "Reload the browser when something changes.",
         required: false,
         default: true,
         short: "r"
 
       def run
         execute "Running the development server" do
-          Reactor.start flags.host, flags.port, flags.auto_format, flags.live_reload
+          Reactor.new(
+            format: flags.format,
+            reload: flags.reload,
+            host: flags.host,
+            port: flags.port)
         end
       end
     end

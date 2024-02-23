@@ -4,7 +4,7 @@ module Mint
       compile node do
         add(node, node, compile(node.body))
 
-        js.string(self.class.bundle_name(node))
+        [Asset.new(node)] of Item
       end
     end
 

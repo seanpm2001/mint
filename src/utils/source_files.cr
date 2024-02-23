@@ -1,4 +1,8 @@
 module Mint
+  module SourceFiles2
+    extend self
+  end
+
   module SourceFiles
     extend self
 

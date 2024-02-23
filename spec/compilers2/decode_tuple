@@ -16,7 +16,7 @@ import {
   decodeString as F,
   decodeTuple as E,
   variant as B
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   A = B(1),

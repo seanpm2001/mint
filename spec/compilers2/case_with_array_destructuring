@@ -14,7 +14,7 @@ import {
   patternVariable as C,
   patternSpread as D,
   match as B
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const A = () => {
   return B([], [

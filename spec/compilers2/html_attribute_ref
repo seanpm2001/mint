@@ -15,7 +15,7 @@ import {
   variant as B,
   setRef as G,
   useRef as E
-} from "runtime";
+} from "/__mint__/runtime.js";
 
 export const
   A = B(1),

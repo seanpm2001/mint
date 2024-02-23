@@ -91,10 +91,9 @@ module Mint
 
       script =
         Compiler.compile(artifacts, {
-          css_prefix: nil,
-          relative:   false,
-          optimize:   false,
-          build:      false,
+          relative: false,
+          optimize: false,
+          build:    false,
         })
 
       <<-HTML

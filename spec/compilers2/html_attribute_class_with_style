@@ -9,16 +9,16 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
----=== /index.js ===---
-import { createElement as B } from "runtime";
+---=== /__mint__/index.css ===---
+.Main_base {
+  width: 100%;
+}
+
+---=== /__mint__/index.js ===---
+import { createElement as B } from "/__mint__/runtime.js";
 
 export const A = () => {
   return B(`div`, {
     className: `something` + ` Main_base`
   })
 };
-
----=== /index.css ===---
-.Main_base {
-  width: 100%;
-}

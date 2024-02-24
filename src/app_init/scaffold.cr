@@ -87,11 +87,6 @@ module Mint
           "title" => name,
           "icon"  => "assets/favicon.png",
         },
-        "external" => {
-          "stylesheets" => [
-            "assets/style.css",
-          ],
-        },
         "source-directories" => [
           "source",
         ],

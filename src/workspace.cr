@@ -86,9 +86,6 @@ module Mint
       @source_watcher =
         Watcher.new(all_files_pattern)
 
-      @static_watcher =
-        Watcher.new(all_static_pattern)
-
       @env_watcher =
         Env.env.try do |file|
           Watcher.new([file])
@@ -142,13 +139,6 @@ module Mint
     end
 
     def watch
-      spawn do
-        # Watches static files
-        @static_watcher.watch do
-          call "change", ast
-        end
-      end
-
       spawn do
         # Watches all the `*.mint` files
         @source_watcher.watch do |files|
@@ -205,13 +195,6 @@ module Mint
       else
         files
       end
-    end
-
-    def static_pattern : Array(String)
-      json
-        .external_files
-        .values
-        .flatten
     end
 
     def update_cache
@@ -292,14 +275,7 @@ module Mint
     end
 
     private def update_patterns
-      @static_watcher.pattern = all_static_pattern
       @source_watcher.pattern = all_files_pattern
-    end
-
-    private def all_static_pattern : Array(String)
-      packages
-        .flat_map(&.static_pattern)
-        .concat(static_pattern)
     end
 
     private def all_files_pattern : Array(String)

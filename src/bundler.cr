@@ -311,11 +311,6 @@ module Mint
                 end
               end
 
-              # if SourceFiles.external_stylesheets?
-              #   link href: path_for_asset("external-stylesheets.css"),
-              #     rel: "stylesheet"
-              # end
-
               link rel: "stylesheet", href: path_for_asset("index.css")
               raw application.head
             end
@@ -324,10 +319,6 @@ module Mint
               if config.live_reload
                 script src: path_for_asset("live-reload.js")
               end
-
-              # if SourceFiles.external_javascripts?
-              #   script src: path_for_asset("external-javascripts.js")
-              # end
 
               script src: path_for_asset("index.js"), type: "module"
 
@@ -419,16 +410,6 @@ module Mint
         else
           ->{ Assets.read("runtime.js") }
         end
-
-      # if SourceFiles.external_stylesheets?
-      #   files[path_for_asset("external-stylesheets.css")] =
-      #     ->{ SourceFiles.external_stylesheets }
-      # end
-
-      # if SourceFiles.external_javascripts?
-      #   files[path_for_asset("external-javascripts.js")] =
-      #     ->{ SourceFiles.external_javascripts }
-      # end
 
       if config.live_reload
         files[path_for_asset("live-reload.js")] =

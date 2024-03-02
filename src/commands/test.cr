@@ -62,7 +62,6 @@ module Mint
           runner = TestRunner.new(flags, arguments)
         end
 
-        puts runner.try(&.failed?)
         exit(1) if runner.try(&.failed?)
       end
     end

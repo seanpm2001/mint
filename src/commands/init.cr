@@ -5,20 +5,24 @@ module Mint
 
       define_help description: "Initializes a new project"
 
+      define_flag bare : Bool,
+        description: "If speficied an empty project will be generated",
+        default: false
+
       define_argument name,
         description: "The name of the new project",
         required: false
 
       def run
-        name = arguments.name.presence
-        if name
-          execute "Initializing a new project" do
-            Scaffold.run(name)
+        execute "Initializing a new project" do
+          name = arguments.name.presence
+
+          while name.nil?
+            terminal.puts "Please provide a name for the project (for example my-project):"
+            name = gets.presence
           end
-        else
-          execute "Please provide project name" do
-            terminal.puts "Example: mint init my-project-name"
-          end
+
+          Scaffold.new(name: name, bare: flags.bare)
         end
       end
     end

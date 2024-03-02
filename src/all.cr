@@ -69,7 +69,7 @@ require "./lsp/**"
 require "./ls/**"
 
 require "./mint_json"
-require "./app_init/scaffold"
+require "./scaffold"
 require "./reactor"
 require "./sandbox_server"
 require "./cli"

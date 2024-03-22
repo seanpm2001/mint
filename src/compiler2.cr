@@ -254,18 +254,25 @@ module Mint
 
     # Compiles the program call.
     def program
-      routes =
-        compile(ast.routes.flat_map(&.routes))
+      main.try do |component|
+        routes =
+          compile(ast.routes.flat_map(&.routes))
 
-      globals =
-        ast
-          .components
-          .select(&.global?)
-          .each_with_object({} of Item => Compiled) do |item, memo|
-            memo[item.as(Item)] = [item] of Item
-          end
+        globals =
+          ast
+            .components
+            .select(&.global?)
+            .each_with_object({} of Item => Compiled) do |item, memo|
+              memo[item.as(Item)] = [item] of Item
+            end
 
-      js.call(Builtin::Program, [main, js.object(globals), ok, js.array(routes)])
+        js.call(Builtin::Program, [
+          [component] of Item,
+          js.object(globals),
+          ok,
+          js.array(routes),
+        ])
+      end || [] of Item
     end
 
     def inject_css(css : String)
@@ -288,15 +295,21 @@ module Mint
     # (Just, Nothing, Err, Ok, Main).
 
     def main
-      [ast.components.find!(&.name.value.==("Main"))] of Item
+      ast.components.find(&.name.value.==("Main"))
     end
 
     def maybe
-      ast.type_definitions.find!(&.name.value.==("Maybe")).tap { |a| resolve a }
+      ast
+        .type_definitions
+        .find!(&.name.value.==("Maybe"))
+        .tap { |node| resolve node }
     end
 
     def result
-      ast.type_definitions.find!(&.name.value.==("Result")).tap { |a| resolve a }
+      ast
+        .type_definitions
+        .find!(&.name.value.==("Result"))
+        .tap { |node| resolve node }
     end
 
     def just

@@ -3,39 +3,46 @@ module Mint
     class Build < Admiral::Command
       include Command
 
-      define_help description: "Builds the project for production"
+      define_help description: "Builds the project for production."
+
+      define_flag runtime : String,
+        description: "If specified, the supplied runtime will be used instead of the default."
+
+      define_flag no_optimize : Bool,
+        description: "If specified, the resulting JavaScript code will not be optimized.",
+        default: false
 
       define_flag relative : Bool,
-        description: "If specified the URLs in the index.html will be in relative format",
+        description: "If specified, the URLs in the HTML will be in relative format.",
         default: false,
         short: "r"
 
-      define_flag generate_manifest : Bool,
-        description: "If specified the web manifest will be generated",
-        default: false
-
       define_flag skip_icons : Bool,
-        description: "If specified the application icons will not be generated",
+        description: "If specified, the application icons will not be generated.",
         default: false
 
-      define_flag minify : Bool,
-        description: "If specified the resulting JavaScript code will be minified",
-        default: true,
-        short: "m"
+      define_flag generate_manifest : Bool,
+        description: "If specified, the web manifest will be generated.",
+        default: false
 
-      define_flag runtime : String,
-        description: "Will use supplied runtime path instead of the default distribution",
-        required: false
+      define_flag verbose : Bool,
+        description: "If specified, all written files will be logged.",
+        default: false
 
       define_flag watch : Bool,
-        description: "Enables watch mode for build",
+        description: "If specified, will build on every change.",
         default: false,
         short: "w"
 
+      define_flag env : String,
+        description: "Loads the given .env file.",
+        short: "e"
+
       def run
-        execute "Building for production..." do
-          # Initialize the workspace from the current working directory. We don't
-          # check everything to speed things up so only the hot path is checked.
+        execute "Building for production...", env: flags.env do
+          # Initialize the workspace from the current working directory.
+          # We don't check everything to speed things up so only the hot
+          # path is checked.
           workspace = Workspace.current
           workspace.check_everything = false
           workspace.check_env = true
@@ -52,38 +59,57 @@ module Mint
               terminal.puts "Building for production..."
               terminal.divider
 
-              terminal.measure "#{COG} Clearing the \"#{DIST_DIR}\" directory..." do
+              terminal.measure %(#{COG} Clearing the "#{DIST_DIR}" directory...") do
                 FileUtils.rm_rf DIST_DIR
               end
 
               files =
-                Bundler.new(
-                  artifacts: workspace.type_checker.artifacts,
-                  json: workspace.json,
-                  config: Bundler::Config.new(
-                    generate_manifest: flags.generate_manifest,
-                    skip_icons: flags.skip_icons,
-                    runtime_path: flags.runtime,
-                    relative: flags.relative,
-                    optimize: flags.minify,
-                    include_program: true,
-                    live_reload: false,
-                    hash_assets: true,
-                    test: nil)).bundle
+                terminal.measure "#{COG} Building..." do
+                  Bundler.new(
+                    artifacts: workspace.type_checker.artifacts,
+                    json: workspace.json,
+                    config: Bundler::Config.new(
+                      generate_manifest: flags.generate_manifest,
+                      skip_icons: flags.skip_icons,
+                      optimize: !flags.no_optimize,
+                      runtime_path: flags.runtime,
+                      relative: flags.relative,
+                      include_program: true,
+                      live_reload: false,
+                      hash_assets: true,
+                      test: nil)).bundle
+                end || {} of String => Proc(String)
 
-              files
-                .keys
-                .sort_by!(&.size)
-                .reverse!
-                .each do |path|
-                  terminal.measure "#{COG} Writing #{path.lchop('/')}..." do
-                    noramlized_path =
-                      Path[DIST_DIR, path.lchop('/')]
+              bundle_size = 0
 
-                    FileUtils.mkdir_p(noramlized_path.dirname)
-                    File.write(noramlized_path, files[path].call)
+              files.keys.sort_by!(&.size).reverse!.each do |path|
+                chopped =
+                  path.lchop('/')
+
+                content =
+                  files[path].call
+
+                size =
+                  content.bytesize
+
+                proc =
+                  ->{ File.write_p(Path[DIST_DIR, chopped], content) }
+
+                bundle_size +=
+                  size
+
+                if flags.verbose
+                  terminal.measure "#{COG} Writing #{chopped} (#{size.humanize_bytes(format: :JEDEC)})..." do
+                    proc.call
                   end
+                else
+                  proc.call
                 end
+              end
+
+              terminal.divider
+              terminal.puts "Files: #{files.size}"
+              terminal.puts "Bundle size: #{bundle_size.humanize_bytes(format: :JEDEC)}"
             in Error
               terminal.print result.to_terminal
             end

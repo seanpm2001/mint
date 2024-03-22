@@ -38,7 +38,7 @@ module Mint
         end.final.hexstring
     end
 
-    def get_routes : String
+    def routes : String
       routes = Mint::Compiler
         .new(TypeChecker.check(@artifacts.ast))
         .compile_service_worker(@artifacts.ast.routes)

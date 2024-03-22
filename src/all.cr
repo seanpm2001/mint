@@ -1,10 +1,11 @@
 require "baked_file_system"
 require "ansi-escapes"
+require "compress/zip"
 require "file_utils"
 require "colorize"
 require "markd"
-require "kemal"
 require "uuid"
+require "http"
 require "html"
 require "json"
 require "ecr"
@@ -58,7 +59,7 @@ require "./parser"
 
 require "./documentation_generator/**"
 require "./documentation_generator"
-require "./documentation_server"
+# require "./documentation_server"
 
 require "./semantic_tokenizer"
 

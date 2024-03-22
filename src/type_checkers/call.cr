@@ -91,9 +91,9 @@ module Mint
           snippet "The function is expecting the #{ordinal} argument to be:", function_argument_type
           snippet "Instead it is:", argument_type
           snippet "The call in question is here:", node
-        end unless Comparer.compare(function_argument_type, argument_type)
+        end unless res = Comparer.compare(function_argument_type, argument_type)
 
-        parameters << argument_type
+        parameters << res
       end
 
       if (optional_param_count = argument_size - args.size) > 0
@@ -108,9 +108,10 @@ module Mint
 
       error! :impossible_error do
         block "You have run into an impossible error. Please file an issue " \
-              "with a reproducible example in the GithubRepository."
+              "with a reproducible example in the Github repository."
 
         snippet "Call type:", call_type
+        snippet "Function type:", function_type
         snippet node
       end unless result
 

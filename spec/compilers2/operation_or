@@ -1,6 +1,11 @@
-enum Maybe(a) {
+enum Result(error, value) {
+  Err(error)
+  Ok(value)
+}
+
+enum Maybe(value) {
   Nothing
-  Just(a)
+  Just(value)
 }
 
 component Main {
@@ -12,13 +17,15 @@ component Main {
 --------------------------------------------------------------------------------
 import {
   variant as B,
-  or as E
+  or as G
 } from "/__mint__/runtime.js";
 
 export const
   A = B(0),
   C = B(1),
-  D = () => {
-    E(new A()._0, `Hello`);
+  D = B(1),
+  E = B(1),
+  F = () => {
+    G(A, C, new A(), `Hello`);
     return ``
   };

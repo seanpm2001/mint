@@ -1,5 +1,6 @@
 module Mint
   class SandboxServer
+    # Represents a source file.
     struct File
       include JSON::Serializable
 
@@ -10,24 +11,27 @@ module Mint
       end
     end
 
-    struct Application
+    # Represents a project.
+    struct Project
       include JSON::Serializable
 
       getter files : Array(File)
+      getter? id : String?
 
       def initialize(@files)
       end
     end
 
+    # A handler for allowing cross origin requests.
     class CORS
       include HTTP::Handler
 
       def call(context)
-        context.response.headers["Access-Control-Allow-Origin"] = "*"
-        context.response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH"
-        context.response.headers["Access-Control-Allow-Credentials"] = "true"
-        context.response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type"
         context.response.headers["Access-Control-Max-Age"] = 1.day.total_seconds.to_i.to_s
+        context.response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH"
+        context.response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        context.response.headers["Access-Control-Allow-Credentials"] = "true"
+        context.response.headers["Access-Control-Allow-Origin"] = "*"
 
         if context.request.method.upcase == "OPTIONS"
           context.response.content_type = "text/html; charset=utf-8"
@@ -39,13 +43,6 @@ module Mint
     end
 
     def initialize(@host = "0.0.0.0", @port = ENV["PORT"]?.try(&.to_i) || 8080, runtime_path : String? = nil)
-      @runtime =
-        if runtime_path
-          Cli.runtime_file_not_found(runtime_path) unless ::File.exists?(runtime_path)
-          ::File.read(runtime_path)
-        else
-          Assets.read("runtime.js")
-        end
       @server = HTTP::Server.new([CORS.new]) do |context|
         handle_request(context)
       end
@@ -55,12 +52,59 @@ module Mint
 
     def handle_request(context)
       json =
-        Application.from_json(context.request.body.try(&.gets_to_end).to_s)
+        Project.from_json(context.request.body.try(&.gets_to_end).to_s)
 
       case context.request.path
       when "/compile"
-        context.response.content_type = "text/html; charset=utf-8"
-        context.response.print html(json)
+        Dir.tempdir do
+          json.files.each do |file|
+            ::File.write(file.path, file.contents)
+          end
+
+          ::File.write("mint.json", {
+            "source-directories" => ["."],
+          }.to_json)
+
+          workspace = Workspace.current
+          workspace.update_cache
+
+          bundle =
+            if error = workspace.error
+              {"index.html" => ->{ error.to_html }}
+            else
+              Bundler.new(
+                artifacts: workspace.type_checker.artifacts,
+                json: workspace.json,
+                config: Bundler::Config.new(
+                  generate_manifest: false,
+                  include_program: true,
+                  hash_assets: false,
+                  runtime_path: nil,
+                  live_reload: false,
+                  skip_icons: false,
+                  relative: false,
+                  optimize: true,
+                  test: nil),
+              ).bundle
+            end
+
+          io =
+            IO::Memory.new
+
+          Compress::Zip::Writer.open(io) do |zip|
+            bundle.each do |path, contents|
+              zip.add(path, contents.call)
+            end
+          end
+
+          io.rewind
+          HTTP::Client.post("https://#{json.id?}.sandbox.mint-lang.com/", body: io)
+        end
+
+        context.response.content_type = "application/json"
+        context.response.print({
+          "url" => "https://#{json.id?}.sandbox.mint-lang.com/",
+        }.to_json)
       when "/format"
         formatted_files =
           json.files.map do |file|
@@ -78,42 +122,6 @@ module Mint
           "files" => formatted_files,
         }.to_json)
       end
-    end
-
-    def html(json)
-      ast =
-        json.files.reduce(@core.dup) do |memo, file|
-          memo.merge Parser.parse(file.contents, file.path)
-        end
-
-      artifacts =
-        TypeChecker.check(ast)
-
-      script =
-        Compiler.compile(artifacts, {
-          relative: false,
-          optimize: false,
-          build:    false,
-        })
-
-      <<-HTML
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-        </head>
-        <body>
-          <script>
-            #{@runtime + script}
-          </script>
-        </body>
-      </html>
-      HTML
-
-    rescue error : Error
-      error.to_html
-    rescue error
-      "Something went wrong: #{error.inspect_with_backtrace}"
     end
 
     def start

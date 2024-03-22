@@ -49,11 +49,11 @@ export const useDidUpdate = (callback) => {
 };
 
 // Function for the `or` operator.
-export const or = (item, value) => {
-  if (item !== undefined && item !== null) {
-    return item;
-  } else {
+export const or = (nothing, err, item, value) => {
+  if (item instanceof nothing || item instanceof err) {
     return value;
+  } else {
+    return item._0;
   }
 };
 

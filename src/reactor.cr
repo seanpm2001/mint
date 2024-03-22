@@ -50,7 +50,7 @@ module Mint
                 test: nil),
             ).bundle
           in Error
-            error(result.to_terminal.to_s.uncolorize)
+            error(result)
           end
 
         @sockets.each(&.send("reload"))
@@ -97,26 +97,9 @@ module Mint
     end
 
     def error(error)
-      page =
-        HtmlBuilder.build(optimize: true) do
-          html do
-            head do
-              meta charset: "utf-8"
-              meta content: "width=device-width, initial-scale=1, shrink-to-fit=no",
-                name: "viewport"
-
-              if reload?
-                script src: "/live-reload.js"
-              end
-            end
-
-            body { pre { code { text error } } }
-          end
-        end
-
       {
         "/live-reload.js" => ->{ Assets.read("live-reload.js") },
-        "index.html"      => ->{ page },
+        "index.html"      => ->{ error.to_html(reload?) },
       }
     end
 

@@ -188,17 +188,19 @@ class Program {
 
   // Renders the program and runs current route handlers.
   render(main, globals) {
-    if (typeof main !== "undefined") {
-      const components = [];
+    const components = [];
 
-      for (let key in globals) {
-        components.push(h(globals[key], { key: key }));
-      }
-
-      render([...components, h(main, { key: "MINT_MAIN" })], this.root);
-
-      this.handlePopState();
+    for (let key in globals) {
+      components.push(h(globals[key], { key: key }));
     }
+
+    let mainNode;
+    if (typeof main !== "undefined") {
+      mainNode = h(main, { key: "MINT_MAIN" })
+    }
+
+    render([...components, mainNode], this.root);
+    this.handlePopState();
   }
 }
 

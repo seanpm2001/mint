@@ -10,7 +10,7 @@ module Mint
 
         case node.operator
         when "or"
-          js.call(Builtin::Or, [left + ["._0"], right])
+          js.call(Builtin::Or, [nothing, err, left, right])
         when "=="
           js.call(Builtin::Compare, [left, right])
         when "!="

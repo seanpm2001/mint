@@ -233,6 +233,7 @@ module Mint
             case item
             when Node
               if !node.type.in?(
+                   Markd::Node::Type::ThematicBreak,
                    Markd::Node::Type::LineBreak,
                    Markd::Node::Type::CodeBlock,
                    Markd::Node::Type::Code)

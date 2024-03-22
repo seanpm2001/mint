@@ -3,8 +3,7 @@ module Mint
     def compile(node : Ast::HereDocument) : Compiled
       compile node do
         # We generate a hexdigest of the source code, but this still can
-        # conflict, so if you find a better solution in the future let me
-        # (or yourself) know.
+        # conflict, so if you find a better solution in the future let us know.
         separator =
           Digest::MD5.hexdigest(node.source)
 

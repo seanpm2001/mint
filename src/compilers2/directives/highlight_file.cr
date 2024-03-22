@@ -5,8 +5,8 @@ module Mint
         contents =
           File.read(node.real_path)
 
-        parser = Parser.new(contents.strip, node.real_path.to_s)
-        parser.parse
+        parser =
+          Parser.new(contents.strip, node.real_path.to_s).tap(&.parse_any)
 
         tokenize(parser.ast)
       end

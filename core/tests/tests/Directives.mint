@@ -17,3 +17,41 @@ suite "@svg" {
     |> Test.Html.assertElementExists("svg")
   }
 }
+
+suite "@format" {
+  test "returns the formatter source" {
+    let #(value, formatted) =
+      @format {
+        {
+          "Hello World!"
+        }
+      }
+
+    value == "Hello World!" &&
+      formatted == <<~MINT
+      {
+        "Hello World!"
+      }
+      MINT
+  }
+}
+
+suite "@highlight" {
+  test "highlights the given code" {
+    @highlight {
+      "Hello World!"
+    }[1]
+    |> Test.Html.start()
+    |> Test.Html.assertElementExists("span.line")
+    |> Test.Html.assertElementExists("span.string")
+  }
+}
+
+suite "@highlight-file" {
+  test "highlights the given file" {
+    @highlight-file(../../../spec/fixtures/Test.mint)
+    |> Test.Html.start()
+    |> Test.Html.assertElementExists("span.line")
+    |> Test.Html.assertElementExists("span.namespace")
+  }
+}

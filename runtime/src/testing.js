@@ -149,19 +149,17 @@ class TestRunner {
         }
       }
 
-      const currentHistory = window.history.length;
-
       const test = this.suite.tests.shift();
 
       try {
         const result = await test.proc.call(this.suite.context);
 
-        // Go back to the beginning
-        if (window.history.length - currentHistory) {
-          window.history.go(-(window.history.length - currentHistory));
+        // Set the URL to the root one.
+        if (window.location.pathname !== "/") {
+          window.history.replaceState({}, "", "/");
         }
 
-        // Clear storages
+        // Clear storages.
         sessionStorage.clear();
         localStorage.clear();
 

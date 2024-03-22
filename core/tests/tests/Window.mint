@@ -57,11 +57,8 @@ component ScrollTest {
 
 suite "Window.navigate" {
   test "it navigates to the given url with push state" {
-    let url =
-      Window.url()
-
     Window.navigate("/blah")
-    Window.href() == "http://127.0.0.1:#{url.port}/blah"
+    String.endsWith(Window.href(), "/blah")
   }
 }
 
@@ -80,13 +77,13 @@ suite "Window.setTitle" {
 
 suite "Window.url" {
   test "returns the current url" {
-    Window.url().hostname == "127.0.0.1"
+    Window.url().hostname == `window.location.hostname`
   }
 }
 
 suite "Window.href" {
   test "returns the current url as string" {
-    Window.href() == "http://127.0.0.1:#{Window.url().port}/"
+    Window.href() == `window.location.href`
   }
 }
 

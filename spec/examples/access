@@ -5,7 +5,7 @@ component Main {
 ----------------------------------------------------------access_expected_field
 component Main {
   fun render {
-    A::
+    A.
 ---------------------------------------------------------access_field_not_found
 record Blah {
   blah : String
@@ -40,10 +40,6 @@ component Main {
     blah.blah.blah
   }
 }
-----------------------------------------------------------access_expected_field
-component Main {
-  fun render : String {
-    A.
 --------------------------------------------------------------access_not_record
 module Test {
   fun b : Function(String) {

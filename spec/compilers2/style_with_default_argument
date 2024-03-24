@@ -18,7 +18,7 @@ component Main {
 import {
   createElement as B,
   style as C
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const A = () => {
   const a = (b = `red`) => {

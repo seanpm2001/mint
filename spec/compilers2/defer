@@ -31,13 +31,13 @@ import {
   createElement as D,
   useEffect as B,
   load as C
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   a = () => {
     return `Blah`
   },
-  b = `/__mint__/1.js`,
+  b = `./1.js`,
   A = () => {
     B(() => {
       (async () => {
@@ -49,7 +49,7 @@ export const
   };
 
 ---=== /__mint__/1.js ===---
-import { a as c } from "/__mint__/index.js";
+import { a as c } from "./index.js";
 
 export const
   a = () => {

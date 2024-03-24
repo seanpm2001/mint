@@ -15,7 +15,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { signal as A } from "/__mint__/runtime.js";
+import { signal as A } from "./runtime.js";
 
 export const
   a = A(``),

@@ -15,7 +15,7 @@ module Mint
         end unless char! '`'
         whitespace
 
-        if word! "as"
+        if keyword! "as"
           whitespace
           next error :js_expected_type_or_variable do
             expected "the type of an inlined JavaScript", word

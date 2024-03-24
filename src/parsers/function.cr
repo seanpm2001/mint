@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         comment = self.comment
 
-        next unless word! "fun"
+        next unless keyword! "fun"
         whitespace
 
         next error :function_expected_name do

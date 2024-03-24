@@ -1,6 +1,8 @@
 module Mint
   # This class is responsible for compiling and building the application.
   class Bundler
+    alias Bundle = Compiler2::Bundle
+
     record Config,
       test : NamedTuple(url: String, id: String)?,
       generate_manifest : Bool,
@@ -26,7 +28,7 @@ module Mint
     getter json : MintJson
 
     # Contains the names of the bundles.
-    getter bundle_names = {} of Ast::Node | Nil => String
+    getter bundle_names = {} of Ast::Node | Bundle => String
 
     delegate application, to: json
 
@@ -69,12 +71,12 @@ module Mint
           ]
         end
 
-      # This holds the to be compiled constants per bundle. `nil` holds
+      # This holds the to be compiled constants per bundle. `Bundle::Index` holds
       # the ones meant for the main bundle.
       bundles =
         {
-          nil => [] of Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled),
-        } of Ast::Node | Nil => Array(Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled))
+          Bundle::Index => ([] of Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled)),
+        } of Ast::Node | Bundle => Array(Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled))
 
       # This holds which node belongs to which bundle.
       scopes =
@@ -107,12 +109,12 @@ module Mint
             bundles[node].concat(nodes)
 
             # Add the lazy component definition to the main bundle.
-            bundles[nil] << {
+            bundles[Bundle::Index] << {
               node,
               node,
               compiler.js.call(
                 Compiler2::Builtin::Lazy,
-                [[Compiler2::Asset.new(node)] of Compiler2::Item]),
+                [[Compiler2::Deferred.new(node)] of Compiler2::Item]),
             }
           end
         end ||
@@ -120,7 +122,7 @@ module Mint
           # it will go into the main bundle. Otherwise it will go to the
           # the bundle it's used from.
           if set.includes?(nil) || (!set.includes?(nil) && set.size >= 2)
-            bundles[nil].concat(nodes)
+            bundles[Bundle::Index].concat(nodes)
           elsif first = set.first
             bundles[first] ||= [] of Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled)
             bundles[first].concat(nodes)
@@ -131,7 +133,7 @@ module Mint
       end
 
       # Add not already added items to the main bundle.
-      bundles[nil].concat(compiler.compiled)
+      bundles[Bundle::Index].concat(compiler.compiled)
 
       # bundles.each do |node, items|
       #   entities =
@@ -153,19 +155,20 @@ module Mint
       # end
 
       class_pool =
-        NamePool(Ast::Node | Compiler2::Builtin, Ast::Node | Nil).new('A'.pred.to_s)
+        NamePool(Ast::Node | Compiler2::Builtin, Ast::Node | Bundle).new('A'.pred.to_s)
 
       pool =
-        NamePool(Ast::Node | Compiler2::Variable | String, Ast::Node | Nil).new
+        NamePool(Ast::Node | Compiler2::Variable | String, Ast::Node | Bundle).new
 
       rendered_bundles =
-        {} of Ast::Node | Nil => Tuple(Compiler2::Renderer, Array(String))
+        {} of Ast::Node | Bundle => Tuple(Compiler2::Renderer, Array(String))
 
       # We render the bundles so we can know after what we need to import.
       bundles.each do |node, contents|
         renderer =
           Compiler2::Renderer.new(
-            bundle_path: ->(item : Ast::Node | Nil) { path_for_bundle(item) },
+            bundle_path: ->path_for_bundle(Ast::Node | Bundle),
+            deferred_path: ->bundle_name(Ast::Node | Bundle),
             class_pool: class_pool,
             base: node,
             pool: pool)
@@ -192,7 +195,7 @@ module Mint
         # If we are building the main bundle we add the translations, tests
         # and the program.
         case node
-        when Nil
+        when Bundle::Index
           # Add translations and tests
           items.concat compiler.translations
           items.concat tests if tests
@@ -209,11 +212,13 @@ module Mint
       end
 
       rendered_bundles.each do |node, (renderer, items)|
-        # Main doesn't import from other nodes.
-        if node
+        case node
+        when Bundle::Index
+          # Index doesn't import from other nodes.
+        else
           # This holds the imports for each other bundle.
           imports =
-            {} of Ast::Node | Nil => Hash(String, String)
+            {} of Ast::Node | Bundle => Hash(String, String)
 
           renderer.used.map do |item|
             # We only need to import things that are actually exported (all
@@ -223,7 +228,7 @@ module Mint
 
             # Get where the entity should be.
             target =
-              scopes[item]?
+              scopes[item]? || Bundle::Index
 
             # If the target is not this bundle and it's not the same bundle
             # then we need to import.
@@ -239,16 +244,19 @@ module Mint
             end
           end
 
-          # For each import we insert an import statment.
+          # For each import we insert an import statement.
           imports.each do |target, data|
             items.unshift(
               renderer.import(
                 data,
                 config.optimize,
-                path_for_bundle(target)))
+                path_for_import(target)))
           end
 
-          items << "export default #{renderer.render(node)}" if node
+          case node
+          when Ast::Node
+            items << "export default #{renderer.render(node)}" if node
+          end
         end
 
         # Gather what builtins need to be imported and add it's statement
@@ -261,7 +269,7 @@ module Mint
             end
 
         items
-          .unshift(renderer.import(builtins, config.optimize, path_for_asset("runtime.js")))
+          .unshift(renderer.import(builtins, config.optimize, "./runtime.js"))
           .reject!(&.blank?)
 
         js =
@@ -320,7 +328,12 @@ module Mint
                 script src: path_for_asset("live-reload.js")
               end
 
-              script src: path_for_asset("index.js"), type: "module"
+              script type: "module" do
+                raw <<-TEXT
+                import Program from "#{path_for_asset("index.js")}"
+                Program()
+                TEXT
+              end
 
               noscript do
                 text "This application requires JavaScript."
@@ -421,20 +434,25 @@ module Mint
       "#{config.relative ? "" : "/"}#{ASSET_DIR}/#{filename}"
     end
 
-    def path_for_bundle(node : Ast::Node | Nil) : String
+    def bundle_name(node : Ast::Node | Bundle) : String
       @bundle_names[node] ||= begin
-        filename =
-          case node
-          when Ast::Directives::FileBased
-            node.filename(build: config.hash_assets)
-          when Nil
-            "index.js"
-          else
-            "#{@bundle_counter += 1}.js"
-          end
-
-        path_for_asset(filename)
+        case node
+        when Ast::Directives::FileBased
+          node.filename(build: config.hash_assets)
+        when Bundle::Index
+          "index.js"
+        else
+          "#{@bundle_counter += 1}.js"
+        end
       end
+    end
+
+    def path_for_import(node : Ast::Node | Bundle) : String
+      "./#{bundle_name(node)}"
+    end
+
+    def path_for_bundle(node : Ast::Node | Bundle) : String
+      path_for_asset(bundle_name(node))
     end
   end
 end

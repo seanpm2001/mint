@@ -20,7 +20,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { compare as A } from "/__mint__/runtime.js";
+import { compare as A } from "./runtime.js";
 
 export const
   a = (b) => {

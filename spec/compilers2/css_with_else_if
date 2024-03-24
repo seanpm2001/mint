@@ -28,7 +28,7 @@ import {
   createElement as C,
   compare as B,
   style as D
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const A = () => {
   const a = (b) => {

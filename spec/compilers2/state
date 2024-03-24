@@ -11,7 +11,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { useSignal as B } from "/__mint__/runtime.js";
+import { useSignal as B } from "./runtime.js";
 
 export const A = () => {
   const

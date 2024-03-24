@@ -104,15 +104,16 @@ describe Mint::Compiler2::VDOMRenderer2 do
           Mint::Compiler2::Js.new(false)
 
         class_pool =
-          Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Builtin, Mint::Ast::Node | Nil).new('A'.pred.to_s)
+          Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Builtin, Mint::Ast::Node | Mint::Compiler2::Bundle).new('A'.pred.to_s)
 
         pool =
-          Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Variable | String, Mint::Ast::Node | Nil).new
+          Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Variable | String, Mint::Ast::Node | Mint::Compiler2::Bundle).new
 
         js_renderer =
           Mint::Compiler2::Renderer.new(
-            bundle_path: ->(_node : Mint::Ast::Node | Nil) { "" },
-            base: nil,
+            deferred_path: ->(_node : Mint::Ast::Node | Mint::Compiler2::Bundle) { "" },
+            bundle_path: ->(_node : Mint::Ast::Node | Mint::Compiler2::Bundle) { "" },
+            base: Mint::Compiler2::Bundle::Index,
             class_pool: class_pool,
             pool: pool)
 

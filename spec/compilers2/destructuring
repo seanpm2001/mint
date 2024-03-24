@@ -28,7 +28,7 @@ import {
   pattern as G,
   variant as B,
   match as F
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   A = B(0),

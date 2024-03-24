@@ -4,7 +4,7 @@ module Mint
       parse do |start_position, start_nodes_position|
         comment = self.comment
 
-        next unless word! "provider"
+        next unless keyword! "provider"
         whitespace
 
         next error :provider_expected_name do

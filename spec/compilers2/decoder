@@ -38,7 +38,7 @@ import {
   decodeTime as L,
   decoder as F,
   variant as B
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   A = B(1),

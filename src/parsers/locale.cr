@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         comment = self.comment
 
-        next unless word! "locale"
+        next unless keyword! "locale"
         whitespace
 
         next error :locale_expected_language do

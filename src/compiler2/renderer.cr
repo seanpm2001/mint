@@ -3,10 +3,10 @@ module Mint
     # This class is responsible to render `Compiled` code.
     class Renderer
       # The pool for variables (lowercase).
-      getter pool : NamePool(Ast::Node | Variable | String, Ast::Node | Nil)
+      getter pool : NamePool(Ast::Node | Variable | String, Ast::Node | Bundle)
 
       # The pool for class variables (uppercase).
-      getter class_pool : NamePool(Ast::Node | Builtin, Ast::Node | Nil)
+      getter class_pool : NamePool(Ast::Node | Builtin, Ast::Node | Bundle)
 
       # A set to track nodes which we rendered.
       getter used = Set(Ast::Node | Encoder | Decoder).new
@@ -14,14 +14,15 @@ module Mint
       # A set to track used builtins which will be imported.
       getter builtins = Set(Builtin).new
 
-      getter base : Ast::Node | Nil
+      getter base : Ast::Node | Bundle
 
-      getter bundle_path : Proc(Ast::Node | Nil, String)
+      getter bundle_path : Proc(Ast::Node | Bundle, String)
+      getter deferred_path : Proc(Ast::Node | Bundle, String)
 
       # The current indentation depth.
       property depth : Int32 = 0
 
-      def initialize(*, @base, @pool, @class_pool, @bundle_path)
+      def initialize(*, @base, @pool, @class_pool, @bundle_path, @deferred_path)
       end
 
       def import(imports : Hash(String, String), optimize : Bool, path : String)
@@ -106,6 +107,8 @@ module Mint
             io << char
             io << (" " * depth * 2) if char == '\n'
           end
+        in Deferred
+          io << "`./#{deferred_path.call(item.value)}`"
         in Asset
           io << "`#{bundle_path.call(item.value)}`"
         in Indent

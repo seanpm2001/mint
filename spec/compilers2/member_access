@@ -24,7 +24,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { access as B } from "/__mint__/runtime.js";
+import { access as B } from "./runtime.js";
 
 export const
   a = (b, c) => {

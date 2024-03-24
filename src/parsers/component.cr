@@ -4,13 +4,13 @@ module Mint
       parse do |start_position, start_nodes_position|
         comment = self.comment
 
-        global = word! "global"
+        global = keyword! "global"
         whitespace
 
-        async = word! "async"
+        async = keyword! "async"
         whitespace
 
-        next unless word! "component"
+        next unless keyword! "component"
         whitespace
 
         next error :component_expected_name do

@@ -37,7 +37,7 @@ import {
   setRef as L,
   useRef as H,
   match as I
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   A = B(1),

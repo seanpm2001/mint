@@ -15,7 +15,7 @@ import {
   decodeNumber as F,
   decodeMap as E,
   variant as B
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   A = B(1),

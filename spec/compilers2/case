@@ -10,7 +10,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { match as B } from "/__mint__/runtime.js";
+import { match as B } from "./runtime.js";
 
 export const A = () => {
   B(`Hello`, [

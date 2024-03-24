@@ -26,7 +26,7 @@ import {
   createProvider as B,
   createElement as E,
   useId as D
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   a = new Map(),

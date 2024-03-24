@@ -217,7 +217,6 @@ module Mint
       case node
       when Ast::Directives::Documentation,
            Ast::Directives::HighlightFile,
-           Ast::Directives::Highlight,
            Ast::Directives::Inline,
            Ast::Directives::Asset,
            Ast::Directives::Svg,
@@ -244,6 +243,8 @@ module Mint
            Ast::Decode,
            Ast::Test
         build(node.expression, node)
+      when Ast::Directives::Highlight
+        build(node.content, node)
       when Ast::CaseBranch
         build(node.expression, node)
         build(node.pattern, node)

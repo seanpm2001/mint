@@ -18,7 +18,7 @@ component Main {
 import {
   variant as B,
   or as G
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   A = B(0),

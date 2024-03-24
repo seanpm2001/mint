@@ -29,11 +29,11 @@ import {
   lazyComponent as F,
   createElement as E,
   lazy as B
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
-  A = B(`/__mint__/1.js`),
-  C = B(`/__mint__/2.js`),
+  A = B(`./1.js`),
+  C = B(`./2.js`),
   D = () => {
     return E(`div`, {}, [
       E(F, {
@@ -52,7 +52,7 @@ export const
   };
 
 ---=== /__mint__/1.js ===---
-import { createElement as B } from "/__mint__/runtime.js";
+import { createElement as B } from "./runtime.js";
 
 export const A = () => {
   return B(`div`, {}, [`First`])
@@ -64,9 +64,9 @@ export default A;
 import {
   lazyComponent as C,
   createElement as B
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
-import { A as D } from "/__mint__/index.js";
+import { A as D } from "./index.js";
 
 export const A = () => {
   return B(`div`, {}, [

@@ -13,7 +13,7 @@ module Mint
 
         if char!('(')
           whitespace
-          highlight = word!("highlight")
+          highlight = keyword!("highlight")
           whitespace
 
           next error :here_doc_expected_closing_parenthesis do

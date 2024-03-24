@@ -4,7 +4,7 @@ module Mint
       compile node do
         add(node, node, compile(node.body))
 
-        [Asset.new(node)] of Item
+        [Deferred.new(node)] of Item
       end
     end
 

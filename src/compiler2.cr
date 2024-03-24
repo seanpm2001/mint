@@ -4,7 +4,7 @@ module Mint
 
     # Represents a compiled item
     alias Item = Ast::Node | Builtin | String | Signal | Indent | Raw |
-                 Variable | Ref | Encoder | Decoder | Asset
+                 Variable | Ref | Encoder | Decoder | Asset | Deferred
 
     # Represents an generated idetifier from the parts of the union type.
     alias Id = Ast::Node | Variable | Encoder | Decoder
@@ -13,7 +13,10 @@ module Mint
     alias Compiled = Array(Item)
 
     # Represents an reference to a file
-    record Asset, value : Ast::Node | Nil
+    record Asset, value : Ast::Node | Bundle
+
+    # Represents an reference to a deferred file
+    record Deferred, value : Ast::Node
 
     # Represents a Preact signal (https://preactjs.com/guide/v10/signals/). Signals are treated
     # differently from vaiables because we will need to access them using the `.value` accessor.
@@ -37,6 +40,10 @@ module Mint
 
     # Represents a variable.
     class Variable; end
+
+    enum Bundle
+      Index
+    end
 
     # Builtin functions in the runtime.
     enum Builtin
@@ -266,12 +273,14 @@ module Mint
               memo[item.as(Item)] = [item] of Item
             end
 
-        js.call(Builtin::Program, [
-          [component] of Item,
-          js.object(globals),
-          ok,
-          js.array(routes),
-        ])
+        ["export default "] + js.arrow_function do
+          js.call(Builtin::Program, [
+            [component] of Item,
+            js.object(globals),
+            ok,
+            js.array(routes),
+          ])
+        end
       end || [] of Item
     end
 

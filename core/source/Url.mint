@@ -38,27 +38,28 @@ module Url {
     `
   }
 
-  const ANCHOR = Dom.createElement("a")
-
   /*
   Parses the given string as an `Url`.
 
     Url.parse("https://www.example.com").host == "www.example.com"
   */
   fun parse (url : String) : Url {
+    let anchor =
+      Dom.createElement("a")
+
     `
     (() => {
-      #{ANCHOR}.href = #{url}
+      #{anchor}.href = #{url}
 
       return #{{
-        hostname: `#{ANCHOR}.hostname || ""`,
-        protocol: `#{ANCHOR}.protocol || ""`,
-        origin: `#{ANCHOR}.origin || ""`,
-        path: `#{ANCHOR}.pathname || ""`,
-        search: `#{ANCHOR}.search || ""`,
-        hash: `#{ANCHOR}.hash || ""`,
-        host: `#{ANCHOR}.host || ""`,
-        port: `#{ANCHOR}.port || ""`
+        hostname: `#{anchor}.hostname || ""`,
+        protocol: `#{anchor}.protocol || ""`,
+        origin: `#{anchor}.origin || ""`,
+        path: `#{anchor}.pathname || ""`,
+        search: `#{anchor}.search || ""`,
+        hash: `#{anchor}.hash || ""`,
+        host: `#{anchor}.host || ""`,
+        port: `#{anchor}.port || ""`
       }}
     })()
     `

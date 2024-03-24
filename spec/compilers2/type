@@ -22,7 +22,7 @@ component Main {
 import {
   newVariant as I,
   variant as B
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   A = B(1),

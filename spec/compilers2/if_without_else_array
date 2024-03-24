@@ -6,7 +6,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-import { compare as B } from "/__mint__/runtime.js";
+import { compare as B } from "./runtime.js";
 
 export const A = () => {
   return (B(`asd`, `asd2`) ? [`ARRAY`] : [])

@@ -18,7 +18,7 @@ component Main {
 import {
   identity as B,
   encoder as A
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const
   a = A({

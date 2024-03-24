@@ -12,7 +12,7 @@ import {
   translations as C,
   translate as B,
   locale as D
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const A = () => {
   return B(`test`)

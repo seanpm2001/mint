@@ -13,7 +13,7 @@ component Main {
 import {
   createElement as C,
   compare as B
-} from "/__mint__/runtime.js";
+} from "./runtime.js";
 
 export const A = () => {
   return (() => {

@@ -3,6 +3,10 @@
 // functions when comparing two values.
 export const Equals = Symbol("Equals");
 
+if (typeof Node === "undefined") {
+  self.Node = class {}
+}
+
 // We use regular functions instead of arrow functions because they have
 // binding (this, arguments, etc...).
 Boolean.prototype[Equals] =

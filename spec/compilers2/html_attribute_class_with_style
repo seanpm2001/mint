@@ -15,7 +15,7 @@ component Main {
 }
 
 ---=== /__mint__/index.js ===---
-import { createElement as B } from "/__mint__/runtime.js";
+import { createElement as B } from "./runtime.js";
 
 export const A = () => {
   return B(`div`, {

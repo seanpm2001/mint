@@ -171,16 +171,16 @@ module Mint
     def word!(expected : String) : Bool
       if word?(expected)
         @position += expected.size
-
-        if expected.chars.all?(&.ascii_lowercase?) &&
-           !expected.blank? &&
-           expected != "or"
-          @ast.keywords << {position - expected.size, position}
-        end
-
         true
       else
         false
+      end
+    end
+
+    # Consumes a word and saves it as a keyword for syntax highlighting.
+    def keyword!(expected : String) : Bool
+      word!(expected).tap do |result|
+        @ast.keywords << {position - expected.size, position} if result
       end
     end
 

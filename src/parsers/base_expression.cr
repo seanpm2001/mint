@@ -94,7 +94,7 @@ module Mint
             when '('
               call(left)
             when '['
-              array_access(left)
+              bracket_access(left)
             end
           end
 

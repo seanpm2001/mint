@@ -228,6 +228,7 @@ module Mint
            Ast::MemberAccess,
            Ast::BoolLiteral,
            Ast::LocaleKey,
+           Ast::Variable,
            Ast::Builtin,
            Ast::Comment,
            Ast::Env
@@ -317,8 +318,7 @@ module Mint
         build(node.expression, node)
       when Ast::Directives::Format
         build(node.content, node)
-      when Ast::Variable
-      when Ast::ArrayAccess
+      when Ast::BracketAccess
         build(node.expression, node)
 
         case node.index

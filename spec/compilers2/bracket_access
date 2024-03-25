@@ -18,7 +18,7 @@ component Main {
 }
 --------------------------------------------------------------------------------
 import {
-  arrayAccess as E,
+  bracketAccess as E,
   variant as B
 } from "./runtime.js";
 

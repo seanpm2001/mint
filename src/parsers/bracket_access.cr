@@ -1,22 +1,22 @@
 module Mint
   class Parser
-    def array_access(expression : Ast::Node) : Ast::ArrayAccess?
+    def bracket_access(expression : Ast::Node) : Ast::BracketAccess?
       parse do |start_position|
         next unless char! '['
         whitespace
 
-        next error :array_access_expected_index do
-          expected "the index of an array access", word
+        next error :bracket_access_expected_index do
+          expected "the index of a bracket access", word
           snippet self
         end unless index = self.expression
         whitespace
 
-        next error :array_access_expected_closing_bracket do
-          expected "the closing bracket of an array access", word
+        next error :bracket_access_expected_closing_bracket do
+          expected "the closing bracket of a bracket access", word
           snippet self
         end unless char! ']'
 
-        Ast::ArrayAccess.new(
+        Ast::BracketAccess.new(
           expression: expression,
           from: start_position,
           to: position,

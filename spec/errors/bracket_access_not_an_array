@@ -10,7 +10,7 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-░ ERROR (ARRAY_ACCESS_NOT_AN_ARRAY) ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░ ERROR (BRACKET_ACCESS_NOT_AN_ARRAY) ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 The entity you are trying to access an item from is not an array or a tuple.
 
@@ -24,8 +24,8 @@ Instead it is:
 
 The array in question is here:
 
-   ┌ ./spec/errors/array_access_not_an_array:3:5
-   ├────────────────────────────────────────────
+   ┌ ./spec/errors/bracket_access_not_an_array:3:5
+   ├──────────────────────────────────────────────
   1│ component Main {
   2│   fun test : Maybe(String) {
   3│     {}[0]

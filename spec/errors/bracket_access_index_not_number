@@ -14,9 +14,9 @@ component Main {
   }
 }
 --------------------------------------------------------------------------------
-░ ERROR (ARRAY_ACCESS_INDEX_NOT_NUMBER) ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░ ERROR (BRACKET_ACCESS_INDEX_NOT_NUMBER) ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-The type of the index of an array access is not a number.
+The type of the index of a bracket access is not a number.
 
 I was expecting:
 
@@ -28,8 +28,8 @@ Instead it is:
 
 The index in question is here:
 
-    ┌ ./spec/errors/array_access_index_not_number:7:7
-    ├────────────────────────────────────────────────
+    ┌ ./spec/errors/bracket_access_index_not_number:7:7
+    ├──────────────────────────────────────────────────
    3│     [
    4│       "Hello",
    5│       "Blah",

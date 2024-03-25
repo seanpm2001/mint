@@ -1,6 +1,6 @@
 module Mint
   class Compiler2
-    def compile(node : Ast::ArrayAccess) : Compiled
+    def compile(node : Ast::BracketAccess) : Compiled
       compile node do
         expression =
           compile node.expression
@@ -14,7 +14,7 @@ module Mint
         if type.name == "Tuple" && node.index.is_a?(Ast::NumberLiteral)
           expression + js.array([index])
         else
-          js.call(Builtin::ArrayAccess, [expression, index, just, nothing])
+          js.call(Builtin::BracketAccess, [expression, index, just, nothing])
         end
       end
     end

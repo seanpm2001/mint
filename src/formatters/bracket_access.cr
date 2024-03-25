@@ -1,6 +1,6 @@
 module Mint
   class Formatter
-    def format(node : Ast::ArrayAccess) : String
+    def format(node : Ast::BracketAccess) : String
       index =
         format node.index
 

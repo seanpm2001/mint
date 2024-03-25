@@ -1,6 +1,6 @@
 module Mint
   class Compiler
-    def _compile(node : Ast::ArrayAccess) : String
+    def _compile(node : Ast::BracketAccess) : String
       type =
         cache[node.expression]
 

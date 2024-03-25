@@ -1,12 +1,12 @@
-----------------------------------------------------array_access_expected_index
+--------------------------------------------------bracket_access_expected_index
 component Main {
   fun render : String {
     array[
-------------------------------------------array_access_expected_closing_bracket
+----------------------------------------bracket_access_expected_closing_bracket
 component Main {
   fun render : String {
     array[0
---------------------------------------------------array_access_index_not_number
+------------------------------------------------bracket_access_index_not_number
 component Main {
   fun test : Maybe(String) {
     [
@@ -22,7 +22,7 @@ component Main {
     <div/>
   }
 }
-------------------------------------------------------array_access_not_an_array
+----------------------------------------------------bracket_access_not_an_array
 component Main {
   fun test : Maybe(String) {
     {}[0]
@@ -34,7 +34,7 @@ component Main {
     <div/>
   }
 }
------------------------------------------------------array_access_invalid_tuple
+---------------------------------------------------bracket_access_invalid_tuple
 component Main {
   fun test : Maybe(String) {
     {"Hello", ""}[2]

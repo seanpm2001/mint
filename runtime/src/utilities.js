@@ -4,7 +4,7 @@ import { signal } from "@preact/signals";
 
 // We need to have a different function for accessing array items because there
 // is no concept of `null` in Mint so we return `Just(a)` or `Nothing`.
-export const arrayAccess = (array, index, just, nothing) => {
+export const bracketAccess = (array, index, just, nothing) => {
   if (array.length >= index + 1 && index >= 0) {
     return new just(array[index]);
   } else {

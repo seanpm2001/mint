@@ -112,7 +112,7 @@ module Mint
 
       # Utilities.
       NormalizeEvent
-      ArrayAccess
+      BracketAccess
       Identity
       ToArray
       Compare
@@ -293,11 +293,13 @@ module Mint
       suites =
         compile(ast.suites)
 
-      js.new(Builtin::TestRunner, [
-        js.array(suites),
-        js.string(url),
-        js.string(id),
-      ])
+      ["export default "] + js.arrow_function do
+        js.new(Builtin::TestRunner, [
+          js.array(suites),
+          js.string(url),
+          js.string(id),
+        ])
+      end
     end
 
     # These functions are for looking up entities that the runtime uses

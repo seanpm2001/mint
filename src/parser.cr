@@ -224,7 +224,7 @@ module Mint
           ascii_letters_or_numbers
         end
 
-        next if char == '_'
+        next if char == '_' # If there is an underscore it's a constant...
         next unless name
 
         parse do

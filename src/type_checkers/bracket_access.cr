@@ -1,6 +1,6 @@
 module Mint
   class TypeChecker
-    def check(node : Ast::ArrayAccess) : Checkable
+    def check(node : Ast::BracketAccess) : Checkable
       index =
         node.index
 
@@ -19,7 +19,7 @@ module Mint
           parameter =
             type.parameters[index.value.to_i]?
 
-          error! :array_access_invalid_tuple do
+          error! :bracket_access_invalid_tuple do
             snippet(
               "The tuple have only #{type.parameters.size} members, but " \
               "you wanted to access the #{ordinal(index.value.to_i + 1)}" \
@@ -29,21 +29,21 @@ module Mint
 
           parameter
         else
-          check_array_access(expression, type)
+          check_bracket_access(expression, type)
         end
       end || begin
-        error! :array_access_index_not_number do
-          block "The type of the index of an array access is not a number."
+        error! :bracket_access_index_not_number do
+          block "The type of the index of a bracket access is not a number."
           expected NUMBER, index_type
           snippet "The index in question is here:", index
         end unless Comparer.compare(index_type, NUMBER)
 
-        check_array_access(expression, type)
+        check_bracket_access(expression, type)
       end
     end
 
-    def check_array_access(expression, type)
-      error! :array_access_not_an_array do
+    def check_bracket_access(expression, type)
+      error! :bracket_access_not_an_array do
         block "The entity you are trying to access an item from is not an " \
               "array or a tuple."
         expected "Array(a), Tuple(...)", type

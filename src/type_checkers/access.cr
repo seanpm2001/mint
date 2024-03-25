@@ -41,6 +41,10 @@ module Mint
       end
     end
 
+    # Maybe.Just -> Type Variant
+    # Maybe.isJust -> Entity function
+    # Html.Event.ADD -> Entity Constant
+    # (() { { a: "B" }}).a -> Record access
     def check(node : Ast::Access) : Checkable
       possibilities = [] of String
 

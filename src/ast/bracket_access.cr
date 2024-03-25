@@ -1,6 +1,6 @@
 module Mint
   class Ast
-    class ArrayAccess < Node
+    class BracketAccess < Node
       getter index, expression
 
       def initialize(@file : Parser::File,

@@ -1,11 +1,8 @@
 module Mint
   class TypeChecker
     def check(node : Ast::BracketAccess) : Checkable
-      index =
-        node.index
-
-      expression =
-        node.expression
+      index, expression =
+        node.index, node.expression
 
       type =
         resolve expression

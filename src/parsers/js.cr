@@ -6,7 +6,7 @@ module Mint
 
         value =
           many(parse_whitespace: false) do
-            raw('`') || interpolation
+            raw('`') || interpolation { builtin || expression }
           end
 
         next error :js_expected_closing_tick do

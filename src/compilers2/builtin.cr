@@ -3,8 +3,6 @@ module Mint
     def compile(node : Ast::Builtin) : Compiled
       compile node do
         case node.value
-        when "normalizeEvent"
-          [Builtin::NormalizeEvent] of Item
         when "decodeBoolean"
           [Builtin::DecodeBoolean] of Item
         when "decodeNumber"
@@ -19,20 +17,22 @@ module Mint
           [Builtin::DecodeMaybe] of Item
         when "decodeTime"
           [Builtin::DecodeTime] of Item
+        when "locale"
+          [Builtin::Locale, ".value"] of Item
+        when "normalizeEvent"
+          [Builtin::NormalizeEvent] of Item
+        when "createPortal"
+          [Builtin::CreatePortal] of Item
         when "testContext"
           [Builtin::TestContext] of Item
         when "testRender"
           [Builtin::TestRender] of Item
-        when "createPortal"
-          [Builtin::CreatePortal] of Item
+        when "setLocale"
+          [Builtin::SetLocale] of Item
         when "navigate"
           [Builtin::Navigate] of Item
         when "compare"
           [Builtin::Compare] of Item
-        when "setLocale"
-          [Builtin::SetLocale] of Item
-        when "locale"
-          [Builtin::Locale, ".value"] of Item
         when "nothing"
           nothing
         when "just"
@@ -42,7 +42,7 @@ module Mint
         when "ok"
           ok
         else
-          raise "Unkown builtin: #{node.value}!"
+          [] of Item
         end
       end
     end

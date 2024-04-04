@@ -1,13 +1,29 @@
 module Mint
   class TypeChecker
     def check(node : Ast::MemberAccess) : Checkable
-      variable =
-        Variable.new("a")
+      case type = resolve node.type
+      when Record
+        field =
+          type.fields[node.name.value]?
 
-      access =
-        PartialRecord.new("", {node.name.value => variable} of String => Checkable)
+        error! :member_access_field_not_found do
+          block do
+            text "The field"
+            bold node.name.value
+            text "does not exists on the type:"
+          end
 
-      Type.new("Function", [access, variable] of Checkable)
+          snippet type
+          snippet "The access in question is here:", node
+        end unless field
+
+        Type.new("Function", [type, field] of Checkable)
+      else
+        error! :member_access_not_record do
+          block "The type of the accessed entity is not a record."
+          snippet "The access in question is here:", node
+        end
+      end
     end
   end
 end

@@ -50,12 +50,14 @@ module Mint
           # interpolation parts together into a string.
           value =
             value
+              .gsub("\\", "\\\\")
               .split(separator)
               .map do |item|
                 raw =
                   item
                     .gsub('`', "\\`")
                     .gsub("${", "\\${")
+
                 [
                   Raw.new(raw),
                 ] of Item

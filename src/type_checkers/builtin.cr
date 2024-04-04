@@ -13,7 +13,7 @@ module Mint
         end
 
         snippet node
-      end unless node.value.in?
+      end unless node.value.in?(EXPOSED_BUILTINS)
 
       VOID
     end

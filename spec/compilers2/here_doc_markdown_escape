@@ -50,7 +50,7 @@ export const A = () => {
         ``,
         B('span', {
           className: "string"
-        }, [`"First line" \`]),
+        }, [`"First line" \\`]),
         `
 `
       ]),
@@ -60,7 +60,7 @@ export const A = () => {
         ``,
         B('span', {
           className: "string"
-        }, [`"Second line" \`]),
+        }, [`"Second line" \\`]),
         `
 `
       ]),

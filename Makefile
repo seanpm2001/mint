@@ -23,7 +23,7 @@ test: spec ameba
 
 .PHONY: test-core
 test-core: build
-	cd core/tests && ../../bin/mint test -b firefox -m
+	cd core/tests && ../../bin/mint test -b chrome
 
 .PHONY: development
 development: build

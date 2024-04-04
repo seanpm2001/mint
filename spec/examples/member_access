@@ -9,6 +9,6 @@ record Test {
 
 component Main {
   fun render : String {
-    .test({test: "Hello"})
+    .test(Test)({test: "Hello"})
   }
 }

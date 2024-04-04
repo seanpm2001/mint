@@ -1,6 +1,8 @@
 module Mint
   class Cli < Admiral::Command
     class SandboxServer < Admiral::Command
+      include Command
+
       define_help description: "Server for compiling sandbox applications."
 
       define_flag host : String,
@@ -14,8 +16,10 @@ module Mint
         short: "p"
 
       def run
-        server = Mint::SandboxServer.new(flags.host, flags.port)
-        server.start
+        execute "Running the sandbox server" do
+          # NOTE: The command and the server itself has the same name.
+          Mint::SandboxServer.new(flags.host, flags.port)
+        end
       end
     end
   end

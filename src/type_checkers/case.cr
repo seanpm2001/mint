@@ -27,6 +27,7 @@ module Mint
 
             unified_branch =
               Comparer.compare(type, resolved)
+
             error! :case_branch_not_matches do
               block do
                 text "The return type of the"

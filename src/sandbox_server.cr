@@ -15,10 +15,10 @@ module Mint
     struct Project
       include JSON::Serializable
 
+      getter activeFile : String
       getter files : Array(File)
-      getter? id : String?
 
-      def initialize(@files)
+      def initialize(@files, @activeFile)
       end
     end
 
@@ -42,39 +42,42 @@ module Mint
       end
     end
 
-    def initialize(@host = "0.0.0.0", @port = ENV["PORT"]?.try(&.to_i) || 8080, runtime_path : String? = nil)
-      @server = HTTP::Server.new([CORS.new]) do |context|
-        handle_request(context)
+    class Ide
+      class Message
+        include JSON::Serializable
+
+        property payload : JSON::Any
+        property type : String
       end
-      @formatter = Formatter.new
-      @core = Core.ast
-    end
 
-    def handle_request(context)
-      json =
-        Project.from_json(context.request.body.try(&.gets_to_end).to_s)
+      @socket : HTTP::WebSocket
+      @directory : Path
+      @id : String
 
-      case context.request.path
-      when "/compile"
-        Dir.tempdir do
-          json.files.each do |file|
-            ::File.write(file.path, file.contents)
-          end
+      def initialize(@socket)
+        @socket.on_message(&->handle_message(String))
+        @socket.on_close { close }
 
-          ::File.write("mint.json", {
-            "source-directories" => ["."],
-          }.to_json)
+        @id =
+          Random::Secure.hex
 
-          workspace = Workspace.current
-          workspace.update_cache
+        @directory =
+          Path[Dir.tempdir, Random::Secure.hex]
+            .tap(&->FileUtils.mkdir_p(Path))
 
+        ::File.write(Path[@directory, "mint.json"], {
+          "source-directories" => ["."],
+        }.to_json)
+
+        @workspace = Workspace.new(@directory.to_s)
+        @workspace.check_everything = false
+        @workspace.on "change" do |result|
           bundle =
-            if error = workspace.error
-              {"index.html" => ->{ error.to_html }}
-            else
+            case result
+            in Ast
               Bundler.new(
-                artifacts: workspace.type_checker.artifacts,
-                json: workspace.json,
+                artifacts: @workspace.type_checker.artifacts,
+                json: @workspace.json,
                 config: Bundler::Config.new(
                   generate_manifest: false,
                   include_program: true,
@@ -86,6 +89,8 @@ module Mint
                   optimize: true,
                   test: nil),
               ).bundle
+            in Error
+              {"index.html" => ->{ result.to_html }}
             end
 
           io =
@@ -98,38 +103,101 @@ module Mint
           end
 
           io.rewind
-          HTTP::Client.post("https://#{json.id?}.sandbox.mint-lang.com/", body: io)
+          HTTP::Client.post("https://#{@id}.sandbox.mint-lang.com/", body: io)
+          @socket.send({type: "reload", url: "https://#{@id}.sandbox.mint-lang.com/"}.to_json)
         end
+      end
 
-        context.response.content_type = "application/json"
-        context.response.print({
-          "url" => "https://#{json.id?}.sandbox.mint-lang.com/",
-        }.to_json)
-      when "/format"
-        formatted_files =
-          json.files.map do |file|
+      def handle_message(raw : String)
+        message =
+          Message.from_json(raw)
+
+        case message.type
+        when "update"
+          Project.from_json(message.payload.to_json).tap do |project|
+            project.files.each do |file|
+              ::File.write(Path[@directory, file.path], file.contents)
+            end
+            @workspace.reset_cache
+            highlight(project.activeFile)
+          end
+        end
+      rescue
+      end
+
+      def highlight(path)
+        tokens =
+          begin
             ast =
-              Parser.parse(file.contents, file.path)
+              Parser.parse(Path[@directory, path].to_s)
 
-            formatted =
-              @formatter.format(ast)
+            contents =
+              ::File.read(Path[@directory, path].to_s)
 
-            File.new(contents: formatted, path: file.path)
+            SemanticTokenizer.new.tap(&.tokenize(ast)).tokens.map do |token|
+              type =
+                case token.type
+                in SemanticTokenizer::TokenType::TypeParameter
+                  :type_parameter
+                in SemanticTokenizer::TokenType::Type
+                  :type
+                in SemanticTokenizer::TokenType::Namespace
+                  :namespace
+                in SemanticTokenizer::TokenType::Property
+                  :property
+                in SemanticTokenizer::TokenType::Keyword
+                  :keyword
+                in SemanticTokenizer::TokenType::Comment
+                  :comment
+                in SemanticTokenizer::TokenType::Variable
+                  :variable
+                in SemanticTokenizer::TokenType::Operator
+                  :operator
+                in SemanticTokenizer::TokenType::String
+                  :string
+                in SemanticTokenizer::TokenType::Number
+                  :number
+                in SemanticTokenizer::TokenType::Regexp
+                  :regexp
+                end
+
+              {
+                from: token.from,
+                to:   token.to,
+                type: type,
+              }
+            end
+          rescue e
+            [] of String
           end
 
-        context.response.content_type = "application/json; charset=utf-8"
-        context.response.print({
-          "files" => formatted_files,
-        }.to_json)
+        @socket.send({type: "highlight", tokens: tokens}.to_json)
+      end
+
+      def close
+        FileUtils.rm_rf(@directory)
       end
     end
 
-    def start
-      address =
-        @server.bind_tcp @host, @port
+    def initialize(host, port)
+      server =
+        HTTP::Server.new(
+          [
+            CORS.new,
+            HTTP::WebSocketHandler.new { |socket| Ide.new(socket) },
+          ])
 
-      puts "Listening on http://#{address}"
-      @server.listen
+      Server.run(
+        server: server,
+        port: port,
+        host: host
+      ) do |host, port|
+        terminal.puts "#{COG} Sandbox server started on http://#{host}:#{port}/"
+      end
+    end
+
+    def terminal
+      Render::Terminal::STDOUT
     end
   end
 end

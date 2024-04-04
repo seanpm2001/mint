@@ -18,7 +18,7 @@ component Main {
         name: "Doe"
       }
     ]
-    |> Array.map(.name)
+    |> Array.map(.name(X))
 
     "asd"
   }

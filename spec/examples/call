@@ -123,14 +123,14 @@ component Main {
     Test.b()
   }
 }
-----------------------------------------------------call_argument_type_mismatch
+--------------------------------------------------member_access_field_not_found
 record Test {
   test : String
 }
 
 component Main {
   fun render : String {
-    .asd({test: "Hello"})
+    .asd(Test)({test: "Hello"})
   }
 }
 ------------------------------------------------------------call_not_a_function

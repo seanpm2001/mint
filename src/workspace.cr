@@ -269,7 +269,7 @@ module Mint
       @event_handlers[event]?.try(&.each(&.call(arg)))
     end
 
-    private def reset_cache
+    def reset_cache
       @cache = {} of String => Ast
       update_cache
     end

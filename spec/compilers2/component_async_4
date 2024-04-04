@@ -1,0 +1,67 @@
+component Content {
+  property fontSize : Number = 18
+
+  fun render : Html {
+    <div>
+      "#{fontSize}px"
+    </div>
+  }
+}
+
+async component Test {
+  property test : String = ""
+
+  fun render : Html {
+    <Content fontSize={16}/>
+  }
+}
+
+component Main {
+  fun render : Html {
+    <div>
+      <Content/>
+      <Test/>
+    </div>
+  }
+}
+--------------------------------------------------------------------------------
+---=== /__mint__/index.js ===---
+import {
+  lazyComponent as F,
+  createElement as B,
+  lazy as D
+} from "./runtime.js";
+
+export const
+  A = ({
+    a = 18
+  }) => {
+    return B(`div`, {}, [`${a}px`])
+  },
+  C = D(`./1.js`),
+  E = () => {
+    return B(`div`, {}, [
+      B(A, {}),
+      B(F, {
+        key: `Test`,
+        x: C,
+        p: {},
+        c: []
+      })
+    ])
+  };
+
+---=== /__mint__/1.js ===---
+import { createElement as B } from "./runtime.js";
+
+import { A as C } from "./index.js";
+
+export const A = ({
+  a = ``
+}) => {
+  return B(C, {
+    a: 16
+  })
+};
+
+export default A;

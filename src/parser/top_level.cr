@@ -76,7 +76,6 @@ module Mint
             store ||
             suite ||
             test ||
-            type ||
             get ||
             use ||
             statement ||

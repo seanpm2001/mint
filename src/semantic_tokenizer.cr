@@ -153,12 +153,21 @@ module Mint
       add(node.tag, TokenType::Namespace)
     end
 
-    def tokenize(node : Ast::StringLiteral)
+    def tokenize(node : Ast::StringLiteral | Ast::HereDocument)
       if node.value.size == 0
         add(node, TokenType::String)
       else
         position =
-          node.from
+          case node
+          when Ast::HereDocument
+            if node.highlight
+              node.from + node.token.size + 14
+            else
+              node.from + node.token.size + 3
+            end
+          else
+            node.from
+          end
 
         node.value.each_with_index do |item, index|
           last =
@@ -182,7 +191,12 @@ module Mint
 
             position =
               if last
-                node.to
+                case node
+                when Ast::HereDocument
+                  node.to - node.token.size
+                else
+                  node.to
+                end
               else
                 position + item.size
               end

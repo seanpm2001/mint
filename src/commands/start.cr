@@ -16,7 +16,7 @@ module Mint
 
       define_flag host : String,
         description: "The host to serve the application on.",
-        default: ENV["HOST"]? || "127.0.0.1",
+        default: ENV["HOST"]? || "0.0.0.0",
         short: "h"
 
       define_flag port : Int32,

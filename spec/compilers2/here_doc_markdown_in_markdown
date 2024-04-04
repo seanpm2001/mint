@@ -1,0 +1,29 @@
+component Main {
+  fun render : Html {
+    <<#MARKDOWN(highlight)
+    ~~~mint
+    <<#MD(highlight)
+    This is a paragraph.
+
+    ```mint
+    module Mint {
+      // This will be syntax highlighted
+    }
+    ```
+    MD
+    ~~~
+    MARKDOWN
+  }
+}
+--------------------------------------------------------------------------------
+import {
+  createElement as B,
+  fragment as C
+} from "./runtime.js";
+
+export const A = () => {
+  return B(C, {}, [
+    B('h2', {}, [`Hello There`]),
+    B('p', {}, [`WTF`])
+  ])
+};

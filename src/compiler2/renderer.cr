@@ -73,7 +73,7 @@ module Mint
           scope =
             case parent = item.parent
             when Ast::Component
-              parent if parent.async?
+              parent if parent.async? || item.is_a?(Ast::Property)
             end || base
 
           used.add(item)

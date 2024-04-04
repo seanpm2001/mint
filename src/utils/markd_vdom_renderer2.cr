@@ -36,7 +36,7 @@ module Mint
           if node == separator
             replacements.shift
           else
-            js.string(node)
+            js.string(node.gsub("\\", "\\\\"))
           end
         in Node
           attributes =

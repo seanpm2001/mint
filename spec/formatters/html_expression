@@ -1,15 +1,29 @@
 component Test {
+  property test : Html
+
   fun render : Html {
-    <div><{
-  "Hello There" + "!"}>
-    </div>
+    test
+  }
+}
+
+component Main {
+  fun render : Html {
+    <Test test=<{
+  "Hello There" + "!"}>>
+    </Test>
   }
 }
 --------------------------------------------------------------------------------
 component Test {
+  property test : Html
+
   fun render : Html {
-    <div>
-      <{ "Hello There" + "!" }>
-    </div>
+    test
+  }
+}
+
+component Main {
+  fun render : Html {
+    <Test test=<{ "Hello There" + "!" }>/>
   }
 }

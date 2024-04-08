@@ -36,6 +36,7 @@ module Mint
               snippet self
             end unless item = self.type || type_variable
             whitespace
+
             item
           end
 

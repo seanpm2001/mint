@@ -225,7 +225,7 @@ module Mint
            Ast::TypeDestructuring,
            Ast::NumberLiteral,
            Ast::RegexpLiteral,
-           Ast::MemberAccess,
+           Ast::FieldAccess,
            Ast::BoolLiteral,
            Ast::LocaleKey,
            Ast::Variable,
@@ -297,15 +297,14 @@ module Mint
       when Ast::Operation
         build(node.left, node)
         build(node.right, node)
-      when Ast::ReturnCall,
+      when Ast::HtmlExpression,
+           Ast::ReturnCall,
            Ast::Constant,
            Ast::Access
         build(node.expression, node)
       when Ast::Pipe
         build(node.expression, node)
         build(node.argument, node)
-      when Ast::HtmlExpression
-        build(node.expressions, node)
       when Ast::HtmlFragment
         build(node.children, node)
       when Ast::HtmlAttribute

@@ -1,7 +1,7 @@
 module Mint
   class Ast
     class HtmlStyle < Node
-      getter name, arguments
+      getter arguments, name
 
       property style_node : Ast::Style? = nil
 

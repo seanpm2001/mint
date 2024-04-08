@@ -1,19 +1,5 @@
 module Mint
   class Compiler2
-    # TODO:
-    # def _compile(node : Ast::HtmlComponent) : String
-    #   if hash = static_value(node)
-    #     name =
-    #       static_components_pool.of(hash, nil)
-
-    #     static_components[name] ||= compile_html_component(node)
-
-    #     "$#{name}()"
-    #   else
-    #     compile_html_component(node)
-    #   end
-    # end
-
     def compile(node : Ast::HtmlComponent) : Compiled
       compile node do
         component =
@@ -42,10 +28,10 @@ module Mint
           js.call(Builtin::CreateElement, [
             [Builtin::LazyComponent] of Item,
             js.object({
-              "key" => js.string(component.name.value),
-              "x"   => [component] of Item,
-              "p"   => js.object(attributes),
               "c"   => children || js.array([] of Compiled),
+              "key" => js.string(component.name.value),
+              "p"   => js.object(attributes),
+              "x"   => [component] of Item,
             }),
           ])
         else

@@ -1,10 +1,10 @@
 module Mint
   class Ast
     class HtmlExpression < Node
-      getter expressions
+      getter expression
 
-      def initialize(@expressions : Array(Node),
-                     @file : Parser::File,
+      def initialize(@file : Parser::File,
+                     @expression : Node,
                      @from : Int64,
                      @to : Int64)
       end

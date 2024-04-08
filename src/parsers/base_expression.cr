@@ -22,7 +22,7 @@ module Mint
         when '#'
           tuple_literal
         when '.'
-          member_access
+          field_access
         when '['
           array_literal
         when ':'
@@ -39,8 +39,7 @@ module Mint
             svg_directive ||
             env
         when '<'
-          html_expression ||
-            html_component ||
+          html_component ||
             here_document ||
             html_element ||
             html_fragment

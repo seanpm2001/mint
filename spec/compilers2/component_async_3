@@ -55,16 +55,16 @@ export const
   D = () => {
     return E(`div`, {}, [
       E(F, {
+        c: [],
         key: `First`,
-        x: A,
         p: {},
-        c: []
+        x: A
       }),
       E(F, {
+        c: [],
         key: `Second`,
-        x: C,
         p: {},
-        c: []
+        x: C
       }),
       b()
     ])

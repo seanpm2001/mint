@@ -15,7 +15,7 @@ component Test.Locale {
 }
 
 suite "Locale" {
-  test "BadUrl" {
+  test "Translates" {
     <Test.Locale/>
     |> Test.Html.start()
     |> Test.Html.assertTextOf("div", "Hello World!")

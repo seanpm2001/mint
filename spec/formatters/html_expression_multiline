@@ -1,18 +1,33 @@
 component Test {
+  property test : Html
+
   fun render : Html {
-    <div><{
-  "Hello ThereHello ThereHello ThereHello " \ "ThereHello ThereHello ThereHello ThereHello ThereHello ThereHello There"}>
-    </div>
+    test
+  }
+}
+
+component Main {
+  fun render : Html {
+    <Test test=<{
+  "Hello ThereHello ThereHello ThereHello " \ "ThereHello ThereHello ThereHello ThereHello ThereHello ThereHello There"}>>
+    </Test>
   }
 }
 --------------------------------------------------------------------------------
 component Test {
+  property test : Html
+
   fun render : Html {
-    <div>
-      <{
+    test
+  }
+}
+
+component Main {
+  fun render : Html {
+    <Test
+      test=<{
         "Hello ThereHello ThereHello ThereHello ThereHello ThereH" \
         "ello ThereHello ThereHello ThereHello ThereHello There"
-      }>
-    </div>
+      }>/>
   }
 }

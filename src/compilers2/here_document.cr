@@ -39,8 +39,7 @@ module Mint
             highlight: node.highlight,
             separator: separator,
             document: document,
-            js: js,
-          )
+            js: js)
         else
           if node.modifier == '~'
             value = value.shrink_to_minimum_leading_whitespace

@@ -47,13 +47,13 @@ component Main {
 -----------------------------------------------------html_content_type_mismatch
 component Main {
   fun render : Html {
-    <div><{ 0 }></div>
+    <div>0</div>
   }
 }
 -------------------------------------------------------------------------------
 component Main {
   fun render : Html {
-    <div><{ "Hello" }></div>
+    <div>"Hello"</div>
   }
 }
 -------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ component Main {
       Maybe::Nothing => ""
     }
 
-    <div as test><{ "Hello" }></div>
+    <div as test>"Hello"</div>
   }
 }
 -------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ enum Maybe(a) {
 
 component Test {
   fun render : Html {
-    <div as test><{ "Hello" }></div>
+    <div as test>"Hello"</div>
   }
 }
 

@@ -54,10 +54,10 @@ export const
       a(),
       b(),
       D(E, {
+        c: [],
         key: `Test`,
-        x: A,
         p: {},
-        c: []
+        x: A
       })
     ])
   };

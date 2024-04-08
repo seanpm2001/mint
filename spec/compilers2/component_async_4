@@ -43,10 +43,10 @@ export const
     return B(`div`, {}, [
       B(A, {}),
       B(F, {
+        c: [],
         key: `Test`,
-        x: C,
         p: {},
-        c: []
+        x: C
       })
     ])
   };

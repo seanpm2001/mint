@@ -26,8 +26,8 @@ module Mint
         Ast::Js.new(
           from: start_position,
           value: value,
-          type: type,
           to: position,
+          type: type,
           file: file)
       end
     end

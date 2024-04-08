@@ -66,10 +66,13 @@ module Mint
         when Ast::Statement
           case target = statement.target
           when Ast::Node
-            match(statement.expression, [
-              {target, truthy},
-              {nil, falsy},
-            ], statement.await)
+            match(
+              statement.expression,
+              [
+                {target, truthy},
+                {nil, falsy},
+              ],
+              statement.await)
           else
             js.tenary(compile(statement.expression), truthy, falsy)
           end

@@ -1,7 +1,7 @@
 module Mint
   class Ast
     class HereDocument < Node
-      getter value, token, modifier, highlight
+      getter highlight, modifier, token, value
 
       def initialize(@value : Array(String | Interpolation),
                      @file : Parser::File,

@@ -170,6 +170,7 @@ module Mint
             bundle_path: ->path_for_bundle(Ast::Node | Bundle),
             deferred_path: ->bundle_name(Ast::Node | Bundle),
             class_pool: class_pool,
+            bundles: bundles,
             base: node,
             pool: pool)
 

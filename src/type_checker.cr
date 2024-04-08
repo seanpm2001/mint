@@ -49,6 +49,13 @@ module Mint
       BOOL,
     ] of Checkable
 
+    VALID_HTML = [
+      TEXT_CHILDREN,
+      HTML_CHILDREN,
+      STRING,
+      HTML,
+    ] of Checkable
+
     getter records, artifacts, formatter, web_components
     getter? check_everything
 

@@ -14,8 +14,8 @@ module Mint
         if char!('(')
           whitespace
           highlight = keyword!("highlight")
-          whitespace
 
+          whitespace
           next error :here_doc_expected_closing_parenthesis do
             expected "the closing parenthesis of here document flags", word
             snippet self

@@ -37,16 +37,16 @@ export const
   D = () => {
     return E(`div`, {}, [
       E(F, {
+        c: [],
         key: `First`,
-        x: A,
         p: {},
-        c: []
+        x: A
       }),
       E(F, {
+        c: [],
         key: `Second`,
-        x: C,
         p: {},
-        c: []
+        x: C
       })
     ])
   };
@@ -71,10 +71,10 @@ import { A as D } from "./index.js";
 export const A = () => {
   return B(`div`, {}, [
     B(C, {
+      c: [],
       key: `First`,
-      x: D,
       p: {},
-      c: []
+      x: D
     }),
     `Second`
   ])

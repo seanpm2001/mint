@@ -11,7 +11,7 @@ component Test.Promise {
   fun render : Html {
     <div>
       <result>
-        <{ result }>
+        result
       </result>
 
       <resolve onClick={(event : Html.Event) : Promise(Void) { resolve() }}/>
@@ -38,7 +38,7 @@ component Test.Promise2 {
   fun render : Html {
     <div>
       <result>
-        <{ result }>
+        result
       </result>
 
       <resolve onClick={(event : Html.Event) { resolve("resolved") }}/>

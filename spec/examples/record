@@ -9,7 +9,7 @@ component Main {
 
   fun render : Html {
     <div>
-      <{ data.name }>
+      data.name
     </div>
   }
 }
@@ -19,7 +19,7 @@ component Test {
 
   fun render : Html {
     <div>
-      <{ data.name }>
+      data.name
     </div>
   }
 }
@@ -96,7 +96,7 @@ component Main {
 
   fun render : Html {
     <div>
-      <{ data.name }>
+      data.name
     </div>
   }
 }

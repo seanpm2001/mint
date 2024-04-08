@@ -15,10 +15,11 @@ module Mint
     struct Project
       include JSON::Serializable
 
-      getter activeFile : String
+      @[JSON::Field(key: "activeFile")]
+      getter active_file : String
       getter files : Array(File)
 
-      def initialize(@files, @activeFile)
+      def initialize(@files, @active_file)
       end
     end
 
@@ -119,7 +120,7 @@ module Mint
               ::File.write(Path[@directory, file.path], file.contents)
             end
             @workspace.reset_cache
-            highlight(project.activeFile)
+            highlight(project.active_file)
           end
         end
       rescue
@@ -130,9 +131,6 @@ module Mint
           begin
             ast =
               Parser.parse(Path[@directory, path].to_s)
-
-            contents =
-              ::File.read(Path[@directory, path].to_s)
 
             SemanticTokenizer.new.tap(&.tokenize(ast)).tokens.map do |token|
               type =
@@ -191,8 +189,8 @@ module Mint
         server: server,
         port: port,
         host: host
-      ) do |host, port|
-        terminal.puts "#{COG} Sandbox server started on http://#{host}:#{port}/"
+      ) do |resolved_host, resolved_port|
+        terminal.puts "#{COG} Sandbox server started on http://#{resolved_host}:#{resolved_port}/"
       end
     end
 

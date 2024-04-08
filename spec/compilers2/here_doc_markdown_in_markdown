@@ -22,8 +22,63 @@ import {
 } from "./runtime.js";
 
 export const A = () => {
-  return B(C, {}, [
-    B('h2', {}, [`Hello There`]),
-    B('p', {}, [`WTF`])
-  ])
+  return B(C, {}, [B('pre', {}, [B('code', {
+    class: "language-mint"
+  }, [
+    B('span', {
+      className: "line"
+    }, [
+      `<<#MD(`,
+      B('span', {
+        className: "keyword"
+      }, [`highlight`]),
+      `)`,
+      B('span', {
+        className: "string"
+      }, [``])
+    ]),
+    B('span', {
+      className: "line"
+    }, [B('span', {
+      className: "string"
+    }, [`This is a paragraph.`])]),
+    B('span', {
+      className: "line"
+    }, [B('span', {
+      className: "string"
+    }, [``])]),
+    B('span', {
+      className: "line"
+    }, [B('span', {
+      className: "string"
+    }, [`\`\`\`mint`])]),
+    B('span', {
+      className: "line"
+    }, [B('span', {
+      className: "string"
+    }, [`module Mint {`])]),
+    B('span', {
+      className: "line"
+    }, [B('span', {
+      className: "string"
+    }, [`  // This will be syntax highlighted`])]),
+    B('span', {
+      className: "line"
+    }, [B('span', {
+      className: "string"
+    }, [`}`])]),
+    B('span', {
+      className: "line"
+    }, [B('span', {
+      className: "string"
+    }, [`\`\`\``])]),
+    B('span', {
+      className: "line"
+    }, [
+      B('span', {
+        className: "string"
+      }, [``]),
+      `MD`
+    ])
+  ])])])
 };

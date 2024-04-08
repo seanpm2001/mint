@@ -1,12 +1,14 @@
 module Mint
   class TypeChecker
+    # TODO: Show all possible types that can be...
     def here_doc_interpolation_type_mismatch(
+      *,
+      node : Ast::Node,
       type : Checkable,
-      got : Checkable,
-      node : Ast::Node
+      got : Checkable
     )
       error! :here_doc_interpolation_type_mismatch do
-        block "An interpolation in here document is causing a mismatch."
+        block "An interpolation in a here document is causing a mismatch."
         expected type, got
         snippet "The interpolation in question is here:", node
       end
@@ -21,8 +23,8 @@ module Mint
               resolve item
 
             here_doc_interpolation_type_mismatch(
-              type: HTML,
               got: item_type,
+              type: HTML,
               node: item,
             ) unless Comparer.matches_any?(item_type, [STRING, NUMBER, HTML])
           end
@@ -37,8 +39,8 @@ module Mint
               resolve item
 
             here_doc_interpolation_type_mismatch(
-              type: STRING,
               got: item_type,
+              type: STRING,
               node: item,
             ) unless Comparer.matches_any?(item_type, [STRING, NUMBER])
           end

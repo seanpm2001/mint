@@ -31,25 +31,25 @@ component ScrollTest {
   fun render : Html {
     <div::base>
       <scroll-width>
-        <{ Number.toString(scrollWidth) }>
+        Number.toString(scrollWidth)
       </scroll-width>
 
       "|"
 
       <scroll-height>
-        <{ Number.toString(Window.scrollHeight()) }>
+        Number.toString(Window.scrollHeight())
       </scroll-height>
 
       "|"
 
       <scroll-left>
-        <{ Number.toString(scrollLeft) }>
+        Number.toString(scrollLeft)
       </scroll-left>
 
       "|"
 
       <scroll-top>
-        <{ Number.toString(scrollTop) }>
+        Number.toString(scrollTop)
       </scroll-top>
     </div>
   }

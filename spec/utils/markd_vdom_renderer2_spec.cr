@@ -111,6 +111,7 @@ describe Mint::Compiler2::VDOMRenderer2 do
 
         js_renderer =
           Mint::Compiler2::Renderer.new(
+            bundles: {} of Mint::Ast::Node | Mint::Compiler2::Bundle => Array(Tuple(Mint::Ast::Node, Mint::Compiler2::Id, Mint::Compiler2::Compiled)),
             deferred_path: ->(_node : Mint::Ast::Node | Mint::Compiler2::Bundle) { "" },
             bundle_path: ->(_node : Mint::Ast::Node | Mint::Compiler2::Bundle) { "" },
             base: Mint::Compiler2::Bundle::Index,

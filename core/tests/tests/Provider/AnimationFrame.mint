@@ -14,7 +14,7 @@ component Test.Provider.AnimationFrame {
 
   fun render : Html {
     <div>
-      <{ Number.toString(frames) }>
+      Number.toString(frames)
     </div>
   }
 }

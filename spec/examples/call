@@ -123,16 +123,6 @@ component Main {
     Test.b()
   }
 }
---------------------------------------------------member_access_field_not_found
-record Test {
-  test : String
-}
-
-component Main {
-  fun render : String {
-    .asd(Test)({test: "Hello"})
-  }
-}
 ------------------------------------------------------------call_not_a_function
 component Main {
   const A = "a"
@@ -142,7 +132,7 @@ component Main {
       A("A is a String constant, but calling it like a function compiles")
 
     <div>
-      <{ a }>
+      a
     </div>
   }
 }

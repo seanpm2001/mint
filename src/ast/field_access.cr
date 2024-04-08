@@ -1,6 +1,6 @@
 module Mint
   class Ast
-    class MemberAccess < Node
+    class FieldAccess < Node
       getter name, type
 
       def initialize(@file : Parser::File,

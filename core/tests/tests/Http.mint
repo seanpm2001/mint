@@ -323,15 +323,15 @@ component Test.Http {
   fun render : Html {
     <div>
       <error>
-        <{ errorMessage }>
+        errorMessage
       </error>
 
       <content>
-        <{ body }>
+        body
       </content>
 
       <status>
-        <{ Number.toString(status) }>
+        Number.toString(status)
       </status>
     </div>
   }

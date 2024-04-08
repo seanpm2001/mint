@@ -7,10 +7,7 @@ module Mint
       value =
         compile node.value
 
-      downcase_name =
-        node.name.value.downcase
-
-      if downcase_name == "readonly" && is_element
+      if node.name.value.downcase == "readonly" && is_element
         {"readOnly".as(Item) => value}
       elsif lookups[node]?.try(&.first?)
         {lookups[node][0].as(Item) => value}

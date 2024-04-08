@@ -8,7 +8,7 @@ component Thing {
 
 component Main {
   fun render {
-    <Thing things=<{"x"}>/>
+    <Thing things=<>"x"</>/>
   }
 }
 --------------------------------------------------------------------------------

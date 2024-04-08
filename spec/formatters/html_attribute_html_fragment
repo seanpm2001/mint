@@ -3,8 +3,8 @@ component Test {
 
   fun render : Html {
     <div>
-      <Test things=<{"x"}>/>
-      <Test things=<{<></>}>/>
+      <Test things=<>"x"</>/>
+      <Test things=<></>/>
     </div>
   }
 }
@@ -14,8 +14,8 @@ component Test {
 
   fun render : Html {
     <div>
-      <Test things=<{ "x" }>/>
-      <Test things=<{ <></> }>/>
+      <Test things=<>"x"</>/>
+      <Test things=<></>/>
     </div>
   }
 }

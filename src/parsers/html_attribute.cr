@@ -14,7 +14,7 @@ module Mint
         end unless char! '='
 
         case
-        when word?("<{") && (value = html_expression)
+        when word?("<>") && (value = html_fragment)
           value
         when char == '"' && (value = string_literal)
           value

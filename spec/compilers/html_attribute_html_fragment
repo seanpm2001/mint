@@ -8,7 +8,7 @@ component Thing {
 
 component Main {
   fun render {
-    <Thing things=<{"x"}>/>
+    <Thing things=<>"x"</>/>
   }
 }
 --------------------------------------------------------------------------------
@@ -33,12 +33,12 @@ A.displayName = "Thing";
 
 class B extends _C {
   render() {
-    return $a();
+    return _h(A, {
+      a: _h(React.Fragment, {}, [
+        `x`
+      ])
+    });
   }
 };
 
 B.displayName = "Main";
-
-const $a = _m(() => _h(A, {
-  a: `x`
-}));

@@ -297,8 +297,7 @@ module Mint
       when Ast::Operation
         build(node.left, node)
         build(node.right, node)
-      when Ast::HtmlExpression,
-           Ast::ReturnCall,
+      when Ast::ReturnCall,
            Ast::Constant,
            Ast::Access
         build(node.expression, node)

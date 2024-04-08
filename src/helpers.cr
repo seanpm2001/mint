@@ -84,8 +84,7 @@ module Mint
         static?(node.value)
       when Ast::Block
         static?(node.expressions)
-      when Ast::HtmlExpression,
-           Ast::Statement
+      when Ast::Statement
         static?(node.expression)
       when Ast::HtmlComponent
         node.ref.nil? &&
@@ -123,8 +122,7 @@ module Mint
         "#{node.name.value}=#{static_value(node.value)}"
       when Ast::Block
         static_value(node.expressions)
-      when Ast::HtmlExpression,
-           Ast::Statement
+      when Ast::Statement
         static_value(node.expression)
       when Ast::RegexpLiteral
         "/#{node.value}/#{node.flags.split.uniq.join}"

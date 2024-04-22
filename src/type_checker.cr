@@ -59,7 +59,6 @@ module Mint
     getter records, artifacts, formatter, web_components
     getter? check_everything
 
-    property component_stack = [] of Ast::Node
     property? checking = true
 
     delegate checked, record_field_lookup, component_records, to: artifacts
@@ -77,10 +76,6 @@ module Mint
     @referee : Ast::Node?
 
     @record_name_char : String = 'A'.pred.to_s
-
-    @ref_stack = {} of Ast::Node => Array(Ast::Node)
-    @refs = [] of Ast::Node
-
     @stack = [] of Ast::Node
 
     def initialize(ast : Ast, @check_env = true, @web_components = [] of String, @check_everything = true)
@@ -236,62 +231,14 @@ module Mint
     # --------------------------------------------------------------------------
 
     def track_references(node)
-      return unless checking?
-
-      # Already tracked
-      if cache[node]?
-        @ref_stack[node]?.try(&.each do |child|
-          # If we hit a defer we break out of the loop
-          # since it will always be in a different file.
-          case child
-          when Ast::Defer
-            break
-          else
-            track_references(child)
-          end
-        end)
-      end
-
-      references[node] ||= Set(Ast::Node | Nil).new
-
-      # case node
-      # when Ast::Function
-      #   if node.name.value == "walk"
-      #     puts "TRACK STACK #{Debugger.dbg(node)}"
-      #     print_stack
-      #     @ref_stack[node]?.try(&.each { |child| Debugger.dbg(child) })
-      #     component_stack.each do |item|
-      #       puts Debugger.dbg(item)
-      #     end
-      #     # pp caller.reverse
-      #   end
-      # end
-
-      if component_stack.empty?
-        references[node].add(nil)
-      else
-        component_stack.reverse_each do |component|
-          references[node].add(component)
-
-          # If we hit a defer we break out of the loop
-          # since it will always be that defers file (
-          # which we added above)
-          case component
-          when Ast::Defer
-            break
-          end
-        end
+      if last = @stack.last?
+        return if node.is_a?(Ast::Connect)
+        # puts "Linking #{Debugger.dbg(node)} -> #{Debugger.dbg(last)}"
+        references.add(last, node)
       end
     end
 
     def check!(node)
-      case node
-      when Ast::Function, Ast::Component
-        if index = @refs.index(node)
-          @ref_stack[node] = @refs[(index + 1)..]
-        end
-      end
-
       resolve_order << node
       checked.add(node) if checking?
     end
@@ -316,7 +263,7 @@ module Mint
             node: node) if @stack.none? { |item| item.is_a?(Ast::Function) || item.is_a?(Ast::InlineFunction) } &&
                            @top_level_entity.try { |item| owns?(node, item) }
 
-          save_ref(node)
+          # save_ref(node)
           track_references(node)
           cached
         else
@@ -338,12 +285,12 @@ module Mint
               referee: @referee.not_nil!,
               node: node) if @top_level_entity.try { |item| owns?(node, item) }
 
+            track_references(node)
             @stack.push node
-            save_ref(node)
+
+            # save_ref(node)
 
             result = check(node, *args).as(Checkable)
-
-            track_references(node)
 
             cache[node] = result
             check! node
@@ -353,13 +300,6 @@ module Mint
             result
           end
         end
-      end
-    end
-
-    def save_ref(node)
-      case node
-      when Ast::Function, Ast::Constant, Ast::State, Ast::Get, Ast::TypeVariant
-        @refs.push node
       end
     end
 

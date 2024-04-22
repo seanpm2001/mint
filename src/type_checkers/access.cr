@@ -78,7 +78,8 @@ module Mint
           when Array(Ast::TypeVariant)
             if option = fields.find(&.value.value.==(node.field.value))
               variables[node] = {option, parent}
-              check!(parent)
+              # puts({Debugger.dbg(parent), Debugger.dbg(node)})
+              resolve(parent)
               return to_function_type(option, parent)
             end
           end

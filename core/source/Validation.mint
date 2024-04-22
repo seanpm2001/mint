@@ -209,7 +209,7 @@ module Validation {
         case item {
           Maybe.Just(error) =>
             {
-              let #(key, message) =
+              let {key, message} =
                 error
 
               let messages =

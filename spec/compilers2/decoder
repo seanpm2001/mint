@@ -42,24 +42,24 @@ import {
 
 export const
   A = B(1),
-  C = B(1),
+  C = B(0),
   D = B(1),
-  E = B(0),
+  E = B(1),
   a = F({
     size: [
-      G(C, A),
+      G(E, D),
       "SIIIZEEE"
     ]
-  }, C, A),
+  }, E, D),
   b = F({
-    maybe: H(I(C, A), C, A, D, E),
-    array: J(I(C, A), C, A),
-    string: I(C, A),
-    number: G(C, A),
-    bool: K(C, A),
-    time: L(C, A),
+    maybe: H(I(E, D), E, D, A, C),
+    array: J(I(E, D), E, D),
+    string: I(E, D),
+    number: G(E, D),
+    bool: K(E, D),
+    time: L(E, D),
     y: a
-  }, C, A),
+  }, E, D),
   M = () => {
     b(undefined);
     return ``

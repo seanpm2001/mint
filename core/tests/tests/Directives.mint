@@ -20,7 +20,7 @@ suite "@svg" {
 
 suite "@format" {
   test "returns the formatter source" {
-    let #(value, formatted) =
+    let {value, formatted} =
       @format {
         {
           "Hello World!"

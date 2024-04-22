@@ -26,6 +26,6 @@ export const
   D = B(1),
   E = B(1),
   F = () => {
-    G(A, C, new A(), `Hello`);
+    G(A, D, new A(), `Hello`);
     return ``
   };

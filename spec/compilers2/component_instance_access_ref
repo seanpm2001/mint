@@ -36,12 +36,12 @@ import {
 } from "./runtime.js";
 
 export const
-  A = B(0),
-  C = B(1),
+  A = B(1),
+  C = B(0),
   D = ({
     _
   }) => {
-    const a = E(new A());
+    const a = E(new C());
     const b = F(() => {
       return {
         a
@@ -49,24 +49,24 @@ export const
     }, []);
     (_ ? _(b) : null);
     return G(`div`, {
-      ref: H(a, C)
+      ref: H(a, A)
     })
   },
   I = () => {
     const
-      c = E(new A()),
+      c = E(new C()),
       d = () => {
         return J(c.current, [
           [
-            K(C, [L]),
+            K(A, [L]),
             (e) => {
               return e.a.current
             }
           ],
           [
-            K(A, []),
+            K(C, []),
             () => {
-              return new A()
+              return new C()
             }
           ]
         ])
@@ -74,6 +74,6 @@ export const
     return G(`div`, {
       "onClick": d
     }, [G(D, {
-      _: H(c, C)
+      _: H(c, A)
     })])
   };

@@ -12,7 +12,7 @@ module Mint
         when '('
           parenthesized_expression || inline_function
         when '-', .ascii_number?
-          number_literal || unary_minus
+          state_setter || number_literal || unary_minus
         when '!'
           negated_expression
         when '"'

@@ -27,7 +27,7 @@ module Mint
                 snippet self
               end if items.none?(Ast::Test | Ast::Constant)
             }
-          ) { many { function || test || constant || comment } }
+          ) { many { function || constant || test || comment } }
 
         next unless body
 

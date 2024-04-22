@@ -19,11 +19,11 @@ provider Provider.Intersection : Provider.Intersection.Subscription {
     */
     let currentObservers =
       for item of observers {
-        let #(subscription, observer) =
+        let {subscription, observer} =
           item
 
         if Array.contains(subscriptions, subscription) {
-          Maybe.Just(#(subscription, observer))
+          Maybe.Just({subscription, observer})
         } else {
           case subscription.element {
             Maybe.Just(observed) =>
@@ -44,14 +44,14 @@ provider Provider.Intersection : Provider.Intersection.Subscription {
         case subscription.element {
           Maybe.Just(observed) =>
             Maybe.Just(
-              #(
+              {
                 subscription,
                 IntersectionObserver.new(
                   subscription.rootMargin,
                   subscription.threshold,
                   subscription.callback)
                 |> IntersectionObserver.observe(observed)
-              ))
+              })
 
           => Maybe.Nothing
         }

@@ -227,6 +227,7 @@ module Mint
            Ast::RegexpLiteral,
            Ast::FieldAccess,
            Ast::BoolLiteral,
+           Ast::StateSetter,
            Ast::LocaleKey,
            Ast::Variable,
            Ast::Builtin,

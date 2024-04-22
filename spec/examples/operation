@@ -50,7 +50,18 @@ component Main {
     true + "Hello"
   }
 }
-
+---------------------------------------------------operation_bool_type_mismatch
+component Main {
+  fun render : String {
+    true && "Hello"
+  }
+}
+---------------------------------------------------operation_bool_type_mismatch
+component Main {
+  fun render : String {
+    "Hello" && true
+  }
+}
 -----------------------------------------------------operation_or_type_mismatch
 enum Maybe(a) {
   Nothing

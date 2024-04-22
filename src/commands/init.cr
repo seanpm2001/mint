@@ -19,7 +19,7 @@ module Mint
           loop do
             terminal.puts "Please provide a name for the project (for example my-project):"
             break if name = gets.presence
-          end
+          end unless name
 
           Scaffold.new(name: name, bare: flags.bare) if name
         end

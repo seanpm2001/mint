@@ -22,12 +22,12 @@ import {
 } from "./runtime.js";
 
 export const
-  A = B(0),
-  C = B(1),
+  A = B(1),
+  C = B(0),
   D = () => {
-    return E(F(C)(``), [
+    return E(F(A)(``), [
       [
-        G(C, [H]),
+        G(A, [H]),
         (a) => {
           return a
         }

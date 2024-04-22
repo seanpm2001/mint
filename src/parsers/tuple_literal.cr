@@ -2,36 +2,19 @@ module Mint
   class Parser
     def tuple_literal : Ast::TupleLiteral?
       parse do |start_position|
-        # TODO: Remove this branch in 0.21.0 when deprecation ends.
-        if char! '{'
-          whitespace
-          next unless head = expression
-          whitespace
+        next unless char! '{'
 
-          next unless char! ','
+        whitespace
+        next unless head = expression
 
-          items =
-            list(terminator: '}', separator: ',') { expression }
+        whitespace
+        next unless char! ','
 
-          whitespace
-          next unless char! '}'
-        elsif word!("#(")
-          whitespace
-          next unless head = expression
-          whitespace
+        items =
+          list(terminator: '}', separator: ',') { expression }
 
-          next unless char! ','
-
-          items = list(terminator: '}', separator: ',') { expression }
-          whitespace
-
-          next error :tuple_literal_expected_closing_parenthesis do
-            expected "the closing parenthesis of a tuple", word
-            snippet self
-          end unless char! ')'
-        else
-          next
-        end
+        whitespace
+        next unless char! '}'
 
         items.unshift(head)
 

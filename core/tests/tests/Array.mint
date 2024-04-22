@@ -123,7 +123,7 @@ suite "Array.find" {
 suite "Array.findByAndMap" {
   test "finds the first item that matches the predicate and returns the second value of the tuple" {
     ([1, 2, 3, 4, 5, 6]
-    |> Array.findByAndMap((number : Number) { #(number == 3, "Three") })
+    |> Array.findByAndMap((number : Number) { {number == 3, "Three"} })
     |> Maybe.withDefault("")) == "Three"
   }
 }

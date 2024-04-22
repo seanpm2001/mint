@@ -1,7 +1,7 @@
 module Mint
   class Ast
     class Route < Node
-      getter url, expression, arguments
+      getter expression, arguments, url
 
       def initialize(@arguments : Array(Argument),
                      @file : Parser::File,

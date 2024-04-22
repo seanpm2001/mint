@@ -39,15 +39,14 @@ export const
     return F(`div`, {}, [``])
   };
 
+---=== /__mint__/1.js ===---
+export const a = [`./2.js`];
+
+export default a;
+
 ---=== /__mint__/2.js ===---
 export const
   a = `Hello`,
   b = a;
 
 export default b;
-
----=== /__mint__/1.js ===---
-export const a = [`./2.js`];
-
-export default a;
-

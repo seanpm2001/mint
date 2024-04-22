@@ -21,7 +21,7 @@ provider Provider.Mouse : Provider.Mouse.Subscription {
         (
           methods : Tuple(Function(Void), Function(Void), Function(Void))
         ) {
-          let #(clickListener, moveListener, upListener) =
+          let {clickListener, moveListener, upListener} =
             methods
 
           clickListener()
@@ -37,7 +37,7 @@ provider Provider.Mouse : Provider.Mouse.Subscription {
             {
               listeners:
                 Maybe.Just(
-                  #(
+                  {
                     Window.addEventListener(
                       "click",
                       true,
@@ -71,7 +71,7 @@ provider Provider.Mouse : Provider.Mouse.Subscription {
                           subscription.ups(event)
                         }
                       })
-                  ))
+                  })
             }
 
         => next { }

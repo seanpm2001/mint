@@ -15,7 +15,7 @@ provider Provider.Keyboard : Provider.Keyboard.Subscription {
       Maybe.map(
         listeners,
         (methods : Tuple(Function(Void), Function(Void))) {
-          let #(keydownListener, keyupListener) =
+          let {keydownListener, keyupListener} =
             methods
 
           keydownListener()
@@ -30,7 +30,7 @@ provider Provider.Keyboard : Provider.Keyboard.Subscription {
             {
               listeners:
                 Maybe.Just(
-                  #(
+                  {
                     Window.addEventListener(
                       "keydown",
                       true,
@@ -47,7 +47,7 @@ provider Provider.Keyboard : Provider.Keyboard.Subscription {
                           subscription.ups(event)
                         }
                       })
-                  ))
+                  })
             }
 
         => next { }

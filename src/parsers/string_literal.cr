@@ -18,7 +18,7 @@ module Mint
           snippet self
         end unless char! '"'
 
-        # Lookahead to see if there is a backslash (string separator), if
+        # Look ahead to see if there is a backslash (string separator), if
         # parsing fails it will track the whitespace back.
         broken =
           parse do

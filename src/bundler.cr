@@ -1,3 +1,5 @@
+require "csv"
+
 module Mint
   # This class is responsible for compiling and building the application.
   class Bundler
@@ -52,7 +54,6 @@ module Mint
 
       # Gather all top level entities and resolve them, this will populate the
       # `compiled` instance variable of the compiler.
-      # entities =
       (artifacts.ast.type_definitions +
         artifacts.ast.unified_modules +
         artifacts.ast.components +
@@ -86,73 +87,42 @@ module Mint
       ids =
         compiler.compiled.map { |(_, id, _)| id }
 
-      # We iterate through all references and decide in which bundle they
-      # belong. All nodes that needs to be compiled should be in the
-      # references map.
-      artifacts.references.map do |node, set|
-        # Gather all related nodes.
-        nodes =
-          compiler.compiled.select { |item| item[1] == node }
+      # Calculate the bundles.
+      artifacts.references.calculate(artifacts.ast.nodes.to_set)
 
-        # Delete the nodes so we know after which was not used so we can
-        # add it to the main bundle.
-        nodes.each { |item| compiler.compiled.delete(item) }
-
-        case node
-        when Ast::Defer
-          bundles[node] ||= [] of Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled)
-          bundles[node].concat(nodes)
-        when Ast::Component
-          # We put async components into their own bundle.
-          if node.async?
-            bundles[node] ||= [] of Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled)
-            bundles[node].concat(nodes)
-
-            # Add the lazy component definition to the main bundle.
-            bundles[Bundle::Index] << {
-              node,
-              node,
-              compiler.js.call(
-                Compiler2::Builtin::Lazy,
-                [[Compiler2::Deferred.new(node)] of Compiler2::Item]),
-            }
+      # Here we separate the compiled items to each bundle.
+      artifacts.references.bundles.each do |node, dependencies|
+        bundles[node] =
+          dependencies.flat_map do |dependency|
+            compiler.compiled.select { |item| item[0] == dependency }
           end
-        end ||
-          # If a node used in the main bundle or it two or more bundles then
-          # it will go into the main bundle. Otherwise it will go to the
-          # the bundle it's used from.
-          if set.includes?(nil) || (!set.includes?(nil) && set.size >= 2)
-            bundles[Bundle::Index].concat(nodes)
-          elsif first = set.first
-            bundles[first] ||= [] of Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled)
-            bundles[first].concat(nodes)
 
-            # Assign the scope to the node
-            scopes[node] = first
+        bundles[node].try(&.each do |item|
+          case node
+          when Ast::Node
+            scopes[item[0]] = node
           end
+        end)
       end
 
-      # Add not already added items to the main bundle.
-      bundles[Bundle::Index].concat(compiler.compiled)
-
-      # bundles.each do |node, items|
-      #   entities =
-      #     items.compact_map do |item|
-      #       if item[0] == node
-      #         next if node.is_a?(Ast::Defer)
-      #       else
-      #         next if item[0].is_a?(Ast::Component) &&
-      #                 item[0].as(Ast::Component).async?
-      #       end
-
-      #       Debugger.dbg(item[0])
-      #     end
-
-      #   puts compiler.path_for_bundle(node)
-      #   entities.sort.each do |item|
-      #     puts " > #{item}"
-      #   end
-      # end
+      # Here we add async components to a bundle so they can be loaded
+      # and referenced in the virtual DOM.
+      artifacts
+        .ast
+        .nodes
+        .select(Ast::HtmlComponent)
+        .select(&.component_node.try(&.async?))
+        .map { |item| {item.component_node.not_nil!, artifacts.references.bundle_of(item)} }
+        .uniq!
+        .map do |(component, bundle)|
+          bundles[bundle]?.try(&.unshift({
+            component,
+            component,
+            compiler.js.call(
+              Compiler2::Builtin::Lazy,
+              [[Compiler2::Deferred.new(component)] of Compiler2::Item]),
+          }))
+        end
 
       class_pool =
         NamePool(Ast::Node | Compiler2::Builtin, Ast::Node | Bundle).new('A'.pred.to_s)
@@ -169,8 +139,8 @@ module Mint
           Compiler2::Renderer.new(
             bundle_path: ->path_for_bundle(Ast::Node | Bundle),
             deferred_path: ->bundle_name(Ast::Node | Bundle),
+            references: artifacts.references,
             class_pool: class_pool,
-            bundles: bundles,
             base: node,
             pool: pool)
 
@@ -184,9 +154,9 @@ module Mint
             # will prevent issues of one entity depending on others (like a const
             # depending on a function from a module).
             contents.sort_by! do |(node, id, _)|
-              case node
+              case id
               when Ast::TypeVariant
-                -2 if node.value.value.in?("Just", "Nothing", "Err", "Ok")
+                -2 if id.value.value.in?("Just", "Nothing", "Err", "Ok")
               end || artifacts.resolve_order.index(node) || -1
             end
 
@@ -226,6 +196,11 @@ module Mint
             # other entities show up here like function arguments statement
             # variables, etc...)
             next unless ids.includes?(item)
+
+            case item
+            when Ast::Component
+              next if item.async?
+            end
 
             # Get where the entity should be.
             target =
@@ -409,6 +384,8 @@ module Mint
 
       if Dir.exists?(PUBLIC_DIR)
         Dir.glob(Path[PUBLIC_DIR, "**", "*"]).each do |path|
+          next if File.directory?(path)
+
           parts =
             Path[path].parts.tap(&.shift)
 

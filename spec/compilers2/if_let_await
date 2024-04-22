@@ -26,14 +26,14 @@ import {
 } from "./runtime.js";
 
 export const
-  A = B(0),
-  C = B(1),
+  A = B(1),
+  C = B(0),
   D = () => {
     (async () => {
-      let a = await E(C)(``);
+      let a = await E(A)(``);
       return F(a, [
         [
-          G(C, [H]),
+          G(A, [H]),
           (b) => {
             return b
           }

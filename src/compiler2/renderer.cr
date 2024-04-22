@@ -14,7 +14,7 @@ module Mint
       # A set to track used builtins which will be imported.
       getter builtins = Set(Builtin).new
 
-      getter bundles : Hash(Ast::Node | Bundle, Array(Tuple(Ast::Node, Compiler2::Id, Compiler2::Compiled)))
+      getter references : ReferencesTracker
       getter base : Ast::Node | Bundle
 
       getter deferred_path : Proc(Ast::Node | Bundle, String)
@@ -23,7 +23,7 @@ module Mint
       # The current indentation depth.
       property depth : Int32 = 0
 
-      def initialize(*, @base, @pool, @class_pool, @bundle_path, @deferred_path, @bundles)
+      def initialize(*, @base, @pool, @class_pool, @bundle_path, @deferred_path, @references)
       end
 
       def import(imports : Hash(String, String), optimize : Bool, path : String)
@@ -72,11 +72,9 @@ module Mint
           io << "#{pool.of(item.value, base)}.current"
         in Ast::Node
           scope =
-            case parent = item.parent
-            when Ast::Component
-              # If a component has it's own bundle or the current bundle
-              # doen't have the component.
-              parent if bundles[parent]? || !bundles[base].find(&.first.==(parent))
+            case item
+            when Ast::Property
+              references.bundle_of(item)
             end || base
 
           used.add(item)
@@ -87,6 +85,7 @@ module Mint
                Ast::Component,
                Ast::Provider
             io << class_pool.of(item, scope)
+            # io << "/* #{Debugger.dbg(item)} */"
           else
             io << pool.of(item, scope)
           end

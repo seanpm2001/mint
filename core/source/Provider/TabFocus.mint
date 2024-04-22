@@ -48,7 +48,7 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
       Maybe.map(
         listeners,
         (methods : Tuple(Function(Void), Function(Void))) {
-          let #(keyDownListener, keyUpListener) =
+          let {keyDownListener, keyUpListener} =
             methods
 
           keyDownListener()
@@ -63,10 +63,10 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
             {
               listeners:
                 Maybe.Just(
-                  #(
+                  {
                     Window.addEventListener("keydown", true, handleKeyDown),
                     Window.addEventListener("keyup", true, handleKeyUp)
-                  ))
+                  })
             }
 
         => next { }

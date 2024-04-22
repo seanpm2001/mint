@@ -21,7 +21,7 @@ provider Provider.Pointer : Provider.Pointer.Subscription {
         (
           methods : Tuple(Function(Void), Function(Void), Function(Void))
         ) {
-          let #(downListener, moveListener, upListener) =
+          let {downListener, moveListener, upListener} =
             methods
 
           downListener()
@@ -37,7 +37,7 @@ provider Provider.Pointer : Provider.Pointer.Subscription {
             {
               listeners:
                 Maybe.Just(
-                  #(
+                  {
                     Window.addEventListener(
                       "pointerdown",
                       true,
@@ -71,7 +71,7 @@ provider Provider.Pointer : Provider.Pointer.Subscription {
                           subscription.ups(event)
                         }
                       })
-                  ))
+                  })
             }
 
         => next { }

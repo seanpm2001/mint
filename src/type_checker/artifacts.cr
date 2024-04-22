@@ -6,7 +6,6 @@ module Mint
       getter scope, components_touched, references
 
       def initialize(@ast : Ast,
-                     @references = {} of Ast::Node => Set(Ast::Node | Nil),
                      @component_records = {} of Ast::Component => Record,
                      @components_touched = Set(Ast::Component).new,
                      @record_field_lookup = {} of Ast::Node => String,
@@ -18,6 +17,7 @@ module Mint
                      @resolve_order = [] of Ast::Node,
                      @checked = Set(Ast::Node).new)
         @scope = Scope.new(@ast)
+        @references = ReferencesTracker.new
       end
     end
   end

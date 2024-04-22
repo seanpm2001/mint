@@ -31,17 +31,17 @@ import {
 } from "./runtime.js";
 
 export const
-  A = B(0),
-  C = B([
+  A = B([
     "matchString",
     "content",
     "key"
   ]),
+  C = B(0),
   D = () => {
-    const a = E(C)(`MATCHSTRING`, `CONTENT`, `KEY`);
+    const a = E(A)(`MATCHSTRING`, `CONTENT`, `KEY`);
     return F(a, [
       [
-        G(C, H([[
+        G(A, H([[
           `content`,
           I
         ]])),
@@ -50,7 +50,7 @@ export const
         }
       ],
       [
-        G(A, []),
+        G(C, []),
         () => {
           return ``
         }

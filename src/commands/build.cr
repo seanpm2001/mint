@@ -108,8 +108,8 @@ module Mint
               end
 
               terminal.divider
-              terminal.puts "Files: #{files.size}"
               terminal.puts "Bundle size: #{bundle_size.humanize_bytes(format: :JEDEC)}"
+              terminal.puts "Files: #{files.size}"
             in Error
               terminal.print result.to_terminal
             end

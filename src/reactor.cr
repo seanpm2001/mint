@@ -69,6 +69,7 @@ module Mint
 
       server =
         HTTP::Server.new([
+          HTTP::CompressHandler.new,
           websocket_handler,
         ]) do |context|
           # Handle the request depending on the result.

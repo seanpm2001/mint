@@ -1,3 +1,13 @@
+component First {
+  property prop : String = ""
+
+  fun render : Html {
+    <div>
+      prop
+    </div>
+  }
+}
+
 component Content {
   property fontSize : Number = 18
 
@@ -10,6 +20,8 @@ component Content {
 
 async component Test {
   property test : String = ""
+  property test2 : String = ""
+  property test3 : String = ""
 
   fun render : Html {
     <Content fontSize={16}/>
@@ -19,6 +31,7 @@ async component Test {
 component Main {
   fun render : Html {
     <div>
+      <First prop="blah"/>
       <Content/>
       <Test/>
     </div>
@@ -27,26 +40,34 @@ component Main {
 --------------------------------------------------------------------------------
 ---=== /__mint__/index.js ===---
 import {
-  lazyComponent as F,
+  lazyComponent as G,
   createElement as B,
-  lazy as D
+  lazy as E
 } from "./runtime.js";
 
 export const
   A = ({
-    a = 18
+    a = ``
   }) => {
-    return B(`div`, {}, [`${a}px`])
+    return B(`div`, {}, [a])
   },
-  C = D(`./1.js`),
-  E = () => {
+  C = ({
+    b = 18
+  }) => {
+    return B(`div`, {}, [`${b}px`])
+  },
+  D = E(`./1.js`),
+  F = () => {
     return B(`div`, {}, [
-      B(A, {}),
-      B(F, {
+      B(A, {
+        a: `blah`
+      }),
+      B(C, {}),
+      B(G, {
         c: [],
         key: `Test`,
         p: {},
-        x: C
+        x: D
       })
     ])
   };
@@ -54,13 +75,15 @@ export const
 ---=== /__mint__/1.js ===---
 import { createElement as B } from "./runtime.js";
 
-import { A as C } from "./index.js";
+import { C } from "./index.js";
 
 export const A = ({
-  a = ``
+  a = ``,
+  b = ``,
+  c = ``
 }) => {
   return B(C, {
-    a: 16
+    b: 16
   })
 };
 

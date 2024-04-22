@@ -62,22 +62,23 @@ export default A;
 
 ---=== /__mint__/2.js ===---
 import {
-  lazyComponent as C,
-  createElement as B
+  lazyComponent as E,
+  createElement as D,
+  lazy as B
 } from "./runtime.js";
 
-import { A as D } from "./index.js";
+export const
+  A = B(`./1.js`),
+  C = () => {
+    return D(`div`, {}, [
+      D(E, {
+        c: [],
+        key: `First`,
+        p: {},
+        x: A
+      }),
+      `Second`
+    ])
+  };
 
-export const A = () => {
-  return B(`div`, {}, [
-    B(C, {
-      c: [],
-      key: `First`,
-      p: {},
-      x: D
-    }),
-    `Second`
-  ])
-};
-
-export default A;
+export default C;

@@ -1,29 +1,32 @@
 module Mint
   class Debugger
     def self.dbg(node)
+      name =
+        node.class.name.sub("Mint::Ast::", "")
+
       case x = node
+      when Ast::Route
+        "Route (#{x.url})"
       when Ast::Component
         "<#{x.name.value}>"
-      when Ast::Module, Ast::Store, Ast::Provider
+      when Ast::Module, Ast::Store, Ast::Provider, Ast::Type
         x.name.value
-      when Ast::Function, Ast::Constant, Ast::Get, Ast::State
-        "#{dbg(x.parent)}.#{x.name.value}"
-      when Ast::Block
-        "{block}"
-      when Ast::Access
-        "{access .#{x.field.value}}"
-      when Ast::Statement
-        name =
-          case target = x.target
-          when Ast::Variable
-            " #{target.value}"
+      when Ast::TypeDefinition
+        "TD: #{x.name.value}"
+      when Ast::TypeVariant
+        dbg(x.parent) + "." + x.value.value
+      when Ast::Function, Ast::Constant, Ast::Get, Ast::State, Ast::Property
+        pn =
+          case y = x.parent
+          when Ast::Component, Ast::Module, Ast::Store, Ast::Provider
+            y.name.value
+          else
+            ""
           end
 
-        "{statement#{name}}"
-      when Ast::Route
-        "{route #{x.url}}"
+        "#{pn}.#{x.name.value}"
       else
-        x.class.name
+        name
       end
     end
 

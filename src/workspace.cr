@@ -224,7 +224,6 @@ module Mint
 
     def update(contents, file)
       self[file] = process(contents, file)
-      check!
       @error = nil
 
       call "change", ast

@@ -32,11 +32,6 @@ component Main {
     }
   }
 }
--------------------------------tuple_destructuring_expected_closing_parenthesis
-component Main {
-  fun render : String {
-    case #("a", "b") {
-      #(a, b, c
 ----------------------------------------------------destructuring_type_mismatch
 component Main {
   fun render : String {

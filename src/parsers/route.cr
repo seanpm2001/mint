@@ -8,12 +8,14 @@ module Mint
           if char! '*'
             "*"
           else
-            gather { chars { |char| !char.in?(' ', '\n', '\r', '\t', '{', '(') } }.to_s
+            gather do
+              chars { |char| !char.in?(' ', '\n', '\r', '\t', '{', '(') }
+            end.to_s
           end
 
         arguments = [] of Ast::Argument
-
         whitespace
+
         if char! '('
           arguments =
             list(terminator: ')', separator: ',') do

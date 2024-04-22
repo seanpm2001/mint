@@ -28,12 +28,12 @@ export const
   A = B(1),
   C = B(0),
   D = B(0),
-  E = B(2),
+  E = B(1),
   F = B(1),
-  G = B(1),
+  G = B(2),
   H = () => {
-    new D();
-    I(E)(``, ``);
-    I(F)(I(G)(``));
+    new C();
+    I(G)(``, ``);
+    I(E)(I(F)(``));
     return ``
   };

@@ -388,7 +388,7 @@ module Dom {
         let hash =
           String.parameterize(text)
 
-        #(tag, text, hash)
+        {tag, text, hash}
       })
   }
 

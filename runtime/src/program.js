@@ -136,7 +136,7 @@ class Program {
   }
 
   // Handles navigation events.
-  handlePopState(event) {
+  async handlePopState(event) {
     const url =
       window.location.pathname + window.location.search + window.location.hash;
 
@@ -148,7 +148,8 @@ class Program {
         routeInfo.url !== this.routeInfo.url ||
         !equals(routeInfo.vars, this.routeInfo.vars)
       ) {
-        this.runRouteHandler(routeInfo);
+        const handler = this.runRouteHandler(routeInfo);
+        if (routeInfo.route.await) { await handler }
       }
 
       this.resolvePagePosition(!!event?.triggerJump);
@@ -158,13 +159,14 @@ class Program {
   }
 
   // Helper function for above.
-  runRouteHandler(routeInfo) {
+  async runRouteHandler(routeInfo) {
     const { route } = routeInfo;
 
     if (route.path === "*") {
-      route.handler();
+      return route.handler();
     } else {
       const { vars } = routeInfo;
+
       try {
         let args = route.mapping.map((name, index) => {
           const value = vars[name];
@@ -177,7 +179,7 @@ class Program {
           }
         });
 
-        route.handler.apply(null, args);
+        return route.handler.apply(null, args);
       } catch (error) {
         if (error.constructor !== DecodingError) {
           throw error;

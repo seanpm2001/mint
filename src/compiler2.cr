@@ -191,8 +191,7 @@ module Mint
       if touched.includes?(node) || !node.in?(artifacts.checked)
         [] of Item
       else
-        touched.add(node)
-        yield
+        yield.tap { touched.add(node) }
       end
     end
 

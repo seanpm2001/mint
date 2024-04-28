@@ -30,6 +30,9 @@ module Mint
           whitespace
         end
 
+        await = keyword! "await"
+        whitespace
+
         body =
           block(
             ->{ error :route_expected_opening_bracket do
@@ -51,6 +54,7 @@ module Mint
           arguments: arguments,
           from: start_position,
           expression: body,
+          await: await,
           to: position,
           file: file,
           url: url)

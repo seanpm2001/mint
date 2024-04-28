@@ -20,12 +20,13 @@ module Mint
 
         handler =
           if async?(node.expression)
-            js.async_arrow_function(arguments) { expression }
+            js.async_arrow_function(arguments) { js.return(expression) }
           else
-            js.arrow_function(arguments) { expression }
+            js.arrow_function(arguments) { js.return(expression) }
           end
 
         js.object({
+          "await"    => [node.await.to_s] of Item,
           "path"     => js.string(node.url),
           "decoders" => js.array(decoders),
           "mapping"  => js.array(mapping),

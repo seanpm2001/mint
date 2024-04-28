@@ -40,7 +40,6 @@ module Window {
       const query = window.matchMedia(#{query});
       const listener = (event) => #{listener}(query.matches);
       query.addListener(listener)
-      #{listener}(query.matches)
       return () => query.removeListener(listener);
     })()
     `

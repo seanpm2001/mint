@@ -273,13 +273,16 @@ module Mint
               VOID
             when Ast::Function, Ast::InlineFunction
               static_type_signature(node)
-            else
+            when Ast::State
+              if type = node.type
+                resolve type
+              end
+            end ||
               error! :recursion do
                 snippet "Recursion is only supported in specific cases " \
                         "at this time. Unfortunatly here is not supported:", node
                 snippet "The previous step in the recursion was here:", @stack.last
               end
-            end
           else
             invalid_self_reference(
               referee: @referee.not_nil!,

@@ -6,6 +6,10 @@ suite "Map literal" {
         "c" => "d"
       }) == 2
   }
+
+  test "accesses the map" {
+    { "a" => "b" }["a"] == Maybe.Just("b")
+  }
 }
 
 suite "Map with enums" {

@@ -2,6 +2,19 @@ import { createRef as createRefOriginal, Component, createElement } from "preact
 import { useEffect, useRef, useMemo } from "preact/hooks";
 import { signal } from "@preact/signals";
 
+import { compare } from "./equality";
+
+// This finds the first element matching the key in a map ([[key, value]]).
+export const mapAccess = (map, key, just, nothing) => {
+  for (const item of map) {
+    if (compare(item[0], key)) {
+      return new just(item[1])
+    }
+  }
+
+  return new nothing();
+}
+
 // We need to have a different function for accessing array items because there
 // is no concept of `null` in Mint so we return `Just(a)` or `Nothing`.
 export const bracketAccess = (array, index, just, nothing) => {

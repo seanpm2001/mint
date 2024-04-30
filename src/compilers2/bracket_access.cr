@@ -14,7 +14,14 @@ module Mint
         if type.name == "Tuple" && node.index.is_a?(Ast::NumberLiteral)
           expression + js.array([index])
         else
-          js.call(Builtin::BracketAccess, [expression, index, just, nothing])
+          accessor =
+            if type.name == "Map"
+              Builtin::MapAccess
+            else
+              Builtin::BracketAccess
+            end
+
+          js.call(accessor, [expression, index, just, nothing])
         end
       end
     end

@@ -113,6 +113,7 @@ module Mint
       # Utilities.
       NormalizeEvent
       BracketAccess
+      MapAccess
       Identity
       ToArray
       Compare

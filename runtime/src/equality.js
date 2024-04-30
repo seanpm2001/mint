@@ -3,6 +3,7 @@
 // functions when comparing two values.
 export const Equals = Symbol("Equals");
 
+/* v8 ignore next 3 */
 if (typeof Node === "undefined") {
   self.Node = class {}
 }
@@ -123,6 +124,8 @@ Map.prototype[Equals] = function (other) {
 
 // If the object has a specific set of keys it's a Preact virtual DOM node.
 const isVnode = (object) =>
+  object !== undefined &&
+  object !== null &&
   typeof object == "object" &&
   "constructor" in object &&
   "props" in object &&

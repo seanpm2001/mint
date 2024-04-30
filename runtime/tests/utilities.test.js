@@ -5,7 +5,7 @@ import { h } from "preact";
 
 import {
   useDidUpdate,
-  arrayAccess,
+  bracketAccess,
   useFunction,
   identity,
   variant,
@@ -16,23 +16,24 @@ import {
 
 const Nothing = variant();
 const Just = variant(1);
+const Err = variant(1);
 
-describe("arrayAccess", () => {
+describe("bracketAccess", () => {
   test("it returns a just for an element", () => {
-    let result = arrayAccess([0], 0, Just, Nothing);
+    let result = bracketAccess([0], 0, Just, Nothing);
 
     expect(result).toBeInstanceOf(Just);
     expect(result._0).toBe(0);
   });
 
   test("it returns nothing for an element", () => {
-    let result = arrayAccess([0], 1, Just, Nothing);
+    let result = bracketAccess([0], 1, Just, Nothing);
 
     expect(result).toBeInstanceOf(Nothing);
   });
 
   test("it returns nothing if index is negative", () => {
-    let result = arrayAccess([0], -1, Just, Nothing);
+    let result = bracketAccess([0], -1, Just, Nothing);
 
     expect(result).toBeInstanceOf(Nothing);
   });
@@ -40,11 +41,11 @@ describe("arrayAccess", () => {
 
 describe("or", () => {
   test("it returns the given item", () => {
-    expect(or("a", "b")).toEqual("a");
+    expect(or(Nothing, Err, new Just("a"), "b")).toEqual("a");
   });
 
   test("it returns the given item", () => {
-    expect(or(null, "b")).toEqual("b");
+    expect(or(Nothing, Err, new Nothing, "b")).toEqual("b");
   });
 });
 

@@ -8,66 +8,68 @@ component Main {
     array[0
 ------------------------------------------------bracket_access_index_not_number
 component Main {
-  fun test : Maybe(String) {
+  fun render : Html {
     [
       "Hello",
       "Blah",
       "Joe"
     ]["asd"]
-  }
-
-  fun render : Html {
-    test()
 
     <div/>
   }
 }
-----------------------------------------------------bracket_access_not_an_array
+--------------------------------------------------bracket_access_not_accessible
 component Main {
-  fun test : Maybe(String) {
-    {}[0]
-  }
-
   fun render : Html {
-    test()
+    {}[0]
 
     <div/>
   }
 }
 ---------------------------------------------------bracket_access_invalid_tuple
 component Main {
-  fun test : Maybe(String) {
-    {"Hello", ""}[2]
-  }
-
   fun render : Html {
-    test()
+    {"Hello", ""}[2]
 
     <div/>
   }
 }
+--------------------------------------------bracket_access_invalid_tuple_access
+component Main {
+  fun render : Html {
+    {"Hello", ""}["asd"]
+
+    <div/>
+  }
+}
+---------------------------------------------bracket_access_invalid_tuple_index
+component Main {
+  fun render : Html {
+    {"Hello", ""}[0.2]
+
+    <div/>
+  }
+}
+-----------------------------------------------bracket_access_index_not_map_key
+component Main {
+  fun render : String {
+    { 0 => "a" }["a"]
+  }
+}
 -------------------------------------------------------------------------------
 component Main {
-  fun test : Maybe(String) {
+  fun render : String {
     [
       "Hello",
       "Blah",
       "Joe"
-    ][1]
-  }
-
-  fun render : String {
-    ""
+    ][1] or ""
   }
 }
 --------------------------------------------------------------------------------
 component Main {
-  fun test : String {
-    {"Hello", ""}[0]
-  }
-
   fun render : Html {
-    test()
+    {"Hello", ""}[0]
 
     <div/>
   }

@@ -46,6 +46,7 @@ module Mint
         when '{'
           record_update ||
             record ||
+            map ||
             tuple_literal ||
             block
         else

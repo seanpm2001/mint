@@ -327,7 +327,8 @@ module Mint
       when Ast::Use
         build(node.condition, node)
         build(node.data, node)
-      when Ast::Record
+      when Ast::Record,
+           Ast::Map
         build(node.fields, node)
       when Ast::NextCall
         build(node.data, node)
@@ -337,6 +338,9 @@ module Mint
       when Ast::Route
         build(node.expression, node)
         build(node.arguments, node)
+      when Ast::MapField
+        build(node.value, node)
+        build(node.key, node)
       when Ast::Field
         build(node.value, node)
 

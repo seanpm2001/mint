@@ -16,6 +16,13 @@ test("comparing same symbols", () => {
   expect(compare(Symbol("A"), Symbol("A"))).toBe(false);
 });
 
+test("comparing vnodes", () => {
+  expect(compare(
+    {props: {}, type: {}, ref: {}, key: {},"__": {}},
+    {props: {}, type: {}, ref: {}, key: {},"__": {}}
+  )).toBe(false);
+})
+
 test("comparing same arrays", () => {
   expect(["A"] == ["A"]).toBe(false);
   expect(compare(["A"], ["A"])).toBe(true);

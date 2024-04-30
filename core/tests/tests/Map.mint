@@ -1,3 +1,13 @@
+suite "Map literal" {
+  test "creates a map" {
+    Map.size(
+      {
+        "a" => "b",
+        "c" => "d"
+      }) == 2
+  }
+}
+
 suite "Map with enums" {
   test "Map.set" {
     (Map.empty()

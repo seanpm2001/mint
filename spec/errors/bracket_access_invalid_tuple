@@ -12,7 +12,7 @@ component Main {
 --------------------------------------------------------------------------------
 ░ ERROR (BRACKET_ACCESS_INVALID_TUPLE) ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-The tuple have only 2 members, but you wanted to access the 3rd. The exact type
+The tuple has only 2 members, but you wanted to access the 3rd. The exact type
 of the tuple is:
 
   Tuple(

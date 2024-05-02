@@ -39,11 +39,11 @@ module Mint
     end
 
     def bundle
-      generate_application
-      generate_index_html
-      generate_manifest if config.generate_manifest
-      generate_icons unless config.skip_icons
-      generate_assets
+      Logger.log "Building application" { generate_application }
+      Logger.log "Building index.html" { generate_index_html }
+      Logger.log "Building manifest" { generate_manifest } if config.generate_manifest
+      Logger.log "Building icons" { generate_icons } unless config.skip_icons
+      Logger.log "Building assets" { generate_assets }
 
       files
     end
@@ -52,24 +52,32 @@ module Mint
       compiler =
         Compiler2.new(artifacts, application.css_prefix, config)
 
-      # Gather all top level entities and resolve them, this will populate the
-      # `compiled` instance variable of the compiler.
-      (artifacts.ast.type_definitions +
-        artifacts.ast.unified_modules +
-        artifacts.ast.components +
-        artifacts.ast.providers +
-        artifacts.ast.stores).tap { |items| compiler.resolve(items) }
+      Logger.log "Compiling intermediate representation..." do
+        # Gather all top level entities and resolve them, this will populate the
+        # `compiled` instance variable of the compiler.
+        (artifacts.ast.type_definitions +
+          artifacts.ast.unified_modules +
+          artifacts.ast.components +
+          artifacts.ast.providers +
+          artifacts.ast.stores).tap { |items| compiler.resolve(items) }
+      end
 
       # Compile the CSS.
       files[path_for_asset("index.css")] =
-        ->{ compiler.style_builder.compile }
+        ->do
+          Logger.log "Building index.css" do
+            compiler.style_builder.compile
+          end
+        end
 
-      # Compile tests if there is configration for it.
       tests =
         if test_information = config.test
-          [
-            compiler.test(test_information[:url], test_information[:id]),
-          ]
+          # Compile tests if there is configration for it.
+          Logger.log "Compiling tests" do
+            [
+              compiler.test(test_information[:url], test_information[:id]),
+            ]
+          end
         end
 
       # This holds the to be compiled constants per bundle. `Bundle::Index` holds
@@ -87,177 +95,185 @@ module Mint
       ids =
         compiler.compiled.map { |(_, id, _)| id }
 
-      # Calculate the bundles.
-      artifacts.references.calculate(artifacts.ast.nodes.to_set)
-
-      # Here we separate the compiled items to each bundle.
-      artifacts.references.bundles.each do |node, dependencies|
-        bundles[node] =
-          dependencies.flat_map do |dependency|
-            compiler.compiled.select { |item| item[0] == dependency }
-          end
-
-        bundles[node].try(&.each do |item|
-          case node
-          when Ast::Node
-            scopes[item[0]] = node
-          end
-        end)
+      Logger.log "Calculating dependencies for bundles..." do
+        # Calculate the bundles.
+        artifacts.references.calculate(artifacts.ast.nodes.to_set)
       end
 
-      # Here we add async components to a bundle so they can be loaded
-      # and referenced in the virtual DOM.
-      artifacts
-        .ast
-        .nodes
-        .select(Ast::HtmlComponent)
-        .select(&.component_node.try(&.async?))
-        .map { |item| {item.component_node.not_nil!, artifacts.references.bundle_of(item)} }
-        .uniq!
-        .map do |(component, bundle)|
-          bundles[bundle]?.try(&.unshift({
-            component,
-            component,
-            compiler.js.call(
-              Compiler2::Builtin::Lazy,
-              [[Compiler2::Deferred.new(component)] of Compiler2::Item]),
-          }))
+      Logger.log "Bundling and rendering JavaScript..." do
+        # Here we separate the compiled items to each bundle.
+        artifacts.references.bundles.each do |node, dependencies|
+          bundles[node] =
+            dependencies.flat_map do |dependency|
+              compiler.compiled.select { |item| item[0] == dependency }
+            end
+
+          bundles[node].try(&.each do |item|
+            case node
+            when Ast::Node
+              scopes[item[0]] = node
+            end
+          end)
         end
 
-      class_pool =
-        NamePool(Ast::Node | Compiler2::Builtin, Ast::Node | Bundle).new('A'.pred.to_s)
-
-      pool =
-        NamePool(Ast::Node | Compiler2::Variable | String, Ast::Node | Bundle).new
-
-      rendered_bundles =
-        {} of Ast::Node | Bundle => Tuple(Compiler2::Renderer, Array(String))
-
-      # We render the bundles so we can know after what we need to import.
-      bundles.each do |node, contents|
-        renderer =
-          Compiler2::Renderer.new(
-            bundle_path: ->path_for_bundle(Ast::Node | Bundle),
-            deferred_path: ->bundle_name(Ast::Node | Bundle),
-            references: artifacts.references,
-            class_pool: class_pool,
-            base: node,
-            pool: pool)
-
-        # Built the singe `const` with multiple assignments so we can add
-        # things later to the array.
-        items =
-          if contents.empty?
-            [] of Compiler2::Compiled
-          else
-            # Here we sort the compiled node by the order they are resovled, which
-            # will prevent issues of one entity depending on others (like a const
-            # depending on a function from a module).
-            contents.sort_by! do |(node, id, _)|
-              case id
-              when Ast::TypeVariant
-                -2 if id.value.value.in?("Just", "Nothing", "Err", "Ok")
-              end || artifacts.resolve_order.index(node) || -1
-            end
-
-            [["export "] + compiler.js.consts(contents)]
+        # Here we add async components to a bundle so they can be loaded
+        # and referenced in the virtual DOM.
+        artifacts
+          .ast
+          .nodes
+          .select(Ast::HtmlComponent)
+          .select(&.component_node.try(&.async?))
+          .map { |item| {item.component_node.not_nil!, artifacts.references.bundle_of(item)} }
+          .uniq!
+          .map do |(component, bundle)|
+            bundles[bundle]?.try(&.unshift({
+              component,
+              component,
+              compiler.js.call(
+                Compiler2::Builtin::Lazy,
+                [[Compiler2::Deferred.new(component)] of Compiler2::Item]),
+            }))
           end
 
-        # If we are building the main bundle we add the translations, tests
-        # and the program.
-        case node
-        when Bundle::Index
-          # Add translations and tests
-          items.concat compiler.translations
-          items.concat tests if tests
+        class_pool =
+          NamePool(Ast::Node | Compiler2::Builtin, Ast::Node | Bundle).new('A'.pred.to_s)
 
-          # Add the program if needed.
-          items << compiler.program if config.include_program
-        end
+        pool =
+          NamePool(Compiler2::Variable |
+                   Compiler2::Encoder |
+                   Compiler2::Decoder |
+                   Ast::Node |
+                   String, Ast::Node | Bundle).new
 
-        # Render the final JavaScript.
-        items =
-          items.reject(&.empty?).map { |item| renderer.render(item) }
+        rendered_bundles =
+          {} of Ast::Node | Bundle => Tuple(Compiler2::Renderer, Array(String))
 
-        rendered_bundles[node] = {renderer, items}
-      end
+        # We render the bundles so we can know after what we need to import.
+        bundles.each do |node, contents|
+          renderer =
+            Compiler2::Renderer.new(
+              bundle_path: ->path_for_bundle(Ast::Node | Bundle),
+              deferred_path: ->bundle_name(Ast::Node | Bundle),
+              references: artifacts.references,
+              class_pool: class_pool,
+              base: node,
+              pool: pool)
 
-      rendered_bundles.each do |node, (renderer, items)|
-        case node
-        when Bundle::Index
-          # Index doesn't import from other nodes.
-        else
-          # This holds the imports for each other bundle.
-          imports =
-            {} of Ast::Node | Bundle => Hash(String, String)
+          # Built the singe `const` with multiple assignments so we can add
+          # things later to the array.
+          items =
+            if contents.empty?
+              [] of Compiler2::Compiled
+            else
+              # Here we sort the compiled node by the order they are resovled, which
+              # will prevent issues of one entity depending on others (like a const
+              # depending on a function from a module).
+              contents.sort_by! do |(node, id, _)|
+                case id
+                when Ast::TypeVariant
+                  -2 if id.value.value.in?("Just", "Nothing", "Err", "Ok")
+                end || artifacts.resolve_order.index(node) || -1
+              end
 
-          renderer.used.map do |item|
-            # We only need to import things that are actually exported (all
-            # other entities show up here like function arguments statement
-            # variables, etc...)
-            next unless ids.includes?(item)
-
-            case item
-            when Ast::Component
-              next if item.async?
+              [["export "] + compiler.js.consts(contents)]
             end
 
-            # Get where the entity should be.
-            target =
-              scopes[item]? || Bundle::Index
-
-            # If the target is not this bundle and it's not the same bundle
-            # then we need to import.
-            if target != node && item != node
-              exported_name =
-                rendered_bundles[target][0].render(item).to_s
-
-              imported_name =
-                renderer.render(item).to_s
-
-              imports[target] ||= {} of String => String
-              imports[target][exported_name] = imported_name
-            end
-          end
-
-          # For each import we insert an import statement.
-          imports.each do |target, data|
-            items.unshift(
-              renderer.import(
-                data,
-                config.optimize,
-                path_for_import(target)))
-          end
-
+          # If we are building the main bundle we add the translations, tests
+          # and the program.
           case node
-          when Ast::Node
-            items << "export default #{renderer.render(node)}" if node
+          when Bundle::Index
+            # Add translations and tests
+            items.concat compiler.translations
+            items.concat tests if tests
+
+            # Add the program if needed.
+            items << compiler.program if config.include_program
           end
+
+          # Render the final JavaScript.
+          items =
+            items.reject(&.empty?).map { |item| renderer.render(item) }
+
+          rendered_bundles[node] = {renderer, items}
         end
 
-        # Gather what builtins need to be imported and add it's statement
-        # as well.
-        builtins =
-          renderer
-            .builtins
-            .each_with_object({} of String => String) do |item, memo|
-              memo[item.to_s.camelcase(lower: true)] = renderer.class_pool.of(item, node)
+        rendered_bundles.each do |node, (renderer, items)|
+          case node
+          when Bundle::Index
+            # Index doesn't import from other nodes.
+          else
+            # This holds the imports for each other bundle.
+            imports =
+              {} of Ast::Node | Bundle => Hash(String, String)
+
+            renderer.used.map do |item|
+              # We only need to import things that are actually exported (all
+              # other entities show up here like function arguments statement
+              # variables, etc...)
+              next unless ids.includes?(item)
+
+              case item
+              when Ast::Component
+                next if item.async?
+              end
+
+              # Get where the entity should be.
+              target =
+                scopes[item]? || Bundle::Index
+
+              # If the target is not this bundle and it's not the same bundle
+              # then we need to import.
+              if target != node && item != node
+                exported_name =
+                  rendered_bundles[target][0].render(item).to_s
+
+                imported_name =
+                  renderer.render(item).to_s
+
+                imports[target] ||= {} of String => String
+                imports[target][exported_name] = imported_name
+              end
             end
 
-        items
-          .unshift(renderer.import(builtins, config.optimize, "./runtime.js"))
-          .reject!(&.blank?)
+            # For each import we insert an import statement.
+            imports.each do |target, data|
+              items.unshift(
+                renderer.import(
+                  data,
+                  config.optimize,
+                  path_for_import(target)))
+            end
 
-        js =
-          if items.empty?
-            ""
-          elsif config.optimize
-            items.join(";")
-          else
-            items.join(";\n\n") + ";"
+            case node
+            when Ast::Node
+              items << "export default #{renderer.render(node)}" if node
+            end
           end
 
-        files[path_for_bundle(node)] = ->{ js }
+          # Gather what builtins need to be imported and add it's statement
+          # as well.
+          builtins =
+            renderer
+              .builtins
+              .each_with_object({} of String => String) do |item, memo|
+                memo[item.to_s.camelcase(lower: true)] = renderer.class_pool.of(item, node)
+              end
+
+          items
+            .unshift(renderer.import(builtins, config.optimize, "./runtime.js"))
+            .reject!(&.blank?)
+
+          js =
+            if items.empty?
+              ""
+            elsif config.optimize
+              items.join(";")
+            else
+              items.join(";\n\n") + ";"
+            end
+
+          files[path_for_bundle(node)] = ->{ js }
+        end
       end
     end
 

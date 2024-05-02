@@ -198,14 +198,16 @@ module Mint
     end
 
     def update_cache
-      files.each do |file|
-        path =
-          File.realpath(file)
+      Logger.log "Parsing files" do
+        files.each do |file|
+          path =
+            File.realpath(file)
 
-        self[file] ||= process(File.read(path), path)
+          self[file] ||= process(File.read(path), path)
+        end
       end
 
-      check!
+      Logger.log "Type Checking" { check! }
 
       @error = nil
 

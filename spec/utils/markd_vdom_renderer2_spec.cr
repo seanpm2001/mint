@@ -107,7 +107,7 @@ describe Mint::Compiler2::VDOMRenderer2 do
           Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Builtin, Mint::Ast::Node | Mint::Compiler2::Bundle).new('A'.pred.to_s)
 
         pool =
-          Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Variable | String, Mint::Ast::Node | Mint::Compiler2::Bundle).new
+          Mint::NamePool(Mint::Ast::Node | Mint::Compiler2::Decoder | Mint::Compiler2::Encoder | Mint::Compiler2::Variable | String, Mint::Ast::Node | Mint::Compiler2::Bundle).new
 
         js_renderer =
           Mint::Compiler2::Renderer.new(

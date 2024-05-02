@@ -4,7 +4,7 @@ module Mint
       parse do |start_position|
         comment = self.comment
 
-        # TODO: Remove `record` and `enum` in 0.21.0 when deprecation ends.
+        # TODO: Remove `record` and `enum` in 0.21.0
         next unless keyword!("type") || keyword!("record") || keyword!("enum")
         whitespace
 

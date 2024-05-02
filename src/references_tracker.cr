@@ -1,34 +1,92 @@
 module Mint
   class ReferencesTracker
+    class Node
+      property parent : Node?
+      getter node : Ast::Node
+
+      def initialize(@parent, @node)
+      end
+    end
+
     alias Bundles = Hash(Ast::Node | Bundle, Set(Ast::Node))
     alias Bundle = Compiler2::Bundle
-
-    # This hash tracks the links between nodes.
-    @mapping = {} of Ast::Node => Set(Ast::Node)
-
-    # This hash contains the final mapping of which
-    # bundle contains which node (inverse of bundles).
-    @bundle_mapping = {} of Ast::Node => Ast::Node | Bundle
 
     # This hash contains which nodes belong to which bundle.
     getter bundles = Bundles.new
 
-    def initialize(@io : IO? = nil)
+    # This hash contains the final mapping of which
+    # bundle contains which node (inverse of bundles).
+    @mapping = {} of Ast::Node => Ast::Node | Bundle
+
+    # This tracks what nodes links to the key node..
+    @parents = {} of Ast::Node => Set(Ast::Node)
+
+    # This is a map for looking up nodes from AST nodes.
+    @node_map = {} of Ast::Node => Node
+
+    # This contains all the nodes.
+    @nodes = [] of Node
+
+    def keep?(node)
+      case node
+      when Ast::TypeDefinition,
+           Ast::HtmlComponent,
+           Ast::Component,
+           Ast::Constant,
+           Ast::Property,
+           Ast::Function,
+           Ast::Provider,
+           Ast::Module,
+           Ast::Encode,
+           Ast::Decode,
+           Ast::Defer,
+           Ast::State,
+           Ast::Store,
+           Ast::Get
+        true
+      end
+    end
+
+    def collapse
+      @nodes.each do |node|
+        if keep?(node.node)
+          parent =
+            node.parent
+
+          while parent && !keep?(parent.node)
+            parent = parent.parent
+          end
+
+          if parent
+            @parents[parent.node] ||= Set(Ast::Node).new
+            @parents[parent.node].add(node.node)
+          end
+
+          node.parent = parent
+        end
+      end
+
+      @nodes.select! { |node| keep?(node.node) }
     end
 
     # Adds a dependency link (node depends on target).
     def add(node, target)
-      @mapping[node] ||= Set(Ast::Node).new
-      @mapping[node].add(target)
+      parent =
+        @node_map[node] ||= Node.new(nil, node)
+
+      @nodes << (@node_map[target] = Node.new(parent, target))
     end
 
     # Returns the bundle of the node.
     def bundle_of(node : Ast::Node) : Ast::Node | Bundle
-      @bundle_mapping[node]? || Bundle::Index
+      @mapping[node]? || Bundle::Index
     end
 
     # Calculates which node belongs to which bundle.
     def calculate(nodes : Set(Ast::Node)) : Bundles
+      # Collapse links, removing not needed ones an repointing.
+      collapse
+
       # These will be the bundles, plus the index.
       target_bundles =
         nodes.select(Ast::Component).select(&.async?) +
@@ -73,14 +131,14 @@ module Mint
         .select { |key, _| target_bundles.includes?(key) }
         .tap(&.[]=(Bundle::Index, index_bundle))
         .tap(&.each do |bundle, dependencies|
-          dependencies.each { |node| @bundle_mapping[node] = bundle }
+          dependencies.each { |node| @mapping[node] = bundle }
           @bundles[bundle] = dependencies
         end)
     end
 
     # We go through each top-level entity and calculate their dependencies.
     private def calculate : Bundles
-      @mapping
+      @node_map
         .keys
         .each_with_object(Bundles.new) do |node, sets|
           case node
@@ -105,61 +163,16 @@ module Mint
       base : Ast::Node,
       level = 0
     ) : Set(Ast::Node)
-      # We add the node as a dependency.
-      case node
-      when Ast::TypeDefinition,
-           Ast::HtmlComponent,
-           Ast::Component,
-           Ast::Constant,
-           Ast::Property,
-           Ast::Function,
-           Ast::Provider,
-           Ast::Module,
-           Ast::Defer,
-           Ast::State,
-           Ast::Store,
-           Ast::Get
-        dependencies.add(node)
-      end
+      dependencies.add(node)
 
-      if level.zero?
-        log Debugger.dbg(node)
-      else
-        log "➔ #{Debugger.dbg(node)}".indent(level * 2)
-      end
+      @parents[node]?.try(&.each do |item|
+        next if item.is_a?(Ast::Defer) || item.is_a?(Ast::TypeDefinition)
+        next if item.is_a?(Ast::Component) && item.async?
+        next if item.is_a?(Ast::Property) && item.parent != base
 
-      # We find it's dependencies and iterate over them.
-      @mapping[node]?.try(&.each do |item|
-        case item
-        when Ast::Component
-          # If we hit async components we don't track them.
-          # They will be handled in the bundler.
-          next if item != base && item.async?
-        when Ast::Defer
-          # If we hit defers we add them, but don't track their
-          # dependencies since they are their dependencies.
-          if item != base
-            log "➔ #{Debugger.dbg(item)}".indent((level + 1) * 2)
-            dependencies.add(node)
-            next
-          end
-        when Ast::TypeDefinition,
-             Ast::Provider,
-             Ast::Module,
-             Ast::Routes,
-             Ast::Locale,
-             Ast::Store,
-             Ast::Suite
-          # We don't track top level dependencies to avoid
-          # them leaking into other top level entities.
-          next if item != base
-        end ||
-          case item
-          when Ast::Property
-            # We don't track properties because they
-            # belong with their components.
-            next if item.parent != base
-          end || calculate(
+        dependencies.add(item)
+
+        calculate(
           dependencies: dependencies,
           level: level + 1,
           node: item,
@@ -169,8 +182,24 @@ module Mint
       dependencies
     end
 
-    private def log(message)
-      @io.try(&.puts(message))
+    def print_bundle_tree(io)
+      bundles.each do |node, dependencies|
+        dependencies.each do |item|
+          io.puts "#{Debugger.dbg(node)} ➔ #{Debugger.dbg(item)}"
+        end
+      end
+    end
+
+    def print_dependency_tree(node, level = 0, io = IO::Memory.new)
+      if level.zero?
+        io.puts Debugger.dbg(node)
+      else
+        io.puts "➔ #{Debugger.dbg(node)}".indent(level * 2)
+      end
+
+      @nodes
+        .select(&.parent.try(&.node.==(node)))
+        .each { |item| print_dependency_tree(item.node, level + 1, io) }
     end
   end
 end

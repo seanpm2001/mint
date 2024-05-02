@@ -322,13 +322,14 @@ export const decoder = (mappings, ok, err) => (input) => {
 
   for (let key in mappings) {
     let decoder = mappings[key];
+    let target = key;
 
     if (Array.isArray(decoder)) {
       decoder = mappings[key][0];
-      key = mappings[key][1];
+      target = mappings[key][1];
     }
 
-    const result = decodeField(key, decoder, err)(input);
+    const result = decodeField(target, decoder, err)(input);
 
     if (result instanceof err) {
       return result;

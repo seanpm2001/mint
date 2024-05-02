@@ -3,7 +3,7 @@ module Mint
     # This class is responsible to render `Compiled` code.
     class Renderer
       # The pool for variables (lowercase).
-      getter pool : NamePool(Ast::Node | Variable | String, Ast::Node | Bundle)
+      getter pool : NamePool(Ast::Node | Variable | String | Encoder | Decoder, Ast::Node | Bundle)
 
       # The pool for class variables (uppercase).
       getter class_pool : NamePool(Ast::Node | Builtin, Ast::Node | Bundle)
@@ -92,7 +92,7 @@ module Mint
         in Encoder, Decoder
           used.add(item)
 
-          io << pool.of(item.value, base)
+          io << pool.of(item, base)
         in Variable
           io << pool.of(item, base)
         in Builtin

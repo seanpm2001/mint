@@ -26,12 +26,6 @@ module Mint
     # because they have a `.current` accessor.
     record Ref, value : Ast::Node
 
-    # Represents an encoder.
-    record Encoder, value : String
-
-    # Represents a decoder.
-    record Decoder, value : String
-
     # Represents code which needs to be indented.
     record Indent, items : Compiled
 
@@ -40,6 +34,12 @@ module Mint
 
     # Represents a variable.
     class Variable; end
+
+    # Represents an encoder.
+    class Encoder; end
+
+    # Represents a decoder.
+    class Decoder; end
 
     enum Bundle
       Index

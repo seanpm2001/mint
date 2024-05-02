@@ -78,7 +78,7 @@ module Mint
 
       # We try to chain accesses and calls until we can.
       #
-      # TODO: Remove `::`, `:` cases in 0.21.0 when deprecation ends.
+      # TODO: Remove `::`, `:` cases in 0.21.0
       loop do
         node =
           if word? "::"

@@ -38,6 +38,10 @@ module Mint
         description: "Loads the given .env file.",
         short: "e"
 
+      define_flag timings : Bool,
+        description: "If specified, timings will be printed.",
+        default: false
+
       def run
         execute "Building for production...", env: flags.env do
           # Initialize the workspace from the current working directory.
@@ -110,6 +114,11 @@ module Mint
               terminal.divider
               terminal.puts "Bundle size: #{bundle_size.humanize_bytes(format: :JEDEC)}"
               terminal.puts "Files: #{files.size}"
+
+              if flags.timings
+                terminal.divider
+                Logger.print(terminal)
+              end
             in Error
               terminal.print result.to_terminal
             end

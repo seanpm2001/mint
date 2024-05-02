@@ -18,6 +18,7 @@ require "./version"
 require "./ext/**"
 require "./errorable"
 
+require "./logger"
 require "./constants"
 require "./assets"
 require "./skippable"

@@ -20,7 +20,7 @@ module Mint
             end
 
         [
-          Decoder.new(type.name).tap do |id|
+          Decoder.new.tap do |id|
             add node, id, js.call(Builtin::Decoder, [js.object(item), ok, err])
           end,
         ] of Item

@@ -23,8 +23,8 @@ module Array {
   /*
   Returns the element at the given index as a `Maybe(item)`.
 
-    Array.at([0], 0) == Maybe::Just(0)
-    Array.at([0], 1) == Maybe::Nothing()
+    Array.at([0], 0) == Maybe.Just(0)
+    Array.at([0], 1) == Maybe.Nothing()
   */
   fun at (array : Array(item), index : Number) : Maybe(item) {
     array[index]
@@ -32,9 +32,9 @@ module Array {
 
   /*
   Flattens an `Array(Maybe(item))` into an `Array(item)`, by unwrapping the
-  items and skipping all elements of `Maybe::Nothing`.
+  items and skipping all elements of `Maybe.Nothing`.
 
-    Array.compact([Maybe::Just("A"), Maybe::Nothing()]) == ["A"]
+    Array.compact([Maybe.Just("A"), Maybe.Nothing()]) == ["A"]
   */
   fun compact (array : Array(Maybe(item))) : Array(item) {
     Array.reduce(
@@ -42,8 +42,8 @@ module Array {
       [],
       (memo : Array(item), item : Maybe(item)) : Array(item) {
         case item {
-          Maybe.Just(value) => Array.push(memo, value)
-          Maybe.Nothing => memo
+          Just(value) => Array.push(memo, value)
+          Nothing => memo
         }
       })
   }
@@ -128,15 +128,14 @@ module Array {
   /*
   Finds the first element in the array that matches the predicate function.
 
-    Array.find([1, 2, 3, 4], (number : Number) { number % 2 == 0 }) == Maybe::Just(2)
+    Array.find([1, 2, 3, 4], (number : Number) { number % 2 == 0 }) == Maybe.Just(2)
   */
   fun find (array : Array(item), function : Function(item, Bool)) : Maybe(item) {
-    Array.first(
-      for item of array {
-        item
-      } when {
-        function(item)
-      })
+    for item of array {
+      item
+    } when {
+      function(item)
+    }[0]
   }
 
   /*
@@ -146,7 +145,7 @@ module Array {
     Array.findByAndMap(
       [1, 2, 3, 4],
       (number : Number) : (Bool, value) { {number % 2 == 0, "Two"} }
-    ) == Maybe::Just("Two")
+    ) == Maybe.Just("Two")
   */
   fun findByAndMap (
     array : Array(item),
@@ -158,21 +157,21 @@ module Array {
         const [found, value] = #{function}(item)
 
         if (found) {
-          return #{Maybe::Just(`value`)}
+          return #{Maybe.Just(`value`)}
         }
       }
 
-      return #{Maybe::Nothing}
+      return #{Maybe.Nothing}
     })()
     `
   }
 
   /*
-  Returns the first element of the array as `Maybe::Just(item)` or
-  `Maybe::Nothing`.
+  Returns the first element of the array as `Maybe.Just(item)` or
+  `Maybe.Nothing`.
 
-    Array.first(["a", "x"]) == Maybe::Just("a")
-    Array.first([]) == Maybe::Nothing
+    Array.first(["a", "x"]) == Maybe.Just("a")
+    Array.first([]) == Maybe.Nothing
   */
   fun first (array : Array(item)) : Maybe(item) {
     array[0]
@@ -244,7 +243,7 @@ module Array {
       let lowerLimit = 0
 
       #{array} =
-        Array.from(#{array}).reverse()
+        [...#{array}].reverse()
 
       for (var $0 = 0; $0 < groups; $0++) {
         lowerLimit = $0 * #{size};
@@ -303,7 +302,7 @@ module Array {
   fun insertAt (array : Array(item), item : item, position : Number) : Array(item) {
     `
     (() => {
-      const result = Array.from(#{array})
+      const result = [...#{array}]
 
       if (#{position} <= 0) {
         result.unshift(#{item})
@@ -336,19 +335,20 @@ module Array {
   }
 
   /*
-  Returns the last element of the array as `Maybe::Just(a)` or `Maybe::Nothing`.
+  Returns the last element of the array as `Maybe.Just(a)` or `Maybe.Nothing`.
 
-    Array.last(["x", "a"]) == Maybe::Just("a")
-    Array.last([]) == Maybe::Nothing
+    Array.last(["x", "a"]) == Maybe.Just("a")
+    Array.last([]) == Maybe.Nothing
   */
   fun last (array : Array(item)) : Maybe(item) {
     `
     (() => {
-      let last = #{array}[#{array}.length - 1]
+      let last = #{array}[#{array}.length - 1];
+
       if (last !== undefined) {
-        return #{Maybe::Just(`last`)}
+        return #{Maybe.Just(`last`)}
       } else {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `
@@ -398,8 +398,8 @@ module Array {
   Returns the maximum value of an array of numbers. It's a maybe because the
   array might not have items in it.
 
-    Array.max([0, 1, 2, 3, 4]) == Maybe::Just(4)
-    Array.max([]) == Maybe::Nothing
+    Array.max([0, 1, 2, 3, 4]) == Maybe.Just(4)
+    Array.max([]) == Maybe.Nothing
   */
   fun max (array : Array(Number)) : Maybe(Number) {
     if Array.size(array) > 0 {
@@ -413,8 +413,8 @@ module Array {
   Returns the minimum value of an array of numbers. It's a maybe because the
   array might not have items in it.
 
-    Array.min([0, 1, 2, 3, 4]) == Maybe::Just(0)
-    Array.min([]) == Maybe::Nothing
+    Array.min([0, 1, 2, 3, 4]) == Maybe.Just(0)
+    Array.min([]) == Maybe.Nothing
   */
   fun min (array : Array(Number)) : Maybe(Number) {
     if Array.size(array) > 0 {
@@ -449,7 +449,7 @@ module Array {
   fun move (array : Array(item), from : Number, to : Number) : Array(item) {
     `
     (() => {
-      const result = Array.from(#{array})
+      const result = [...#{array}]
 
       if (#{from} == #{to} || #{from} < 0 || #{from} >= result.length) {
         return result
@@ -559,8 +559,8 @@ module Array {
   /*
   Returns a random element from the array.
 
-    Array.sample(["a"]) == Maybe::Just("a")
-    Array.sample() == Maybe::Nothing()
+    Array.sample(["a"]) == Maybe.Just("a")
+    Array.sample() == Maybe.Nothing()
   */
   fun sample (array : Array(item)) : Maybe(item) {
     `
@@ -568,9 +568,9 @@ module Array {
       if (#{array}.length) {
         const item = #{array}[Math.floor(Math.random() * #{array}.length)]
 
-        return #{Maybe::Just(`item`)}
+        return #{Maybe.Just(`item`)}
       } else {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `
@@ -595,7 +595,7 @@ module Array {
     `
     (() => {
       if (#{index} < 0 || #{index} >= #{array}.length) { return #{array} }
-      const result = Array.from(#{array})
+      const result = [...#{array}]
       result[#{index}] = #{item}
       return result
     })()
@@ -709,7 +709,7 @@ module Array {
         return #{array}
       }
 
-      const result = Array.from(#{array})
+      const result = [...#{array}]
       const saved = result[#{index1}]
       result[#{index1}] = result[#{index2}]
       result[#{index2}] = saved;
@@ -757,7 +757,7 @@ module Array {
   fun unshift (array : Array(item), item : item) : Array(item) {
     `
     (() => {
-      const result = Array.from(#{array})
+      const result = [...#{array}]
       result.unshift(#{item})
       return result
     })()

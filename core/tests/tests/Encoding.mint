@@ -34,11 +34,11 @@ suite "Encode" {
     `typeof #{encode Time.now()} === "string"`
   }
 
-  test "it encodes Maybe::Just as its value" {
-    `#{encode Maybe::Just("Hello")} === "Hello"`
+  test "it encodes Maybe.Just as its value" {
+    `#{encode Maybe.Just("Hello")} === "Hello"`
   }
 
-  test "it encodes Maybe::Nothing as null" {
+  test "it encodes Maybe.Nothing as null" {
     `#{encode EncodeTest.nothing()} === null`
   }
 

@@ -194,7 +194,7 @@ module Map {
       |> Map.set("a", "y")
 
     (Map.merge(a, b)
-    |> Map.get("a")) == Maybe::Just("y")
+    |> Map.get("a")) == Maybe.Just("y")
   */
   fun merge (map1 : Map(key, value), map2 : Map(key, value)) : Map(key, value) {
     Map.reduce(
@@ -292,7 +292,7 @@ module Map {
     method : Function(key, value, result)
   ) : Map(key, value) {
     `
-    Array.from(#{map}).sort((a, b) => {
+    [...#{map}].sort((a, b) => {
       let aVal = #{method}(a[0], a[1])
       let bVal = #{method}(b[0], b[1])
 

@@ -77,9 +77,9 @@ module Window {
       let result = window.confirm(#{message})
 
       if (result) {
-        resolve(#{Result::Ok(`result`)})
+        resolve(#{Result.Ok(`result`)})
       } else {
-        resolve(#{Result::Err("User cancelled!")})
+        resolve(#{Result.Err("User cancelled!")})
       }
     })
     `
@@ -216,11 +216,11 @@ module Window {
 
   This function returns the entered text as a `Maybe(String)` and blocks
   execution until the popup is closed. If the user cancelled the popup it
-  returns `Maybe::Nothing`.
+  returns `Maybe.Nothing`.
 
     case (Window.prompt("How old are you?")) {
-      Maybe::Just(value) => Debug.log(value)
-      Maybe::Nothing => Debug.log("User cancelled")
+      Maybe.Just(value) => Debug.log(value)
+      Maybe.Nothing => Debug.log("User cancelled")
     }
   */
   fun prompt (label : String, current : String = "") : Promise(Maybe(String)) {
@@ -229,9 +229,9 @@ module Window {
       let result = window.prompt(#{label}, #{current})
 
       if (result !== null) {
-        resolve(#{Maybe::Just(`result`)})
+        resolve(#{Maybe.Just(`result`)})
       } else {
-        resolve(#{Maybe::Nothing})
+        resolve(#{Maybe.Nothing})
       }
     })
     `

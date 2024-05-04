@@ -58,7 +58,7 @@ enum T {
 
 component Main {
   fun render : String {
-    if (let T::B(a) = T::B(0)) {
+    if (let T.B(a) = T.B(0)) {
       a
     } else {
       "b"
@@ -106,7 +106,7 @@ enum T {
 
 component Main {
   fun render : String {
-    if (let T::A(a) = T::A("")) {
+    if (let T.A(a) = T.A("")) {
       a
     } else {
       "b"
@@ -121,7 +121,7 @@ enum T {
 
 component Main {
   fun render : String {
-    if (let T::A(a) = T::B) {
+    if (let T.A(a) = T.B) {
       a
     } else {
       "b"

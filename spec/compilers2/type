@@ -12,9 +12,9 @@ enum Res(error, value) {
 
 component Main {
   fun render : String {
-    Test::X
-    Res::Other("", "")
-    Test::Z(Res::Error(""))
+    Test.X
+    Res.Other("", "")
+    Test.Z(Res.Error(""))
     ""
   }
 }

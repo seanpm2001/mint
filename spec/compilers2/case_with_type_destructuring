@@ -9,11 +9,11 @@ enum C(a) {
 
 component Main {
   fun render : String {
-    case (C::D(A::B(""))) {
-      C::X => ""
-      C::D(a) =>
+    case (C.D(A.B(""))) {
+      C.X => ""
+      C.D(a) =>
         case (a) {
-          A::B(c) =>
+          A.B(c) =>
             c
         }
     }

@@ -9,9 +9,9 @@ module Locale {
     `
     (() => {
       if (#{%locale%}) {
-        return #{Maybe::Just(`#{%locale%}`)}
+        return #{Maybe.Just(`#{%locale%}`)}
       } else {
-        return #{Maybe::Nothing}
+        return #{Maybe.Nothing}
       }
     })()
     `

@@ -5,7 +5,7 @@ enum T {
 
 component Main {
   fun render : String {
-    if (let T::A(a) = T::A("")) {
+    if (let T.A(a) = T.A("")) {
       a
     } else {
       "b"

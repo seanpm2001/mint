@@ -5,7 +5,7 @@ enum Maybe(a) {
 
 component Main {
   fun test : String {
-    Maybe::Nothing or "Hello"
+    Maybe.Nothing or "Hello"
   }
 
   fun render : String {

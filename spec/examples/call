@@ -40,7 +40,7 @@ enum A {
 
 component Main {
   fun render : String {
-    case (A::B(0)) {
+    case (A.B(0)) {
       => ""
     }
   }

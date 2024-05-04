@@ -9,6 +9,6 @@ enum Maybe {
 
 component Main {
   fun render : Html {
-    encode Maybe::Just("")
+    encode Maybe.Just("")
   }
 }

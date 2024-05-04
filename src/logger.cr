@@ -45,7 +45,7 @@ module Mint
         end
 
       width =
-        logs.map(&.first.size).max
+        logs.max_of(&.first.size)
 
       logs.each do |(message, elapsed)|
         formatted =

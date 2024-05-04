@@ -63,10 +63,10 @@ request = await
   |> Http.send()
 
 case (request) {
-  Result::Ok(response) =>
+  Result.Ok(response) =>
     Debug.log(response)
 
-  Result::Err(error) =>
+  Result.Err(error) =>
     Debug.log(error)
 }
 ```
@@ -283,9 +283,9 @@ module Http {
       } catch (error) {
         delete #{REQUESTS}[#{uid}]
 
-        resolve(#{Result::Err({
+        resolve(#{Result.Err({
           headers: `getResponseHeaders()`,
-          type: Http.Error::BadUrl,
+          type: Http.Error.BadUrl,
           status: `xhr.status`,
           url: request.url
         })})
@@ -298,9 +298,9 @@ module Http {
       xhr.addEventListener('error', (event) => {
         delete #{REQUESTS}[#{uid}]
 
-        resolve(#{Result::Err({
+        resolve(#{Result.Err({
           headers: `getResponseHeaders()`,
-          type: Http.Error::NetworkError,
+          type: Http.Error.NetworkError,
           status: `xhr.status`,
           url: request.url
         })})
@@ -309,9 +309,9 @@ module Http {
       xhr.addEventListener('timeout', (event) => {
         delete #{REQUESTS}[#{uid}]
 
-        resolve(#{Result::Err({
+        resolve(#{Result.Err({
           headers: `getResponseHeaders()`,
-          type: Http.Error::Timeout,
+          type: Http.Error.Timeout,
           status: `xhr.status`,
           url: request.url
         })})
@@ -332,9 +332,9 @@ module Http {
             object.querySelector("parsererror");
 
           if (errorNode) {
-            body = #{Http.ResponseBody::Text(`responseText`)};
+            body = #{Http.ResponseBody.Text(`responseText`)};
           } else {
-            body = #{Http.ResponseBody::HTML(`object`)};
+            body = #{Http.ResponseBody.HTML(`object`)};
           }
         } else if (contentType.startsWith("application/xml")) {
           const object =
@@ -344,26 +344,26 @@ module Http {
             object.querySelector("parsererror");
 
           if (errorNode) {
-            body = #{Http.ResponseBody::Text(`responseText`)};
+            body = #{Http.ResponseBody.Text(`responseText`)};
           } else {
-            body = #{Http.ResponseBody::XML(`object`)};
+            body = #{Http.ResponseBody.XML(`object`)};
           }
         } else if (contentType.startsWith("application/json")) {
           try {
-            body = #{Http.ResponseBody::JSON(`JSON.parse(responseText)`)};
+            body = #{Http.ResponseBody.JSON(`JSON.parse(responseText)`)};
           } catch (e) {
-            body = #{Http.ResponseBody::Text(`responseText`)};
+            body = #{Http.ResponseBody.Text(`responseText`)};
           }
         } else if (contentType.startsWith("text/")) {
-          body = #{Http.ResponseBody::Text(`responseText`)};
+          body = #{Http.ResponseBody.Text(`responseText`)};
         }
 
         if (!body) {
           const parts = #{Url.parse(request.url).path}.split('/');
-          body = #{Http.ResponseBody::File(`new File([xhr.response], parts[parts.length - 1], { type: contentType })`)};
+          body = #{Http.ResponseBody.File(`new File([xhr.response], parts[parts.length - 1], { type: contentType })`)};
         }
 
-        resolve(#{Result::Ok({
+        resolve(#{Result.Ok({
           headers: `getResponseHeaders()`,
           bodyString: `responseText`,
           status: `xhr.status`,
@@ -374,9 +374,9 @@ module Http {
       xhr.addEventListener('abort', (event) => {
         delete #{REQUESTS}[#{uid}]
 
-        resolve(#{Result::Err({
+        resolve(#{Result.Err({
           headers: `getResponseHeaders()`,
-          type: Http.Error::Aborted,
+          type: Http.Error.Aborted,
           status: `xhr.status`,
           url: request.url
         })})

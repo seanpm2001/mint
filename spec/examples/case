@@ -42,9 +42,9 @@ enum A {
 
 component Main {
   fun render : String {
-    case (A::B) {
-      A::B => "a"
-      A::C => "c"
+    case (A.B) {
+      A.B => "a"
+      A.C => "c"
       => "x"
     }
   }
@@ -66,9 +66,9 @@ enum A {
 
 component Main {
   fun render : String {
-    case (A::B) {
-      A::B => "a"
-      A::C => "c"
+    case (A.B) {
+      A.B => "a"
+      A.C => "c"
     }
   }
 }
@@ -91,8 +91,8 @@ enum Maybe(value) {
 component Main {
   fun testCase : Maybe(Number) {
     case (-1) {
-      -1 => Maybe::Nothing
-      => Maybe::Just(2)
+      -1 => Maybe.Nothing
+      => Maybe.Just(2)
     }
   }
 

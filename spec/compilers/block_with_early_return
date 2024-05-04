@@ -5,8 +5,8 @@ enum Test {
 
 component Main {
   fun render : String {
-    let Test::A(a) =
-      Test::A("Some string...") or return "RETURN"
+    let Test.A(a) =
+      Test.A("Some string...") or return "RETURN"
 
     a
   }

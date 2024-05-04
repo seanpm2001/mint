@@ -10,8 +10,7 @@ enum Maybe(value) {
 
 component Main {
   fun render : String {
-    Maybe::Nothing or "Hello"
-    ""
+    Maybe.Nothing or "Hello"
   }
 }
 --------------------------------------------------------------------------------
@@ -26,6 +25,5 @@ export const
   D = B(1),
   E = B(1),
   F = () => {
-    G(A, D, new A(), `Hello`);
-    return ``
+    return G(A, D, new A(), `Hello`)
   };

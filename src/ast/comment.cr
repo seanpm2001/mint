@@ -16,6 +16,10 @@ module Mint
                      @to : Int64)
       end
 
+      def block?
+        type == Type::Block
+      end
+
       def to_html
         Markd.to_html(content)
       end

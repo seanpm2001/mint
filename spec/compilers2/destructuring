@@ -9,14 +9,14 @@ enum Test {
 component Main {
   fun render : String {
     let item =
-      Test::Item(
+      Test.Item(
         matchString: "MATCHSTRING",
         content: "CONTENT",
         key: "KEY")
 
     case item {
-      Test::Item(content) => content
-      Test::None => ""
+      Test.Item(content) => content
+      Test.None => ""
     }
   }
 }

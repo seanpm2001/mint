@@ -1,17 +1,18 @@
 module Mint
   class Formatter
+    def list(nodes : Array(Ast::Node), delimeter : String? = nil) : String
+      list(nodes.zip(format(nodes)).to_a, delimeter)
+    end
+
     # Formats a list of nodes while preserving
     # whitespace between them
-    def list(nodes : Array(Ast::Node)) : String
+    def list(nodes : Array(Tuple(Ast::Node, String)), delimeter : String? = nil) : String
       last_formatted = ""
       last = nil
 
       nodes
-        .sort_by(&.from)
-        .reduce("") do |memo, node|
-          # Format the node
-          formatted = format node
-
+        .sort_by(&.first.from)
+        .reduce("") do |memo, (node, formatted)|
           next memo if formatted.empty?
 
           # If this is the first node
@@ -28,7 +29,11 @@ module Mint
             separator =
               case
               when last.is_a?(Ast::Comment) && node.is_a?(Ast::Comment)
-                "\n\n"
+                if last.block? || node.block?
+                  "\n\n"
+                else
+                  "\n"
+                end
               when !last.is_a?(Ast::Comment) && node.is_a?(Ast::Comment)
                 "\n\n"
               when last.is_a?(Ast::Comment) && node.responds_to?(:comment) && node.comment
@@ -48,7 +53,7 @@ module Mint
             last_formatted = formatted
 
             # Return memo
-            memo + separator + formatted
+            "#{memo}#{delimeter}#{separator}#{formatted}"
           end
         end
     end

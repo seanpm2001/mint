@@ -24,33 +24,30 @@ provider Provider.Keyboard : Provider.Keyboard.Subscription {
 
       next { listeners: Maybe.Nothing }
     } else {
-      case listeners {
-        Maybe.Nothing =>
-          next
-            {
-              listeners:
-                Maybe.Just(
-                  {
-                    Window.addEventListener(
-                      "keydown",
-                      true,
-                      (event : Html.Event) {
-                        for subscription of subscriptions {
-                          subscription.downs(event)
-                        }
-                      }),
-                    Window.addEventListener(
-                      "keyup",
-                      true,
-                      (event : Html.Event) {
-                        for subscription of subscriptions {
-                          subscription.ups(event)
-                        }
-                      })
-                  })
-            }
-
-        => next { }
+      if listeners == Maybe.Nothing {
+        next
+          {
+            listeners:
+              Maybe.Just(
+                {
+                  Window.addEventListener(
+                    "keydown",
+                    true,
+                    (event : Html.Event) {
+                      for subscription of subscriptions {
+                        subscription.downs(event)
+                      }
+                    }),
+                  Window.addEventListener(
+                    "keyup",
+                    true,
+                    (event : Html.Event) {
+                      for subscription of subscriptions {
+                        subscription.ups(event)
+                      }
+                    })
+                })
+          }
       }
     }
   }

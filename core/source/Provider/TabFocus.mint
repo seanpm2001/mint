@@ -21,8 +21,6 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
       } when {
         subscription.element == activeElement
       }
-    } else {
-      []
     }
   }
 
@@ -37,8 +35,6 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
       } when {
         subscription.element == target
       }
-    } else {
-      []
     }
   }
 
@@ -57,19 +53,16 @@ provider Providers.TabFocus : Provider.TabFocus.Subscription {
 
       next { listeners: Maybe.Nothing }
     } else {
-      case listeners {
-        Maybe.Nothing =>
-          next
-            {
-              listeners:
-                Maybe.Just(
-                  {
-                    Window.addEventListener("keydown", true, handleKeyDown),
-                    Window.addEventListener("keyup", true, handleKeyUp)
-                  })
-            }
-
-        => next { }
+      if listeners == Maybe.Nothing {
+        next
+          {
+            listeners:
+              Maybe.Just(
+                {
+                  Window.addEventListener("keydown", true, handleKeyDown),
+                  Window.addEventListener("keyup", true, handleKeyUp)
+                })
+          }
       }
     }
   }

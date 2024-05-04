@@ -64,7 +64,7 @@ enum T {
 
 component Main {
   fun render : String {
-    if (let T::A(a) = "") {
+    if (let T.A(a) = "") {
       a
     } else {
       "b"
@@ -88,7 +88,7 @@ component Main {
 -----------------------------------------------------destructuring_type_missing
 component Main {
   fun render : String {
-    let Maybe::Just(a) = "" or return ""
+    let Maybe.Just(a) = "" or return ""
     ""
   }
 }
@@ -99,7 +99,7 @@ enum Maybe {
 
 component Main {
   fun render : String {
-    let Maybe::Just(a) = "" or return ""
+    let Maybe.Just(a) = "" or return ""
     ""
   }
 }
@@ -110,7 +110,7 @@ enum Maybe {
 
 component Main {
   fun render : String {
-    let Maybe::Just(key) = Maybe::Just(item: "") or return ""
+    let Maybe.Just(key) = Maybe.Just(item: "") or return ""
     ""
   }
 }

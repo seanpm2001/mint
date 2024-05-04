@@ -26,19 +26,6 @@ enum A {
 
 component Main {
   fun render : String {
-    case (A::B) {
-      => ""
-    }
-  }
-}
--------------------------------------------------------------------------------
-enum A {
-  B
-  C
-}
-
-component Main {
-  fun render : String {
     case (A.B) {
       => ""
     }

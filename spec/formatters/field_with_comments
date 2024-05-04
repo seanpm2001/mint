@@ -19,7 +19,6 @@ module Test {
     {
       /* A */
       a: "Hello",
-
       /* B */
       b: "Blah"
     }

@@ -1,12 +1,12 @@
 module Mint
   class TypeChecker
-    def unwind_access(node : Ast::Access, stack = [] of Ast::Node) : Array(Ast::Node)
+    def unwind_access(node : Ast::Access, stack = [] of Ast::Variable) : Array(Ast::Variable)
       case item = node.expression
       when Ast::Access
         stack.unshift(item.field)
         unwind_access(item, stack)
-      when Ast::Variable
-        stack.unshift(node.expression)
+      when Ast::Variable # Value
+        stack.unshift(item)
       end
 
       stack
@@ -46,33 +46,23 @@ module Mint
     # Html.Event.ADD -> Entity Constant
     # (() { { a: "B" }}).a -> Record access
     def check(node : Ast::Access) : Checkable
-      possibilities = [] of String
+      possibility =
+        case variable = node.expression
+        when Ast::Access
+          stack =
+            unwind_access(node)
 
-      case variable = node.expression
-      when Ast::Access
-        stack = unwind_access(node)
-        target = ""
-
-        loop do
-          case item = stack.shift?
-          when Ast::Variable
-            target +=
-              if target.blank?
-                item.value
-              else
-                "." + item.value
-              end
-
-            possibilities.unshift target
+          if stack.empty?
+            nil
           else
-            break
+            stack.join(".", &.value)
           end
+        when Ast::Variable
+          variable.value
         end
-      when Ast::Variable
-        possibilities << variable.value
-      end
 
-      possibilities.each do |possibility|
+      # possibilities.each do |possibility|
+      if possibility
         if parent = ast.type_definitions.find(&.name.value.==(possibility))
           case fields = parent.fields
           when Array(Ast::TypeVariant)

@@ -40,9 +40,11 @@ module Mint
                 "\n\n"
               when last.is_a?(Ast::Comment)
                 "\n"
-              when replace_skipped(last_formatted).includes?('\n') ||
-                replace_skipped(formatted).includes?('\n') ||
-                space_separated
+              when space_separated
+                "\n\n"
+              when !node.is_a?(Ast::Field) && !last.is_a?(Ast::Field) &&
+                (replace_skipped(last_formatted).includes?('\n') ||
+                  replace_skipped(formatted).includes?('\n'))
                 "\n\n"
               else
                 "\n"

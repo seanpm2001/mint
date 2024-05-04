@@ -1,8 +1,8 @@
-enum A(a) {
+type A(a) {
   B(a)
 }
 
-enum C(a) {
+type C(a) {
   D(A(a))
   X
 }

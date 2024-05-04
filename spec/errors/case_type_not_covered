@@ -1,4 +1,4 @@
-enum A {
+type A {
   B
   C
   D

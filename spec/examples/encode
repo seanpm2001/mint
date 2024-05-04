@@ -3,7 +3,7 @@ component Main {
   fun render : Html {
     encode
 ------------------------------------------------------------encode_complex_type
-enum Maybe {
+type Maybe {
   Just(String)
 }
 

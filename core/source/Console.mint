@@ -30,7 +30,6 @@ module Console {
   */
   fun assert (assertion : Bool, value : a, values : Array(b) = []) : Tuple(Bool, a, Array(b)) {
     `console.assert(#{assertion}, #{value}, ...#{values})`
-
     {assertion, value, values}
   }
 
@@ -78,7 +77,6 @@ module Console {
   */
   fun debug (value : a, values : Array(b) = []) : Tuple(a, Array(b)) {
     `console.debug(#{value}, ...#{values})`
-
     {value, values}
   }
 
@@ -89,7 +87,6 @@ module Console {
   */
   fun dir (value : a) : a {
     `console.dir(#{value})`
-
     value
   }
 
@@ -101,7 +98,6 @@ module Console {
   */
   fun dirxml (value : a) : a {
     `console.dirxml(#{value})`
-
     value
   }
 
@@ -112,7 +108,6 @@ module Console {
   */
   fun error (value : a, values : Array(b) = []) : Tuple(a, Array(b)) {
     `console.error(#{value}, ...#{values})`
-
     {value, values}
   }
 
@@ -123,7 +118,6 @@ module Console {
   */
   fun group (label : String = "Default") : String {
     `console.group(#{label})`
-
     label
   }
 
@@ -134,7 +128,6 @@ module Console {
   */
   fun groupCollapsed (label : String = "Default") : String {
     `console.groupCollapsed(#{label})`
-
     label
   }
 
@@ -145,7 +138,6 @@ module Console {
   */
   fun groupEnd (label : String = "Default") : String {
     `console.groupEnd(#{label})`
-
     label
   }
 
@@ -156,7 +148,6 @@ module Console {
   */
   fun info (value : a, values : Array(b) = []) : Tuple(a, Array(b)) {
     `console.info(#{value}, ...#{values})`
-
     {value, values}
   }
 
@@ -169,7 +160,6 @@ module Console {
   */
   fun log (value : a, values : Array(b) = []) : Tuple(a, Array(b)) {
     `console.log(#{value}, ...#{values})`
-
     {value, values}
   }
 
@@ -229,7 +219,6 @@ module Console {
   */
   fun time (label : String = "Default") : String {
     `console.time(#{label})`
-
     label
   }
 
@@ -240,7 +229,6 @@ module Console {
   */
   fun timeEnd (label : String = "Default") : String {
     `console.timeEnd(#{label})`
-
     label
   }
 
@@ -251,7 +239,6 @@ module Console {
   */
   fun timeLog (label : String = "Default", values : Array(a) = []) : Tuple(String, Array(a)) {
     `console.timeLog(#{label}, ...#{values})`
-
     {label, values}
   }
 
@@ -279,7 +266,6 @@ module Console {
   */
   fun trace (value : a, values : Array(b)) : Tuple(a, Array(b)) {
     `console.trace(#{value}, ...#{values})`
-
     {value, values}
   }
 
@@ -290,7 +276,6 @@ module Console {
   */
   fun warn (value : a, values : Array(b) = []) : Tuple(a, Array(b)) {
     `console.warn(#{value}, ...#{values})`
-
     {value, values}
   }
 }

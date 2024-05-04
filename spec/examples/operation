@@ -63,7 +63,7 @@ component Main {
   }
 }
 -----------------------------------------------------operation_or_type_mismatch
-enum Maybe(a) {
+type Maybe(a) {
   Nothing
   Just(a)
 }
@@ -74,7 +74,7 @@ component Main {
   }
 }
 -----------------------------------------------operation_or_not_maybe_or_result
-enum Maybe(a) {
+type Maybe(a) {
   Nothing
   Just(a)
 }
@@ -129,7 +129,7 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
-enum Maybe(a) {
+type Maybe(a) {
   Nothing
   Just(a)
 }

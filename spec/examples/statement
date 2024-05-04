@@ -1,5 +1,5 @@
 -------------------------------------------------statement_return_type_mismatch
-enum Test {
+type Test {
   A(String)
   B(String)
 }

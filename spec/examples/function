@@ -72,7 +72,7 @@ component Main {
   }
 }
 ---------------------------------------------------------function_type_mismatch
-enum Maybe(value) {
+type Maybe(value) {
   Just(value)
   Nothing
 }

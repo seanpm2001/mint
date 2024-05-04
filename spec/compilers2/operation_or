@@ -1,9 +1,9 @@
-enum Result(error, value) {
+type Result(error, value) {
   Err(error)
   Ok(value)
 }
 
-enum Maybe(value) {
+type Maybe(value) {
   Nothing
   Just(value)
 }

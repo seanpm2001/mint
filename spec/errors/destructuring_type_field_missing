@@ -1,4 +1,4 @@
-enum Maybe {
+type Maybe {
   Just(item : String)
 }
 

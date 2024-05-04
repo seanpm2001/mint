@@ -131,7 +131,7 @@ module Mint
 
       contents =
         <<-MINT
-        record #{name} {
+        type #{name} {
         #{compiled_fields}
         }
         MINT

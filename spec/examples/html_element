@@ -57,7 +57,7 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
-enum Maybe(a) {
+type Maybe(a) {
   Nothing
   Just(a)
 }
@@ -65,8 +65,8 @@ enum Maybe(a) {
 component Main {
   fun render : Html {
     case test {
-      Maybe::Just(item) => ""
-      Maybe::Nothing => ""
+      Just(item) => ""
+      Nothing => ""
     }
 
     <div as test>"Hello"</div>
@@ -100,7 +100,7 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
-enum Maybe(a) {
+type Maybe(a) {
   Nothing
   Just(a)
 }
@@ -114,8 +114,8 @@ component Test {
 component Main {
   fun render : Html {
     case test {
-      Maybe::Just(item) => { item.test "" }
-      Maybe::Nothing => ""
+      Just(item) => { item.test "" }
+      Nothing => ""
     }
 
     <Test as test/>

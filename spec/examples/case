@@ -35,7 +35,7 @@ component Main {
   }
 }
 -----------------------------------------------------------case_unnecessary_all
-enum A {
+type A {
   B
   C
 }
@@ -58,7 +58,7 @@ component Main {
   }
 }
 ----------------------------------------------------------case_type_not_covered
-enum A {
+type A {
   B
   C
   D
@@ -83,7 +83,7 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
-enum Maybe(value) {
+type Maybe(value) {
   Just(value)
   Nothing
 }

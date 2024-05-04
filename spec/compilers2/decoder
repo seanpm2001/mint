@@ -8,11 +8,11 @@ type Maybe(a) {
   Nothing
 }
 
-record Y  {
+type Y  {
   size : Number using "SIIIZEEE"
 }
 
-record X {
+type X {
   maybe : Maybe(String),
   array : Array(String),
   string : String,

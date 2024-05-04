@@ -1,4 +1,4 @@
-enum T {
+type T {
   A(String)
   B
 }

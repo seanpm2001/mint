@@ -37,7 +37,7 @@ suite "Suite 2" {
   }
 }
 ---------------------------------------------------------------variable_missing
-enum A {
+type A {
   B(String)
   C
 }

@@ -3,11 +3,11 @@ type Result(error, value) {
   Ok(value)
 }
 
-record X.Y {
+type X.Y {
   blah : String
 }
 
-record X {
+type X {
   name : String,
   y: X.Y
 }

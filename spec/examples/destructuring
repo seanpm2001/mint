@@ -57,7 +57,7 @@ component Main {
   }
 }
 ----------------------------------------------------destructuring_type_mismatch
-enum T {
+type T {
   A(String)
   B
 }
@@ -93,7 +93,7 @@ component Main {
   }
 }
 ---------------------------------------------destructuring_type_variant_missing
-enum Maybe {
+type Maybe {
   Nothing
 }
 
@@ -104,7 +104,7 @@ component Main {
   }
 }
 -----------------------------------------------destructuring_type_field_missing
-enum Maybe {
+type Maybe {
   Just(item : String)
 }
 
@@ -125,7 +125,7 @@ component Main {
   }
 }
 -------------------------------------------------------------------------------
-enum Maybe(a) {
+type Maybe(a) {
   Just(a)
   Nothing
 }

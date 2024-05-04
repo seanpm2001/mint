@@ -3,7 +3,7 @@ type Result(error, value) {
   Ok(value)
 }
 
-record Test {
+type Test {
   string : String,
   number : Number,
 }

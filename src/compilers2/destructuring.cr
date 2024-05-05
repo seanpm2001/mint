@@ -30,26 +30,33 @@ module Mint
       node : Ast::TypeDestructuring,
       variables : Array(Compiled)
     ) : Compiled
-      items =
-        if lookups[node][0].as(Ast::TypeVariant).fields
-          params = node.items.select(Ast::Variable)
+      case item = lookups[node][0]
+      when Ast::TypeVariant
+        items =
+          if item.fields
+            params = node.items.select(Ast::Variable)
 
-          if !params.empty?
-            fields =
-              params.map do |param|
-                js.array([
-                  js.string(param.value),
-                  destructuring(param, variables),
-                ])
-              end
+            if !params.empty?
+              fields =
+                params.map do |param|
+                  js.array([
+                    js.string(param.value),
+                    destructuring(param, variables),
+                  ])
+                end
 
-            js.call(Builtin::PatternRecord, [js.array(fields)])
-          end
-        end || js.array(node.items.map do |param|
-          destructuring(param, variables)
-        end)
+              js.call(Builtin::PatternRecord, [js.array(fields)])
+            end
+          end || js.array(node.items.map do |param|
+            destructuring(param, variables)
+          end)
 
-      js.call(Builtin::Pattern, [[lookups[node][0]], items])
+        js.call(Builtin::Pattern, [[lookups[node][0]], items])
+      when Ast::Constant
+        [item] of Item
+      else
+        compile(item)
+      end
     end
 
     def match(

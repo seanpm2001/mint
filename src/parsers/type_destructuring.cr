@@ -4,6 +4,9 @@ module Mint
       parse do |start_position|
         next unless name = id track: false
 
+        # This means that it's an access of a constant.
+        next if char == '.'
+
         # TODO: Remove this in 0.21.0
         next if char == ':' && !word?("::")
 

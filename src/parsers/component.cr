@@ -3,6 +3,7 @@ module Mint
     def component : Ast::Component?
       parse do |start_position, start_nodes_position|
         comment = self.comment
+        whitespace
 
         global = keyword! "global"
         whitespace

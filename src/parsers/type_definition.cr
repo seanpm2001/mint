@@ -3,6 +3,7 @@ module Mint
     def type_definition : Ast::TypeDefinition?
       parse do |start_position|
         comment = self.comment
+        whitespace
 
         # TODO: Remove `record` and `enum` in 0.21.0
         next unless keyword!("type") || keyword!("record") || keyword!("enum")

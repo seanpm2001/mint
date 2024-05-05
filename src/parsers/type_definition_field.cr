@@ -3,6 +3,7 @@ module Mint
     def type_definition_field(*, raise_on_colon : Bool = true) : Ast::TypeDefinitionField?
       parse do |start_position|
         comment = self.comment
+        whitespace
 
         next unless key = variable
         whitespace

@@ -3,6 +3,7 @@ module Mint
     def locale : Ast::Locale?
       parse do |start_position|
         comment = self.comment
+        whitespace
 
         next unless keyword! "locale"
         whitespace

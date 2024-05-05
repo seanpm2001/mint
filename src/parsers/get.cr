@@ -3,6 +3,7 @@ module Mint
     def get : Ast::Get?
       parse do |start_position|
         comment = self.comment
+        whitespace
 
         next unless keyword! "get"
         whitespace

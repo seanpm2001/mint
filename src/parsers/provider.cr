@@ -3,6 +3,7 @@ module Mint
     def provider : Ast::Provider?
       parse do |start_position, start_nodes_position|
         comment = self.comment
+        whitespace
 
         next unless keyword! "provider"
         whitespace

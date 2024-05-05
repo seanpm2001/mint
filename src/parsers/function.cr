@@ -3,6 +3,7 @@ module Mint
     def function : Ast::Function?
       parse do |start_position|
         comment = self.comment
+        whitespace
 
         next unless keyword! "fun"
         whitespace

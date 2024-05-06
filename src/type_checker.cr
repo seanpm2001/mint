@@ -105,8 +105,6 @@ module Mint
     # --------------------------------------------------------------------------
 
     def resolve_records
-      add_record Record.new("Unit"), Ast::Record.empty
-
       ast.type_definitions.each do |definition|
         next if definition.fields.is_a?(Array(Ast::TypeVariant))
         value = check(definition)

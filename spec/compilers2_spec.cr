@@ -5,8 +5,6 @@ Dir
   .select! { |file| File.file?(file) }
   .sort!
   .each do |file|
-    next if File.basename(file).starts_with?("static_component")
-
     it file do
       begin
         # Read and separate sample from expected

@@ -92,7 +92,6 @@ suite "Http.jsonBody" {
       withCredentials: false,
       body: `"{\"user\":\"spaceman\"}"`,
       method: "GET",
-
       headers:
         [
           {
@@ -104,7 +103,6 @@ suite "Http.jsonBody" {
             value: "application/json"
           }
         ],
-
       url: ""
     }
   }
@@ -116,7 +114,6 @@ suite "Http.jsonBody" {
       withCredentials: false,
       body: `"{\"user\":\"spaceman\"}"`,
       method: "GET",
-
       headers:
         [
           {
@@ -124,7 +121,6 @@ suite "Http.jsonBody" {
             value: "text/plain"
           }
         ],
-
       url: ""
     }
   }
@@ -185,7 +181,6 @@ suite "Http.header" {
             value: "Y"
           }
         ],
-
       withCredentials: false,
       method: "GET",
       body: `null`,
@@ -209,7 +204,6 @@ suite "Http.header" {
             value: "C"
           }
         ],
-
       withCredentials: false,
       method: "GET",
       body: `null`,

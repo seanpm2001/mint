@@ -19,7 +19,6 @@ module Time.Format {
             December => "dec."
           }
         },
-
       toMonthName:
         (month : Month) {
           case month {
@@ -37,7 +36,6 @@ module Time.Format {
             December => "december"
           }
         },
-
       toWeekdayName:
         (weekday : Weekday) {
           case weekday {
@@ -50,7 +48,6 @@ module Time.Format {
             Sunday => "vasárnap"
           }
         },
-
       toWeekdayAbbreviation:
         (weekday : Weekday) {
           case weekday {
@@ -63,7 +60,6 @@ module Time.Format {
             Sunday => "va."
           }
         },
-
       toOrdinalSuffix:
         (day : Number) {
           case day {
@@ -101,7 +97,6 @@ module Time.Format {
             => ""
           }
         },
-
       amPm:
         (hour : Number) {
           if hour >= 12 {
@@ -110,7 +105,6 @@ module Time.Format {
             "de."
           }
         },
-
       someSecondsAgo:
         (seconds : Number) {
           if seconds < 30 {
@@ -119,7 +113,6 @@ module Time.Format {
             "#{seconds} másodperce"
           }
         },
-
       someMinutesAgo:
         (minutes : Number) {
           if minutes < 2 {
@@ -128,7 +121,6 @@ module Time.Format {
             "#{minutes} perce"
           }
         },
-
       someHoursAgo:
         (hours : Number) {
           if hours < 2 {
@@ -137,7 +129,6 @@ module Time.Format {
             "#{hours} órája"
           }
         },
-
       someDaysAgo:
         (days : Number) {
           if days < 2 {
@@ -146,7 +137,6 @@ module Time.Format {
             "#{days} napja"
           }
         },
-
       someMonthsAgo:
         (months : Number) {
           if months < 2 {
@@ -155,7 +145,6 @@ module Time.Format {
             "#{months} hónapja"
           }
         },
-
       someYearsAgo:
         (years : Number) {
           if years < 2 {
@@ -164,7 +153,6 @@ module Time.Format {
             "#{years} éve"
           }
         },
-
       inSomeSeconds:
         (seconds : Number) {
           if seconds < 30 {
@@ -173,7 +161,6 @@ module Time.Format {
             "#{seconds} másodperc múlva"
           }
         },
-
       inSomeMinutes:
         (minutes : Number) {
           if minutes < 2 {
@@ -182,7 +169,6 @@ module Time.Format {
             "#{minutes} perc múlva"
           }
         },
-
       inSomeHours:
         (hours : Number) {
           if hours < 2 {
@@ -191,7 +177,6 @@ module Time.Format {
             "#{hours} óra múlva"
           }
         },
-
       inSomeDays:
         (days : Number) {
           if days < 2 {
@@ -200,7 +185,6 @@ module Time.Format {
             "#{days} nam múlva"
           }
         },
-
       inSomeMonths:
         (months : Number) {
           if months < 2 {
@@ -209,7 +193,6 @@ module Time.Format {
             "#{months} hónap múlva"
           }
         },
-
       inSomeYears:
         (years : Number) {
           if years < 2 {
@@ -218,7 +201,6 @@ module Time.Format {
             "#{years} év múlva"
           }
         },
-
       rightNow: "épp most"
     }
 }

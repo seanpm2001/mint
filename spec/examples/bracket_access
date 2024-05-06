@@ -21,7 +21,7 @@ component Main {
 --------------------------------------------------bracket_access_not_accessible
 component Main {
   fun render : Html {
-    {}[0]
+    ""[0]
 
     <div/>
   }

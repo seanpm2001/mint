@@ -1,6 +1,6 @@
 component Main {
   fun test : Maybe(String) {
-    {}[0]
+    0[0]
   }
 
   fun render : Html {
@@ -21,7 +21,7 @@ I was expecting:
 
 Instead it is:
 
-  Unit
+  Number
 
 The array in question is here:
 
@@ -29,8 +29,8 @@ The array in question is here:
    ├────────────────────────────────────────────────
   1│ component Main {
   2│   fun test : Maybe(String) {
-  3│     {}[0]
-   │     ⌃⌃
+  3│     0[0]
+   │     ⌃
   4│   }
   5│
   6│   fun render : Html {

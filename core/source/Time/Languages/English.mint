@@ -19,7 +19,6 @@ module Time.Format {
             December => "Dec"
           }
         },
-
       toMonthName:
         (month : Month) {
           case month {
@@ -37,7 +36,6 @@ module Time.Format {
             December => "December"
           }
         },
-
       toWeekdayName:
         (weekday : Weekday) {
           case weekday {
@@ -50,7 +48,6 @@ module Time.Format {
             Sunday => "Sunday"
           }
         },
-
       toWeekdayAbbreviation:
         (weekday : Weekday) {
           case weekday {
@@ -63,7 +60,6 @@ module Time.Format {
             Sunday => "Sun"
           }
         },
-
       toOrdinalSuffix:
         (day : Number) {
           case day % 100 {
@@ -80,7 +76,6 @@ module Time.Format {
               }
           }
         },
-
       amPm:
         (hour : Number) {
           if hour >= 12 {
@@ -89,7 +84,6 @@ module Time.Format {
             "am"
           }
         },
-
       someSecondsAgo:
         (seconds : Number) {
           if seconds < 30 {
@@ -98,7 +92,6 @@ module Time.Format {
             "#{seconds} seconds ago"
           }
         },
-
       someMinutesAgo:
         (minutes : Number) {
           if minutes < 2 {
@@ -107,7 +100,6 @@ module Time.Format {
             "#{minutes} minutes ago"
           }
         },
-
       someHoursAgo:
         (hours : Number) {
           if hours < 2 {
@@ -116,7 +108,6 @@ module Time.Format {
             "#{hours} hours ago"
           }
         },
-
       someDaysAgo:
         (days : Number) {
           if days < 2 {
@@ -125,7 +116,6 @@ module Time.Format {
             "#{days} days ago"
           }
         },
-
       someMonthsAgo:
         (months : Number) {
           if months < 2 {
@@ -134,7 +124,6 @@ module Time.Format {
             "#{months} months ago"
           }
         },
-
       someYearsAgo:
         (years : Number) {
           if years < 2 {
@@ -143,7 +132,6 @@ module Time.Format {
             "#{years} years ago"
           }
         },
-
       inSomeSeconds:
         (seconds : Number) {
           if seconds < 30 {
@@ -152,7 +140,6 @@ module Time.Format {
             "in #{seconds} seconds"
           }
         },
-
       inSomeMinutes:
         (minutes : Number) {
           if minutes < 2 {
@@ -161,7 +148,6 @@ module Time.Format {
             "in #{minutes} minutes"
           }
         },
-
       inSomeHours:
         (hours : Number) {
           if hours < 2 {
@@ -170,7 +156,6 @@ module Time.Format {
             "in #{hours} hours"
           }
         },
-
       inSomeDays:
         (days : Number) {
           if days < 2 {
@@ -179,7 +164,6 @@ module Time.Format {
             "in #{days} days"
           }
         },
-
       inSomeMonths:
         (months : Number) {
           if months < 2 {
@@ -188,7 +172,6 @@ module Time.Format {
             "in #{months} months"
           }
         },
-
       inSomeYears:
         (years : Number) {
           if years < 2 {
@@ -197,7 +180,6 @@ module Time.Format {
             "in #{years} years"
           }
         },
-
       rightNow: "right now"
     }
 }

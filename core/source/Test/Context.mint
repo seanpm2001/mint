@@ -75,7 +75,7 @@ module Test.Context {
 
     test {
       Test.Context.of(5)
-      |> Test.Context.assertOf("5", Number.toString)
+      |> Test.Context.assert((value : Number) { value == 5 })
     }
   */
   fun assert (
